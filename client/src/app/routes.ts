@@ -3,7 +3,6 @@ import { UserComponent } from './user/user.component';
 import { SignUpComponent } from './user/sign-up/sign-up.component';
 import { SignInComponent } from './user/sign-in/sign-in.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { ProjectProfileComponent } from './project-profile/project-profile.component';
 import { AuthGuard } from './auth/auth.guard';
 
 export const appRoutes: Routes = [
@@ -17,9 +16,6 @@ export const appRoutes: Routes = [
     },
     {
         path: 'userprofile', component: UserProfileComponent,canActivate:[AuthGuard]
-    },
-    {
-        path: 'projectprofile', component: ProjectProfileComponent,canActivate:[AuthGuard]
     },
     {
         path: '', redirectTo: '/login', pathMatch: 'full'

@@ -16,7 +16,6 @@ import { UserService } from './shared/user.service';
 //other
 import { AuthGuard } from './auth/auth.guard';
 import { AuthInterceptor } from './auth/auth.interceptor';
-import { ProjectProfileComponent } from './project-profile/project-profile.component';
 
 @NgModule({
   declarations: [
@@ -24,8 +23,7 @@ import { ProjectProfileComponent } from './project-profile/project-profile.compo
     UserComponent,
     SignUpComponent,
     UserProfileComponent,
-    SignInComponent,
-    ProjectProfileComponent
+    SignInComponent
   ],
   imports: [
     BrowserModule,
