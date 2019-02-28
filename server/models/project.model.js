@@ -10,6 +10,10 @@ var projectSchema = new mongoose.Schema({
         required: 'URL can\'t be empty',
         unique: true
     },
+    githubPartURL: {
+        type: String,
+        required: 'URL can\'t be empty',
+    },
     description: {
         type: String,
         required: 'Description can\'t be empty',

@@ -22,6 +22,8 @@ import { ProjectsComponent } from './projects/projects.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ProjectCreateComponent } from './project-create/project-create.component';
 import { ProjectProfileComponent } from './project-profile/project-profile.component';
+import { ProjectBacklogComponent } from './project-backlog/project-backlog.component';
+import { ProjectCompletedComponent } from './project-completed/project-completed.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { ProjectProfileComponent } from './project-profile/project-profile.compo
     ProjectsComponent,
     NavbarComponent,
     ProjectCreateComponent,
-    ProjectProfileComponent
+    ProjectProfileComponent,
+    ProjectBacklogComponent,
+    ProjectCompletedComponent
   ],
   imports: [
     BrowserModule,

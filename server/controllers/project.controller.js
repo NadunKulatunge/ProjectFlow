@@ -9,6 +9,7 @@ module.exports.createProject = (req, res, next) => {
     var project = new Project();
     project.title = req.body.title;
     project.githubURL = req.body.githubURL;
+    project.githubPartURL = req.body.githubPartURL;
     project.description = req.body.description;
     project.userID = req.body.userID;
 
@@ -29,18 +30,28 @@ module.exports.userProjects = (req, res, next) =>{
     console.log(req._id)
 
     Project.find().where("userID", req._id).
-          exec(function(err, result) {
-             // docs contains an array of MongooseJS Documents
-             // so you can return that...
-             // reverse does an in-place modification, so there's no reason
-             // to assign to something else ...
+        exec(function(err, result) {
             if (!result)
-                return res.status(411).json({ status: false, message: 'Project record not found.' });
+                return res.status(404).json({ status: false, message: 'Project record not found.' });
             else
                 return res.status(200).json({ status: true, result });
+        });
 
-          });
+}
 
-
+module.exports.projectInfo = (req, res, next) =>{
+    console.log(req.params.id)
+    
+    Project.findOne({ _id: req.params.id },
+        (err, project) => {
+            if (!project){
+                return res.status(404).json({ status: false, message: 'Project record not found.' });
+            } else if(project.userID != req._id) {
+                return res.status(403.2).json({ status: false, message: 'Project record read access forbidden.' });
+            }else {
+                return res.status(200).json({ status: true, project });
+            }
+        }
+    );
 
 }
