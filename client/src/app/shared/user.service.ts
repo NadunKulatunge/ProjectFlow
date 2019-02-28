@@ -32,6 +32,10 @@ export class UserService {
     return this.http.get(environment.apiBaseUrl + '/userProfile');
   }
 
+  getGithubdata() {
+    return this.http.get(environment.apiBaseUrl + '/github');
+  }
+
 
   //Helper Methods
 

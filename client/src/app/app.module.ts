@@ -16,6 +16,11 @@ import { UserService } from './shared/user.service';
 //other
 import { AuthGuard } from './auth/auth.guard';
 import { AuthInterceptor } from './auth/auth.interceptor';
+import { GithubComponent } from './github/github.component';
+import { GithubService } from './shared/github.service';
+import { ProjectsComponent } from './projects/projects.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { ProjectCreateComponent } from './project-create/project-create.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +28,11 @@ import { AuthInterceptor } from './auth/auth.interceptor';
     UserComponent,
     SignUpComponent,
     UserProfileComponent,
-    SignInComponent
+    SignInComponent,
+    GithubComponent,
+    ProjectsComponent,
+    NavbarComponent,
+    ProjectCreateComponent
   ],
   imports: [
     BrowserModule,
@@ -34,8 +43,8 @@ import { AuthInterceptor } from './auth/auth.interceptor';
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
-    multi: true
-  },AuthGuard,UserService],
+    multi: true,
+  },AuthGuard,UserService, GithubService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

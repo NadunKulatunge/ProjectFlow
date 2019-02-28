@@ -4,6 +4,8 @@ const _ = require('lodash');
 
 const User = mongoose.model('User');
 
+const request = require('superagent');
+
 module.exports.register = (req, res, next) => {
     var user = new User();
     user.fullName = req.body.fullName;
@@ -40,7 +42,20 @@ module.exports.userProfile = (req, res, next) =>{
             if (!user)
                 return res.status(404).json({ status: false, message: 'User record not found.' });
             else
-                return res.status(200).json({ status: true, user : _.pick(user,['fullName','email']) });
+                return res.status(200).json({ status: true, user : _.pick(user,['_id','fullName','email']) });
         }
     );
+}
+
+module.exports.github = (req, res, next) =>{
+
+        const accessToken = '9605bc40b37f04ccc8673f6ebe23aa4a9ff6c7f7';
+    
+        request
+        .get('https://api.github.com/user')
+        .set('Authorization', 'token ' + accessToken)
+        .then(result => {
+            res.send(result.body);
+        });
+    
 }

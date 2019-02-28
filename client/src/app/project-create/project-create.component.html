@@ -1,0 +1,29 @@
+<h2 class="headerLine">Create Project</h2>
+<form #signUpForm="ngForm" (ngSubmit)="signUpForm.valid && onSubmit(signUpForm)">
+  <div class="form-group">
+    <label for="exampleInputEmail1">Project Name</label>
+    <input type="text" class="form-control" #title="ngModel" name="title" [(ngModel)]="dataService.selectedProject.title" id="exampleInputEmail1" aria-describedby="emailHelp" >
+  </div>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Github URL</label>
+    <input type="text" #githubURL="ngModel" class="form-control" name="githubURL" [(ngModel)]="dataService.selectedProject.githubURL" id="exampleInputEmail1" aria-describedby="emailHelp" >
+    <small id="emailHelp" class="form-text text-muted">https://github.com/angular/angular-cli</small>
+  </div>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Description</label>
+    <input type="text" #description="ngModel"  name="description" [(ngModel)]="dataService.selectedProject.description" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" >
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+<!-- Success message -->
+<div class="success" *ngIf="showSucessMessage">
+    Saved successfully
+  </div>
+  
+  <!-- Error message -->
+  <div class="alert" *ngIf="serverErrorMessages">
+    {{serverErrorMessages}}
+  </div>
