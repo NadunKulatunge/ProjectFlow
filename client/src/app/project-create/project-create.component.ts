@@ -14,6 +14,9 @@ export class ProjectCreateComponent implements OnInit {
 
   userDetails;
   userID;
+  githubPartURL;
+  urlsplit;
+  url;
 
   showSucessMessage: boolean;
   serverErrorMessages: string;
@@ -35,9 +38,14 @@ export class ProjectCreateComponent implements OnInit {
 
 
   onSubmit(form: NgForm) {
+    this.url = form.value.githubURL;
+    this.urlsplit = this.url.split("/").slice(-2)
+    this.githubPartURL = this.urlsplit[0]+"/"+this.urlsplit[1];
+  
     let newItem: Project = {
       title: form.value.title,
       githubURL: form.value.githubURL,
+      githubPartURL: this.githubPartURL,
       description: form.value.description,
       userID: this.userID
 
@@ -64,6 +72,7 @@ export class ProjectCreateComponent implements OnInit {
     this.dataService.selectedProject = {
       title: '',
       githubURL: '',
+      githubPartURL: '',
       description: '',
       userID: ''
     };

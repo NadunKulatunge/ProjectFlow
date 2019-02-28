@@ -14,8 +14,8 @@ export class GithubService {
     return this.http.get(environment.apiBaseUrl + '/github');
   }
 
-  getGithubOpenIssues() {
-    return this.http.get(environment.apiBaseUrl + '/githubopenissues');
+  getGithubOpenIssues(id) {
+    return this.http.get(environment.apiBaseUrl + '/githubopenissues/'+id);
   }
 
 }

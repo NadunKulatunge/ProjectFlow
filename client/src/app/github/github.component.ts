@@ -32,7 +32,7 @@ export class GithubComponent implements OnInit {
       }
     );
 
-    this.githubService.getGithubOpenIssues().subscribe(
+    /*this.githubService.getGithubOpenIssues(this.id).subscribe(
       res => {
         //this.userDetails = res['user'];
         //console.log(res);
@@ -44,7 +44,7 @@ export class GithubComponent implements OnInit {
         console.log(err);
         
       }
-    );
+    );*/
 
   }
 

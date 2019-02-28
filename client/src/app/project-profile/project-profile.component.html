@@ -1,0 +1,10 @@
+
+<div class="card">
+    <h5 class="card-header">Project Backlog</h5>
+    <div class="card-body" *ngFor="let item of githubOpenIssues">
+      <h5 class="card-title" >{{item.number + ') ' +item.title}}</h5>
+      <p class="card-text">{{item.body}}</p>
+      <a href="{{item.id}}" class="btn btn-success">Add to Sprint</a>
+      <hr>
+    </div>
+  </div>

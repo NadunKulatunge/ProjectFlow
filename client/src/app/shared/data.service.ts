@@ -13,6 +13,7 @@ export class DataService {
   selectedProject: Project = {
     title: '',
     githubURL: '',
+    githubPartURL: '',
     description: '',
     userID: ''
   };
@@ -30,6 +31,12 @@ export class DataService {
   getProjects() {
     return this.http.get(environment.apiBaseUrl + '/userprojects');
   }
+
+  getProjectInfo(id) {
+    return this.http.get(environment.apiBaseUrl + '/projectinfo/'+id);
+  }
+
+
 
  
 }

@@ -21,6 +21,7 @@ import { GithubService } from './shared/github.service';
 import { ProjectsComponent } from './projects/projects.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ProjectCreateComponent } from './project-create/project-create.component';
+import { ProjectProfileComponent } from './project-profile/project-profile.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ProjectCreateComponent } from './project-create/project-create.componen
     GithubComponent,
     ProjectsComponent,
     NavbarComponent,
-    ProjectCreateComponent
+    ProjectCreateComponent,
+    ProjectProfileComponent
   ],
   imports: [
     BrowserModule,

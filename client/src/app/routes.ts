@@ -6,6 +6,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { GithubComponent } from './github/github.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { ProjectCreateComponent } from './project-create/project-create.component';
+import { ProjectProfileComponent } from './project-profile/project-profile.component';
 import { AuthGuard } from './auth/auth.guard';
 
 export const appRoutes: Routes = [
@@ -28,6 +29,9 @@ export const appRoutes: Routes = [
     },
     {
         path: 'projectcreate', component: ProjectCreateComponent,canActivate:[AuthGuard]
+    },
+    {
+        path: 'project-profile/:id', component: ProjectProfileComponent,canActivate:[AuthGuard]
     },
     {
         path: '', redirectTo: '/login', pathMatch: 'full'
