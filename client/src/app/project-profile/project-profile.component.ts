@@ -18,8 +18,8 @@ export class ProjectProfileComponent implements OnInit {
   description;
   projectID;
   githubURL;
-
   alldata;
+  
   openIssueCount=0;
   closedIssueCount=0;
   openPullRequestCount=0;
@@ -35,7 +35,9 @@ export class ProjectProfileComponent implements OnInit {
   projectProgress;
   closedIssueProgress;
   closedPullRequestProgress;
-
+  openTaskProgress;
+  openIssueProgress;
+  openPullRequestProgress;
 
   projectProgressPercentage;
 
@@ -136,6 +138,10 @@ export class ProjectProfileComponent implements OnInit {
     this.projectProgress = ((this.totalClosedTaskCount/this.totalTaskCount)*100).toFixed(1);
     this.closedIssueProgress = ((this.closedIssueCount/this.totalTaskCount)*100).toFixed(1);
     this.closedPullRequestProgress = ((this.closedPullRequestCount/this.totalTaskCount)*100).toFixed(1);
+
+    this.openIssueProgress = ((this.openIssueCount/this.totalTaskCount)*100).toFixed(1);
+    this.openPullRequestProgress = ((this.openPullRequestCount/this.totalTaskCount)*100).toFixed(1);
+    this.openTaskProgress = ((this.totalOpenTaskCount/this.totalTaskCount)*100).toFixed(1);
     
   }
 

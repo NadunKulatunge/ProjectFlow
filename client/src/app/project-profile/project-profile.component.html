@@ -17,40 +17,82 @@
       <dd class="col-sm-9">{{githubURL}}</dd>
 
       <hr>
-
-      <dt class="col-sm-3 text-truncate">Open Issues</dt>
-      <dd class="col-sm-9">{{openIssueCount}}</dd>
-      <dt class="col-sm-3 text-truncate">Closed Issues</dt>
-      <dd class="col-sm-9">{{closedIssueCount}}</dd>
-      <dt class="col-sm-3 text-truncate">Total Issues</dt>
-      <dd class="col-sm-9">{{totalIssueCount}}</dd>
-
-      <hr>
-
-      <dt class="col-sm-3 text-truncate">Open pull-requests</dt>
-      <dd class="col-sm-9">{{openPullRequestCount}}</dd>
-      <dt class="col-sm-3 text-truncate">Closed pull-requests</dt>
-      <dd class="col-sm-9">{{closedPullRequestCount}}</dd>
-      <dt class="col-sm-3 text-truncate">Total pull-requests</dt>
-      <dd class="col-sm-9">{{totalPullRequestCount}}</dd>
-      
-      <dt class="col-sm-3 text-truncate">Total Tasks</dt>
-      <dd class="col-sm-9">{{totalTaskCount}}</dd>
       
     </dl>
+  </div>
+</div>
 
-    <h2>Project Progress {{projectProgress + '%'}}</h2>
+<div class="card" style="margin-bottom: 10px;">
+  <h2>Backlog / To-Do</h2>
+  <div class="card-body" >
+    <dl class="row">
+      <dt class="col-sm-3 text-truncate">Open Issues</dt>
+      <dd class="col-sm-9"><span class="badge badge-primary">{{openIssueCount}}</span></dd>
+      <dt class="col-sm-3 text-truncate">Open pull-requests</dt>
+      <dd class="col-sm-9"><span class="badge badge-danger">{{openPullRequestCount}}</span></dd>
+    </dl>
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" [style.width]="openIssueProgress+ '%'" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+      <div class="progress-bar bg-danger" role="progressbar" [style.width]="openPullRequestProgress+ '%'" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+    <dl class="row" style="margin-top: 20px;">
+      <dt class="col-sm-3 text-truncate">To-Do Task Count</dt>
+      <dd class="col-sm-9">{{totalOpenTaskCount}}</dd>
+      <dt class="col-sm-3 text-truncate">To-Do Task Percentage</dt>
+      <dd class="col-sm-9">{{openTaskProgress + '%'}}</dd>
+    </dl>
 
+    <button type="button" [routerLink]="['/project-backlog', id]" class="btn btn-dark btn-lg btn-block">View Project Backlog</button>
+    <br>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom: 10px;">
+  <h2>Sprint / In-Progress</h2>
+  <div class="card-body" >
+    <dl class="row">
+      <dt class="col-sm-3 text-truncate">Closed Issues</dt>
+      <dd class="col-sm-9"><span class="badge badge-primary">{{closedIssueCount}}</span></dd>
+      <dt class="col-sm-3 text-truncate">Closed pull-requests</dt>
+      <dd class="col-sm-9"><span class="badge badge-danger">{{closedPullRequestCount}}</span></dd>
+    </dl>
     <div class="progress">
       <div class="progress-bar" role="progressbar" [style.width]="closedIssueProgress+ '%'" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
       <div class="progress-bar bg-danger" role="progressbar" [style.width]="closedPullRequestProgress+ '%'" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
+    <dl class="row" style="margin-top: 20px;">
+      <dt class="col-sm-3 text-truncate">Closed Task Count</dt>
+      <dd class="col-sm-9">{{totalClosedTaskCount}}</dd>
+      <dt class="col-sm-3 text-truncate">Closed Task Percentage</dt>
+      <dd class="col-sm-9">{{projectProgress + '%'}}</dd>
+    </dl>
 
+    <button type="button" [routerLink]="['/project-completed', id]" class="btn btn-dark btn-lg btn-block">View Current Sprint</button>
     <br>
-    <br>
-    <button type="button" [routerLink]="['/project-backlog', id]" class="btn btn-primary btn-lg btn-block">View Project Backlog</button>
-    <br>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom: 10px;">
+  <h2>Completed</h2>
+  <div class="card-body" >
+    <dl class="row">
+      <dt class="col-sm-3 text-truncate">Closed Issues</dt>
+      <dd class="col-sm-9"><span class="badge badge-primary">{{closedIssueCount}}</span></dd>
+      <dt class="col-sm-3 text-truncate">Closed pull-requests</dt>
+      <dd class="col-sm-9"><span class="badge badge-danger">{{closedPullRequestCount}}</span></dd>
+    </dl>
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" [style.width]="closedIssueProgress+ '%'" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+      <div class="progress-bar bg-danger" role="progressbar" [style.width]="closedPullRequestProgress+ '%'" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+    <dl class="row" style="margin-top: 20px;">
+      <dt class="col-sm-3 text-truncate">Closed Task Count</dt>
+      <dd class="col-sm-9">{{totalClosedTaskCount}}</dd>
+      <dt class="col-sm-3 text-truncate">Closed Task Percentage</dt>
+      <dd class="col-sm-9">{{projectProgress + '%'}}</dd>
+    </dl>
+
     <button type="button" [routerLink]="['/project-completed', id]" class="btn btn-dark btn-lg btn-block">View Completed Tasks</button>
-
+    <br>
   </div>
 </div>
