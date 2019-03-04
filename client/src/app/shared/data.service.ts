@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { environment } from '../../environments/environment';
 import { Project } from './project.model';
+import { Sprint } from './sprint.model';
+import { SprintItem } from './sprintitem.model';
 import { UserService } from '../shared/user.service';
 
 @Injectable({
@@ -18,12 +20,20 @@ export class DataService {
     userID: ''
   };
 
+  selectedSprint: Sprint = {
+    title: '',
+    startDate: '',
+    endDate: '',
+    projectID: ''
+  };
+
   noAuthHeader = { headers: new HttpHeaders({ 'NoAuth': 'True' }) };
 
   constructor(private http: HttpClient, private userService: UserService) { }
  
   //HttpMethods
 
+  //Projects
   createProject(project: Project) {
     return this.http.post(environment.apiBaseUrl+'/project/create',project);
   }
@@ -36,7 +46,26 @@ export class DataService {
     return this.http.get(environment.apiBaseUrl + '/projectinfo/'+id);
   }
 
+  //Sprints
+  createSprint(sprint: Sprint) {
+    return this.http.post(environment.apiBaseUrl+'/sprint/create',sprint);
+  }
 
+  getSprints(pid){
+    return this.http.get(environment.apiBaseUrl+'/sprints/'+pid);
+  }
+
+  createSprintItem(sprintitem: SprintItem) {
+    return this.http.post(environment.apiBaseUrl+'/sprintitem/create',sprintitem);
+  }
+
+  getSprintItems(pid){
+    return this.http.get(environment.apiBaseUrl+'/sprintitems/'+pid);
+  }
+
+  getProjectIssuesAddedToSprints(pid){
+    return this.http.get(environment.apiBaseUrl+'/projectIssuesAddedToSprints/'+pid);
+  }
 
  
 }

@@ -7,3 +7,5 @@ mongoose.connect(process.env.MONGODB_URI, (err) => {
 
 require('./user.model');
 require('./project.model');
+require('./sprint.model');
+require('./sprintitem.model');

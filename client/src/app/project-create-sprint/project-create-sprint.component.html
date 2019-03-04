@@ -1,0 +1,28 @@
+<h2 class="headerLine">Create Sprint</h2>
+<form #sprintForm="ngForm" (ngSubmit)="sprintForm.valid && onSubmit(sprintForm)">
+  <div class="form-group">
+    <label>Sprint Title</label>
+    <input type="text" #githubURL="ngModel" class="form-control" name="title" [(ngModel)]="dataService.selectedSprint.title" >
+  </div>
+  <div class="form-group">
+    <label>Start Date</label>
+    <input type="date" #description="ngModel"  name="startDate" [(ngModel)]="dataService.selectedSprint.startDate" class="form-control" >
+  </div>
+  <div class="form-group">
+    <label>End Date</label>
+    <input type="date" #description="ngModel"  name="endDate" [(ngModel)]="dataService.selectedSprint.endDate" class="form-control" >
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+<!-- Success message -->
+<div class="success" *ngIf="showSucessMessage">
+  Saved successfully
+</div>
+
+<!-- Error message -->
+<div class="alert" *ngIf="serverErrorMessages">
+  {{serverErrorMessages}}
+</div>

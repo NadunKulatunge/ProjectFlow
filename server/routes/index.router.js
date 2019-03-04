@@ -4,6 +4,7 @@ const router = express.Router();
 const ctrlUser = require('../controllers/user.controller');
 const ctrlGithub = require('../controllers/github.controller');
 const ctrlProject = require('../controllers/project.controller');
+const ctrlSprint = require('../controllers/sprint.controller');
 
 const jwtHelper = require('../config/jwtHelper');
 
@@ -21,9 +22,13 @@ router.post('/project/create',jwtHelper.verifyJwtToken, ctrlProject.createProjec
 router.get('/userprojects',jwtHelper.verifyJwtToken, ctrlProject.userProjects);
 router.get('/projectinfo/:id',jwtHelper.verifyJwtToken, ctrlProject.projectInfo);
 
+router.post('/sprintitem/create',jwtHelper.verifyJwtToken, ctrlSprint.createSprintItem);
+router.get('/sprintitems',jwtHelper.verifyJwtToken, ctrlSprint.sprintItem);
+router.post('/sprint/create',jwtHelper.verifyJwtToken, ctrlSprint.createSprint);
+router.get('/sprints/:pid',jwtHelper.verifyJwtToken, ctrlSprint.sprint);
+router.get('/projectIssuesAddedToSprints/:pid',jwtHelper.verifyJwtToken, ctrlSprint.projectIssuesAddedToSprints);
 
 
 module.exports = router;
-
 
 
