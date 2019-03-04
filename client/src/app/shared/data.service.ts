@@ -55,16 +55,24 @@ export class DataService {
     return this.http.get(environment.apiBaseUrl+'/sprints/'+pid);
   }
 
+  getSprint(pid, sid){
+    return this.http.get(environment.apiBaseUrl+'/sprint/'+pid+'/'+sid);
+  }
+
   createSprintItem(sprintitem: SprintItem) {
     return this.http.post(environment.apiBaseUrl+'/sprintitem/create',sprintitem);
   }
 
-  getSprintItems(pid){
-    return this.http.get(environment.apiBaseUrl+'/sprintitems/'+pid);
+  getSprintItems(pid, sid){
+    return this.http.get(environment.apiBaseUrl+'/sprintitems/'+pid+'/'+sid);
   }
 
   getProjectIssuesAddedToSprints(pid){
     return this.http.get(environment.apiBaseUrl+'/projectIssuesAddedToSprints/'+pid);
+  }
+
+  getSprintItemDetails(issueNumber, pid){
+    return this.http.get(environment.apiBaseUrl+'/sprintitem/'+pid+'/'+issueNumber);
   }
 
  

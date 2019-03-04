@@ -13,7 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ProjectCreateSprintComponent implements OnInit {
 
-  id;
+  pid;
   project;
   projectTitle;
   projectID;
@@ -23,9 +23,9 @@ export class ProjectCreateSprintComponent implements OnInit {
   constructor(private dataService: DataService, private router : Router, private userService: UserService, private _Activatedroute:ActivatedRoute) { }
 
   ngOnInit() {
-    this.id=this._Activatedroute.snapshot.params['id'];
+    this.pid=this._Activatedroute.snapshot.params['pid'];
 
-    this.dataService.getProjectInfo(this.id).subscribe(
+    this.dataService.getProjectInfo(this.pid).subscribe(
       res => {
         this.project = res;
         this.projectTitle = this.project.project.title;
@@ -33,7 +33,7 @@ export class ProjectCreateSprintComponent implements OnInit {
         //console.log(this.projectID);
       },
       err => { 
-        if (err.status === 404 || err.status === 403.2 ) {
+        if (err.status === 404 || err.status === 403.2 || err.status === 403) {
           this.router.navigateByUrl('/projects');
         }
         console.log(err);

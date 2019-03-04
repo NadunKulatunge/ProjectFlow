@@ -12,7 +12,7 @@ import { GithubService } from '../shared/github.service';
 })
 export class ProjectProfileComponent implements OnInit {
 
-  id;
+  pid;
   project;
   title;
   description;
@@ -43,12 +43,14 @@ export class ProjectProfileComponent implements OnInit {
 
   githubOpenIssues;
 
+  sprints;
+
   constructor(private githubService: GithubService, private _Activatedroute:ActivatedRoute, private dataService: DataService, private router : Router) { }
 
   ngOnInit() {
-    this.id=this._Activatedroute.snapshot.params['id'];
+    this.pid=this._Activatedroute.snapshot.params['pid'];
 
-    this.dataService.getProjectInfo(this.id).subscribe(
+    this.dataService.getProjectInfo(this.pid).subscribe(
       res => {
         this.project = res;
         this.project = this.project.project;
@@ -59,7 +61,7 @@ export class ProjectProfileComponent implements OnInit {
         console.log(this.title)
       },
       err => { 
-        if (err.status === 404 || err.status === 403.2 ) {
+        if (err.status === 404 || err.status === 403.2 || err.status === 403) {
           this.router.navigateByUrl('/projects');
         }
         console.log(err);
@@ -68,7 +70,7 @@ export class ProjectProfileComponent implements OnInit {
     );
 
     //Open issue count
-    this.githubService.getGithubIssueCount(this.id, 'issue', 'open').subscribe(
+    this.githubService.getGithubIssueCount(this.pid, 'issue', 'open').subscribe(
       res => {
         this.alldata = res;
         this.openIssueCount = this.alldata.total_count;
@@ -82,7 +84,7 @@ export class ProjectProfileComponent implements OnInit {
     );
 
     //Closed issue count
-    this.githubService.getGithubIssueCount(this.id, 'issue', 'closed').subscribe(
+    this.githubService.getGithubIssueCount(this.pid, 'issue', 'closed').subscribe(
       res => {
         this.alldata = res;
         this.closedIssueCount = this.alldata.total_count;
@@ -96,7 +98,7 @@ export class ProjectProfileComponent implements OnInit {
     );
 
     //Open pull-request count
-    this.githubService.getGithubIssueCount(this.id, 'pull-request', 'open').subscribe(
+    this.githubService.getGithubIssueCount(this.pid, 'pull-request', 'open').subscribe(
       res => {
         this.alldata = res;
         this.openPullRequestCount = this.alldata.total_count;
@@ -109,12 +111,25 @@ export class ProjectProfileComponent implements OnInit {
       }
     );
 
-    this.githubService.getGithubIssueCount(this.id, 'pull-request', 'closed').subscribe(
+    this.githubService.getGithubIssueCount(this.pid, 'pull-request', 'closed').subscribe(
       res => {
         this.alldata = res;
         this.closedPullRequestCount = this.alldata.total_count;
         console.log(this.closedPullRequestCount);
         this.updateCount();
+      },
+      err => { 
+        console.log(err);
+        
+      }
+    );
+
+    //get all the sprints
+    this.dataService.getSprints(this.pid).subscribe(
+      res => {
+        this.sprints = res;
+        this.sprints = this.sprints.result;
+        //console.log(this.sprints)
       },
       err => { 
         console.log(err);

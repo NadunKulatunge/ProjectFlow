@@ -26,4 +26,8 @@ export class GithubService {
     return this.http.get(environment.apiBaseUrl + '/githubissuecount/'+id+'/'+type+"/"+state);
   }
 
+  githubGetIssueFromNumber(pid, issueNumber) {
+    return this.http.get(environment.apiBaseUrl + '/githubGetIssueFromNumber/'+pid+'/'+issueNumber);
+  }
+
 }

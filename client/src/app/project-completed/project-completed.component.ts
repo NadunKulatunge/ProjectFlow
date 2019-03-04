@@ -11,7 +11,7 @@ import { GithubService } from '../shared/github.service';
 })
 export class ProjectCompletedComponent implements OnInit {
 
-  id;
+  pid;
   project;
   projectID;
   githubClosedIssues;
@@ -19,9 +19,26 @@ export class ProjectCompletedComponent implements OnInit {
   constructor(private githubService: GithubService, private _Activatedroute:ActivatedRoute, private dataService: DataService, private router : Router) { }
 
   ngOnInit() {
-    this.id=this._Activatedroute.snapshot.params['id'];
+    this.pid=this._Activatedroute.snapshot.params['pid'];
 
-    this.githubService.getGithubClosedIssues(this.id).subscribe(
+    //Params Protection
+    this.dataService.getProjectInfo(this.pid).subscribe(
+      res => {
+        this.project = res;
+        this.project = this.project.project;
+        this.projectID = this.project._id;
+        //console.log(this.project);
+      },
+      err => { 
+        if (err.status === 404 || err.status === 403.2 || err.status === 403) {
+          this.router.navigateByUrl('/projects');
+        }
+        console.log(err);
+        
+      }
+    );
+
+    this.githubService.getGithubClosedIssues(this.pid).subscribe(
       res => {
         //this.userDetails = res['user'];
         //console.log(res);

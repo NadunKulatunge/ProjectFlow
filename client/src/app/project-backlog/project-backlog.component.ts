@@ -20,13 +20,15 @@ export class ProjectBacklogComponent implements OnInit {
   data;
   issuesAddedToSprints;
   issuesNumberToSprintTitle;
+  sprintItemDetails;
+  sprintItemSprintTitle;
 
   serverErrorMessages;
 
   constructor(private githubService: GithubService, private _Activatedroute:ActivatedRoute, private dataService: DataService, private router : Router) { }
 
   ngOnInit() {
-    this.pid=this._Activatedroute.snapshot.params['id'];
+    this.pid=this._Activatedroute.snapshot.params['pid'];
 
     //Params Protection
     this.dataService.getProjectInfo(this.pid).subscribe(
@@ -37,7 +39,7 @@ export class ProjectBacklogComponent implements OnInit {
         //console.log(this.project);
       },
       err => { 
-        if (err.status === 404 || err.status === 403.2 ) {
+        if (err.status === 404 || err.status === 403.2 || err.status === 403) {
           this.router.navigateByUrl('/projects');
         }
         console.log(err);
@@ -90,7 +92,6 @@ export class ProjectBacklogComponent implements OnInit {
     );
     
 
-
   }
 
   addToSprint(issueNumber, sprintID, sprintTitle){
@@ -126,6 +127,35 @@ export class ProjectBacklogComponent implements OnInit {
 
   addIssueToSprintArray(issueNumber){
     this.issuesAddedToSprints.push(issueNumber);
+  }
+
+  getSprintItemDetails(issueNumber){
+    this.dataService.getSprintItemDetails(issueNumber, this.pid).subscribe(
+      res => {
+        this.sprintItemDetails = res;
+        console.log(this.sprintItemDetails)
+      },
+      err => { 
+        console.log(err);
+        
+      }
+    );
+  }
+
+  getSprintItemSprintTitle(issueNumber){
+    this.dataService.getSprintItemDetails(issueNumber, this.pid).subscribe(
+      res => {
+        this.sprintItemDetails = res;
+        this.sprintItemDetails = this.sprintItemDetails.result;
+        this.sprintItemSprintTitle = this.sprintItemDetails.sprintTitle;
+        console.log(this.sprintItemSprintTitle)
+      },
+      err => { 
+        console.log(err);
+        
+      }
+    );
+    return this.sprintItemSprintTitle ;
   }
 
 

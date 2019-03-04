@@ -10,6 +10,7 @@ import { ProjectProfileComponent } from './project-profile/project-profile.compo
 import { ProjectBacklogComponent } from './project-backlog/project-backlog.component';
 import { ProjectCompletedComponent } from './project-completed/project-completed.component';
 import { ProjectCreateSprintComponent } from './project-create-sprint/project-create-sprint.component';
+import { ProjectSprintComponent } from './project-sprint/project-sprint.component';
 
 import { AuthGuard } from './auth/auth.guard';
 
@@ -35,16 +36,19 @@ export const appRoutes: Routes = [
         path: 'projectcreate', component: ProjectCreateComponent,canActivate:[AuthGuard]
     },
     {
-        path: 'project-profile/:id', component: ProjectProfileComponent,canActivate:[AuthGuard]
+        path: 'project-profile/:pid', component: ProjectProfileComponent,canActivate:[AuthGuard]
     },
     {
-        path: 'project-backlog/:id', component: ProjectBacklogComponent,canActivate:[AuthGuard]
+        path: 'project-backlog/:pid', component: ProjectBacklogComponent,canActivate:[AuthGuard]
     },
     {
-        path: 'project-completed/:id', component: ProjectCompletedComponent,canActivate:[AuthGuard]
+        path: 'project-completed/:pid', component: ProjectCompletedComponent,canActivate:[AuthGuard]
     },
     {
-        path: 'project-create-sprint/:id', component: ProjectCreateSprintComponent,canActivate:[AuthGuard]
+        path: 'project-create-sprint/:pid', component: ProjectCreateSprintComponent,canActivate:[AuthGuard]
+    },
+    {
+        path: 'project-sprint/:pid/:sid', component: ProjectSprintComponent,canActivate:[AuthGuard]
     },
     {
         path: '', redirectTo: '/login', pathMatch: 'full'

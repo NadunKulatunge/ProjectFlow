@@ -16,7 +16,7 @@
       <dt class="col-sm-3">Github URL</dt>
       <dd class="col-sm-9">{{githubURL}}</dd>
       
-      <button type="button" [routerLink]="['/project-create-sprint', id]" class="btn btn-success btn-lg btn-block">Create New Sprint</button>
+
     </dl>
   </div>
 </div>
@@ -41,33 +41,41 @@
       <dd class="col-sm-9">{{openTaskProgress + '%'}}</dd>
     </dl>
 
-    <button type="button" [routerLink]="['/project-backlog', id]" class="btn btn-dark btn-lg btn-block">View Project Backlog</button>
+    <button type="button" [routerLink]="['/project-backlog', pid]" class="btn btn-danger btn-lg btn-block">View Project Backlog</button>
     <br>
   </div>
 </div>
 
 <div class="card" style="margin-bottom: 10px;">
   <h2>Sprint / In-Progress</h2>
-  <div class="card-body" >
+  <div class="card-body" *ngFor="let sprint of sprints">
+      <hr style="margin-top:-20px"> 
+    <h4 class="text-center font-weight-bold">{{sprint.title}}</h4>
+
     <dl class="row">
-      <dt class="col-sm-3 text-truncate">Closed Issues</dt>
-      <dd class="col-sm-9"><span class="badge badge-primary">{{closedIssueCount}}</span></dd>
-      <dt class="col-sm-3 text-truncate">Closed pull-requests</dt>
-      <dd class="col-sm-9"><span class="badge badge-danger">{{closedPullRequestCount}}</span></dd>
+      <dt class="col-sm-3 text-truncate">Start Date</dt>
+      <dd class="col-sm-9">{{sprint.startDate | date: 'dd/MM/yyyy'}}</dd>
+      <dt class="col-sm-3 text-truncate">End Date</dt>
+      <dd class="col-sm-9">{{sprint.endDate | date: 'dd/MM/yyyy'}}</dd>
+      <dt class="col-sm-3 text-truncate">To-Do Tasks</dt>
+      <dd class="col-sm-9"><span class="badge badge-danger">11</span></dd>
+      <dt class="col-sm-3 text-truncate">Completed Tasks</dt>
+      <dd class="col-sm-9"><span class="badge badge-success">12</span></dd>
     </dl>
     <div class="progress">
-      <div class="progress-bar" role="progressbar" [style.width]="closedIssueProgress+ '%'" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-      <div class="progress-bar bg-danger" role="progressbar" [style.width]="closedPullRequestProgress+ '%'" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+      <div class="progress-bar bg-success" role="progressbar" [style.width]="closedIssueProgress+ '%'" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
     <dl class="row" style="margin-top: 20px;">
-      <dt class="col-sm-3 text-truncate">Closed Task Count</dt>
-      <dd class="col-sm-9">{{totalClosedTaskCount}}</dd>
-      <dt class="col-sm-3 text-truncate">Closed Task Percentage</dt>
+      <dt class="col-sm-3 text-truncate">Sprint Completion</dt>
       <dd class="col-sm-9">{{projectProgress + '%'}}</dd>
     </dl>
 
-    <button type="button" [routerLink]="['/project-completed', id]" class="btn btn-dark btn-lg btn-block">View Current Sprint</button>
+    <button type="button" [routerLink]="['/project-sprint', pid, sprint._id]" class="btn btn-success btn-lg btn-block">View {{sprint.title}}</button>
     <br>
+  </div>
+  <hr>
+  <div class="card-body" >
+    <button type="button" [routerLink]="['/project-create-sprint', pid]" class="btn btn-dark btn-lg btn-block">Create Sprint</button>
   </div>
 </div>
 
@@ -91,7 +99,7 @@
       <dd class="col-sm-9">{{projectProgress + '%'}}</dd>
     </dl>
 
-    <button type="button" [routerLink]="['/project-completed', id]" class="btn btn-dark btn-lg btn-block">View Completed Tasks</button>
+    <button type="button" [routerLink]="['/project-completed', pid]" class="btn btn-primary btn-lg btn-block">View Completed Tasks</button>
     <br>
   </div>
 </div>

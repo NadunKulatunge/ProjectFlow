@@ -1,0 +1,23 @@
+<h2 class="headerLine">{{sprintTitle}}</h2>
+
+<div class="card" *ngFor="let issue of issueItems" style="margin-bottom: 10px;">
+  <div class="card-body" >
+    <h5 class="card-title" >
+      {{issue.number + ') ' +issue.title}}
+      <span class="badge badge-success" *ngIf="isIssueOpen(issue.state)">{{issue.state}}</span>
+      <span class="badge badge-danger"  *ngIf="!isIssueOpen(issue.state)">{{issue.state}}</span>
+
+    </h5>
+    <p class="card-text">{{issue.body}}</p>
+    <hr>
+  </div>
+</div>
+
+<div *ngIf="!isIssueItemsEmpty()" class="alert alert-primary text-center" role="alert">
+  Loading items please wait... If you have not yet added any items to this sprint, visit the project backlog.
+  <br>
+  <br>
+  <div class="text-center"> 
+  <button type="button" [routerLink]="['/project-backlog', pid]" class="btn btn-primary align-center">Project Backlog</button>
+  </div>
+</div>
