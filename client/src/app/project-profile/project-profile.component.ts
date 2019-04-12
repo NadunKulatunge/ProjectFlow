@@ -52,6 +52,7 @@ export class ProjectProfileComponent implements OnInit {
 
     this.dataService.getProjectInfo(this.pid).subscribe(
       res => {
+        
         this.project = res;
         this.project = this.project.project;
         this.title = this.project.title;
@@ -72,6 +73,7 @@ export class ProjectProfileComponent implements OnInit {
     //Open issue count
     this.githubService.getGithubIssueCount(this.pid, 'issue', 'open').subscribe(
       res => {
+        
         this.alldata = res;
         this.openIssueCount = this.alldata.total_count;
         console.log(this.openIssueCount);

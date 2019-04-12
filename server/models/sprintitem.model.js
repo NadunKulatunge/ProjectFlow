@@ -16,6 +16,10 @@ var sprintItemSchema = new mongoose.Schema({
     sprintTitle: {
         type: String,
         required: 'Sprint title can\'t be empty',
+    },
+    userID: {
+        type: String,
+        required: 'User ID can\'t be empty',
     }
 });
 

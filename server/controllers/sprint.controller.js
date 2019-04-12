@@ -14,6 +14,7 @@ module.exports.createSprintItem = (req, res, next) =>{
     sprintItem.issueNumber = req.body.issueNumber;
     sprintItem.sprintID = req.body.sprintID;
     sprintItem.sprintTitle = req.body.sprintTitle;
+    sprintItem.userID = req._id;
 
     sprintItem.save((err, doc) => {
         if (!err)
@@ -30,7 +31,28 @@ module.exports.createSprintItem = (req, res, next) =>{
 }
 
 module.exports.sprintItem = (req, res, next) =>{
+    console.log(req._id)
+    SprintItem.findOne({ issueNumber: req.params.issueNumber, projectID:  req.params.pid, userID: req._id},
+        (err, result) => {
+            if (!result)
+                return res.status(403).json({ status: false, message: 'User record not found.' });
+            else
+                return res.status(200).json({ status: true, result });
+        }
+    );
+    
+}
 
+module.exports.sprintItems = (req, res, next) =>{
+    console.log(req._id)
+
+    SprintItem.find({userID: req._id, projectID:  req.params.pid, sprintID: req.params.sid}).where().
+        exec(function(err, result) {
+            if (!result)
+                return res.status(404).json({ status: false, message: 'Sprint Item record not found.' });
+            else
+                return res.status(200).json({ status: true, result });
+        });
     
 }
 
@@ -67,7 +89,7 @@ module.exports.createSprint = (req, res, next) =>{
 
 }
 
-module.exports.sprint = (req, res, next) =>{
+module.exports.sprints = (req, res, next) =>{
     console.log(req._id)
 
     Project.findOne({ _id: req.params.pid },
@@ -78,6 +100,30 @@ module.exports.sprint = (req, res, next) =>{
                 return res.status(403.2).json({ status: false, message: 'Sprint read access forbidden.' });
             }else {
                 Sprint.find().where("projectID", req.params.pid).
+                exec(function(err, result) {
+                    if (!result)
+                        return res.status(404).json({ status: false, message: 'Sprint record not found.' });
+                    else
+                        return res.status(200).json({ status: true, result });
+                });
+                
+            }
+        }
+    );
+    
+}
+
+module.exports.sprint = (req, res, next) =>{
+    console.log(req._id)
+
+    Project.findOne({ _id: req.params.pid },
+        (err, project) => {
+            if (!project){
+                return res.status(404).json({ status: false, message: 'Project record not found.' });
+            } else if(project.userID != req._id) {
+                return res.status(403.2).json({ status: false, message: 'Sprint read access forbidden.' });
+            }else {
+                Sprint.find({userID: req._id, projectID:  req.params.pid, _id: req.params.sid}).where().
                 exec(function(err, result) {
                     if (!result)
                         return res.status(404).json({ status: false, message: 'Sprint record not found.' });

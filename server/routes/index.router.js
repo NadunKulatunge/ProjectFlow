@@ -17,18 +17,18 @@ router.get('/github',jwtHelper.verifyJwtToken, ctrlGithub.githubUserProfile);
 router.get('/githubopenissues/:id',jwtHelper.verifyJwtToken, ctrlGithub.githubOpenIssues);
 router.get('/githubclosedissues/:id',jwtHelper.verifyJwtToken, ctrlGithub.githubClosedIssues);
 router.get('/githubissuecount/:id/:type/:state',jwtHelper.verifyJwtToken, ctrlGithub.githubIssueCount);
+router.get('/githubGetIssueFromNumber/:id/:issuenum',jwtHelper.verifyJwtToken, ctrlGithub.githubGetIssueFromNumber);
 
 router.post('/project/create',jwtHelper.verifyJwtToken, ctrlProject.createProject);
 router.get('/userprojects',jwtHelper.verifyJwtToken, ctrlProject.userProjects);
 router.get('/projectinfo/:id',jwtHelper.verifyJwtToken, ctrlProject.projectInfo);
 
 router.post('/sprintitem/create',jwtHelper.verifyJwtToken, ctrlSprint.createSprintItem);
-router.get('/sprintitems',jwtHelper.verifyJwtToken, ctrlSprint.sprintItem);
+router.get('/sprintitems/:pid/:sid',jwtHelper.verifyJwtToken, ctrlSprint.sprintItems);
 router.post('/sprint/create',jwtHelper.verifyJwtToken, ctrlSprint.createSprint);
-router.get('/sprints/:pid',jwtHelper.verifyJwtToken, ctrlSprint.sprint);
+router.get('/sprint/:pid/:sid',jwtHelper.verifyJwtToken, ctrlSprint.sprint);
+router.get('/sprints/:pid',jwtHelper.verifyJwtToken, ctrlSprint.sprints);
 router.get('/projectIssuesAddedToSprints/:pid',jwtHelper.verifyJwtToken, ctrlSprint.projectIssuesAddedToSprints);
-
+router.get('/sprintitem/:pid/:issueNumber',jwtHelper.verifyJwtToken, ctrlSprint.sprintItem);
 
 module.exports = router;
-
-
