@@ -34,7 +34,7 @@
 
     <div class="card" style="margin-bottom: 10px;">
         <h2>Sprint / In-Progress</h2>
-        <div class="card-body" *ngFor="let sprint of sprints">
+        <div class="card-body" *ngFor="let sprint of sprints; let i= index;">
             <hr style="margin-top:-20px"> 
           <h4 class="text-center font-weight-bold">{{sprint.title}}</h4>
       
@@ -43,17 +43,18 @@
             <dd class="col-sm-6">{{sprint.startDate | date: 'dd/MM/yyyy'}}</dd>
             <dt class="col-sm-6 text-truncate">End Date</dt>
             <dd class="col-sm-6">{{sprint.endDate | date: 'dd/MM/yyyy'}}</dd>
-            <dt class="col-sm-6 text-truncate">To-Do Tasks</dt>
-            <dd class="col-sm-6"><span class="badge badge-danger">11</span></dd>
-            <dt class="col-sm-6 text-truncate">Completed Tasks</dt>
-            <dd class="col-sm-6"><span class="badge badge-success">12</span></dd>
+            <dt class="col-sm-6 text-truncate" *ngIf="sprintOpenIssues[i] != null">Open Tasks</dt>
+            <dd class="col-sm-6" *ngIf="sprintOpenIssues[i] != null"><span class="badge badge-danger">{{sprintOpenIssues[i]}}</span></dd>
+            <dt class="col-sm-6 text-truncate" *ngIf="sprintClosedIssues[i] != null">Closed Tasks</dt>
+            <dd class="col-sm-6" *ngIf="sprintClosedIssues[i] != null"><span class="badge badge-success">{{sprintClosedIssues[i]}}</span></dd>
           </dl>
           <div class="progress">
-            <div class="progress-bar bg-success" role="progressbar" [style.width]="closedIssueProgress+ '%'" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress-bar bg-success" role="progressbar" [style.width]="sprintClosedIssuePercentages[i] + '%'" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
           </div>
           <dl class="row" style="margin-top: 20px;">
-            <dt class="col-sm-6 text-truncate">Sprint Completion</dt>
-            <dd class="col-sm-6">{{projectProgress + '%'}}</dd>
+            <dt class="col-sm-6 text-truncate" *ngIf="sprintClosedIssuePercentages[i] != null">Sprint Completion</dt>
+            <dd class="col-sm-6" *ngIf="sprintClosedIssuePercentages[i] != null">{{sprintClosedIssuePercentages[i] + '%'}}</dd>
+            <dt class="col-sm-12 text-truncate" *ngIf="sprintClosedIssuePercentages[i] == null">No tasks assigned to this sprint yet. Visit <a [routerLink]="['/project-backlog', pid]">Project Backlog</a></dt>
           </dl>
       
           <button type="button" [routerLink]="['/project-sprint', pid, sprint._id]" class="btn btn-success btn-lg btn-block">View {{sprint.title}}</button>

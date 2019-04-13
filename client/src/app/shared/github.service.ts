@@ -30,4 +30,8 @@ export class GithubService {
     return this.http.get(environment.apiBaseUrl + '/githubGetIssueFromNumber/'+pid+'/'+issueNumber);
   }
 
+  getGithubSprintDetails(sprintID, projectID) {
+    return this.http.get(environment.apiBaseUrl + '/githubSprintDetails/'+sprintID+'/'+projectID);
+  }
+
 }

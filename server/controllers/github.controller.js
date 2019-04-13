@@ -231,6 +231,7 @@ module.exports.githubIssueCount = (req, res, next) =>{
     
 }
 
+//req.params.id - projectID
 module.exports.githubGetIssueFromNumber = (req, res, next) =>{
 
     console.log(req.params.id, req.params.issuenum )
@@ -268,15 +269,75 @@ module.exports.githubGetIssueFromNumber = (req, res, next) =>{
                         console.log('Bad credentials');
                         res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
                     });
-                }
-                
-                
+                }  
             }
         }
     );
     
 }
 
-   
+//Get sprint openissuecount, closedissuecount using sprintID
+module.exports.githubSprintDetails = (req, res, next) =>{
+
+    Project.findOne({ _id: req.params.projectID },
+        (err, project) => {
+            if (!project){
+                return res.status(404).json({ status: false, message: 'Project record not found.' });
+            } else if(project.userID != req._id) {
+                return res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
+            }else {
+
+                SprintItem.find({ sprintID: req.params.sprintID },
+                    (err, sprintitems) => {
+                        console.log('booooooo')
+                        //console.log(sprintitem)
+                        var output = [];
+                        var i = 0;
+                        var openIssueCount = 0;
+                        var closedIssueCount = 0;
+                        sprintitems.forEach( (sprintitem) => {
+                            
+                            url = 'https://api.github.com/repos/' + project.githubPartURL + '/issues/'+sprintitem.issueNumber;
+                            //console.log(url)
+
+                            request
+                                .get(url)
+
+                                .set('Authorization', 'token ' + req._githubToken)
+                                .then(result => {
+                                    //console.log(result.body.state);
+                                    if(result.body.state == 'open'){
+                                        openIssueCount++
+                                    }else if(result.body.state == 'closed'){
+                                        closedIssueCount++
+                                    }
+
+                                    output.push({issueNumber: sprintitem.issueNumber, state: result.body.state});
+                                    i++
+
+                                    if(sprintitems.length == i){
+                                        output.unshift({openIssues: openIssueCount, closedIssues: closedIssueCount});
+                                        res.send(output);
+                                    }
+                                })
+                                .catch((err) => {
+                                    console.log('Bad credentials');
+                                    res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
+                                });
+
+
+
+                        });
+                                                
+                        
+                    }
+                );
+
+            }
+        }
+    );
+
+
     
+}
 

@@ -46,6 +46,10 @@ export class ProjectProfileComponent implements OnInit {
   sprints;
 
   error;
+  sprintDetails= [];
+  sprintOpenIssues= [];
+  sprintClosedIssues= [];
+  sprintClosedIssuePercentages= [];
 
   constructor(private githubService: GithubService, private _Activatedroute:ActivatedRoute, private dataService: DataService, private router : Router) { }
 
@@ -135,7 +139,6 @@ export class ProjectProfileComponent implements OnInit {
         if(err.status == 403){
           this.error = "You do not have permission to access this repository or repository not found. Make sure that you have necessary permissions to access this repository or try re-login to GitHub."
         }
-        
       }
     );
 
@@ -145,6 +148,28 @@ export class ProjectProfileComponent implements OnInit {
         this.sprints = res;
         this.sprints = this.sprints.result;
         //console.log(this.sprints)
+
+        //Get Sprint Details for each sprint
+        this.sprints.forEach( (myObject, index) => {
+
+          console.log(myObject._id);
+          this.githubService.getGithubSprintDetails(myObject._id, myObject.projectID).subscribe(
+            res => {
+              console.log(res);
+              this.sprintOpenIssues.push(res[0]['openIssues']);
+              this.sprintClosedIssues.push(res[0]['closedIssues']);
+              this.sprintClosedIssuePercentages.push( ((res[0]['closedIssues']/(res[0]['closedIssues']+res[0]['openIssues'])) *100).toFixed(1) )
+              console.log(this.sprintOpenIssues)
+              console.log(this.sprintClosedIssues)
+              console.log(this.sprintClosedIssuePercentages)
+            },
+            err => { 
+              console.log(err);
+            }
+          )
+          
+        });
+
       },
       err => { 
         console.log(err);

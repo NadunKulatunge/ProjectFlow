@@ -30,6 +30,7 @@ router.get('/sprint/:pid/:sid',jwtHelper.verifyJwtToken, ctrlSprint.sprint);
 router.get('/sprints/:pid',jwtHelper.verifyJwtToken, ctrlSprint.sprints);
 router.get('/projectIssuesAddedToSprints/:pid',jwtHelper.verifyJwtToken, ctrlSprint.projectIssuesAddedToSprints);
 router.get('/sprintitem/:pid/:issueNumber',jwtHelper.verifyJwtToken, ctrlSprint.sprintItem);
+router.get('/githubSprintDetails/:sprintID/:projectID',jwtHelper.verifyJwtToken, ctrlGithub.githubSprintDetails);
 
 //Github SignIn
 
