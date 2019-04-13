@@ -12,6 +12,9 @@ var userSchema = new mongoose.Schema({
         required: 'Email can\'t be empty',
         unique: true
     },
+    accessToken: {
+        type: String
+    },
     password: {
         type: String,
         required: 'Password can\'t be empty',
@@ -44,7 +47,8 @@ userSchema.methods.verifyPassword = function (password) {
 };
 
 userSchema.methods.generateJwt = function () {
-    return jwt.sign({ _id: this._id},
+    console.log(this.accessToken)
+    return jwt.sign({ _id: this._id, _githubToken: this.accessToken},
         process.env.JWT_SECRET,
     {
         expiresIn: process.env.JWT_EXP

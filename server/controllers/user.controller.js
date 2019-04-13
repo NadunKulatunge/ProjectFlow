@@ -6,6 +6,9 @@ const User = mongoose.model('User');
 
 const request = require('superagent');
 
+
+//module.exports.globalUserID = '';
+
 module.exports.register = (req, res, next) => {
     var user = new User();
     user.fullName = req.body.fullName;
@@ -30,7 +33,13 @@ module.exports.authenticate = (req, res, next) => {
         // error from passport middleware
         if (err) return res.status(400).json(err);
         // registered user
-        else if (user) return res.status(200).json({ "token": user.generateJwt() });
+        else if (user) {
+            console.log(user)
+            module.exports.globalUserID = user._id;
+            return res.status(200).json({ "token": user.generateJwt() });
+            //module.exports.globalUserID = '';
+            
+        }
         // unknown user or wrong password
         else return res.status(404).json(info);
     })(req, res);

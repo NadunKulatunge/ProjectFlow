@@ -45,6 +45,8 @@ export class ProjectProfileComponent implements OnInit {
 
   sprints;
 
+  error;
+
   constructor(private githubService: GithubService, private _Activatedroute:ActivatedRoute, private dataService: DataService, private router : Router) { }
 
   ngOnInit() {
@@ -65,7 +67,7 @@ export class ProjectProfileComponent implements OnInit {
         if (err.status === 404 || err.status === 403.2 || err.status === 403) {
           this.router.navigateByUrl('/projects');
         }
-        console.log(err);
+        console.log(err.status);
         
       }
     );
@@ -81,6 +83,9 @@ export class ProjectProfileComponent implements OnInit {
       },
       err => { 
         console.log(err);
+        if(err.status == 403){
+          this.error = "You do not have permission to access this repository or repository not found. Make sure that you have necessary permissions to access this repository or try re-login to GitHub."
+        }
         
       }
     );
@@ -95,6 +100,9 @@ export class ProjectProfileComponent implements OnInit {
       },
       err => { 
         console.log(err);
+        if(err.status == 403){
+          this.error = "You do not have permission to access this repository or repository not found. Make sure that you have necessary permissions to access this repository or try re-login to GitHub."
+        }
         
       }
     );
@@ -109,7 +117,9 @@ export class ProjectProfileComponent implements OnInit {
       },
       err => { 
         console.log(err);
-        
+        if(err.status == 403){
+          this.error = "You do not have permission to access this repository or repository not found. Make sure that you have necessary permissions to access this repository or try re-login to GitHub."
+        }
       }
     );
 
@@ -122,6 +132,9 @@ export class ProjectProfileComponent implements OnInit {
       },
       err => { 
         console.log(err);
+        if(err.status == 403){
+          this.error = "You do not have permission to access this repository or repository not found. Make sure that you have necessary permissions to access this repository or try re-login to GitHub."
+        }
         
       }
     );
@@ -135,6 +148,9 @@ export class ProjectProfileComponent implements OnInit {
       },
       err => { 
         console.log(err);
+        if(err.status == 403){
+          this.error = "You do not have permission to access this repository or repository not found. Make sure that you have necessary permissions to access this repository or try re-login to GitHub."
+        }
         
       }
     );

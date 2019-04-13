@@ -7,28 +7,94 @@ const Sprint = mongoose.model('Sprint');
 
 const request = require('superagent');
 
+const ctrlUser = require('../controllers/user.controller');
+
+//var accessToken = '';
+
 module.exports.githubUserProfile = (req, res, next) =>{
 
-    //const accessToken = '9605bc40b37f04ccc8673f6ebe23aa4a9ff6c7f7';
+    if(req._githubToken){
+        request
+        .get('https://api.github.com/user')
+        .set('Authorization', 'token ' + req._githubToken)
+        .then(result => {
+            res.send(result.body);
+            //console.log(result
+        })
+        .catch((err) => {
+            console.log('Bad credentials');
+            res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
+        });
+    } else {
+        request
+        .get('https://api.github.com/user')
+        //.set('Authorization', 'token ' + accessToken)
+        .then(result => {
+            res.send(result.body);
+            //console.log(result)
+        })
+        .catch((err) => {
+            console.log('Bad credentials');
+            res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
+        });
+    }
 
+    
+}
+
+//Github Auth
+module.exports.githubSignIn = (req, res, next) =>{
+
+    const { query } = req;
+    const { code } = query;
+
+    if(!code){
+        return res.send({
+            success: false,
+            message: 'Error: no code'
+        })
+    }
+    //POST
     request
-    .get('https://api.github.com/user')
-    //.set('Authorization', 'token ' + accessToken)
-    .then(result => {
-        res.send(result.body);
-        console.log(result)
+    .post('https://github.com/login/oauth/access_token')
+    .send({ 
+        client_id: '530a31e610d573b4d652', 
+        client_secret: '7bdbec56d41af9fb1aa7e7a844c39f879da7eb6b',
+        code: code
     })
-    .catch((err) => {
-        console.log('Bad credentials');
-        res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
+    .set('Accept', 'application/json')
+    .then(function(result) {
+        const data = result.body;
+        //accessToken = data.access_token;
+        //req._githubToken = data.access_token;
+        //console.log(result)
+        console.log(ctrlUser.globalUserID);
+        if(ctrlUser.globalUserID){
+            User.updateOne({_id: ctrlUser.globalUserID}, {
+                $set: {
+                    accessToken: data.access_token,
+                }
+            }, {new: true} ,function(err, result) {
+                if(err) {
+                    res.json(err);
+                } else {
+                    res.json('Login Success!! Please re-login to use the new features');
+                    //console.log(result)
+                    //console.log(accessToken)
+                }
+            });
+        }else {
+            return res.status(403).json({ status: false, message: 'Error while trying to connect to GitHub' });
+        }
+
     });
     
 }
 
+
 module.exports.githubOpenIssues = (req, res, next) =>{
 
-    //const accessToken = '9605bc40b37f04ccc8673f6ebe23aa4a9ff6c7f7';
-    console.log(req.params.id )
+    console.log(req._githubToken )
     Project.findOne({ _id: req.params.id },
         (err, project) => {
             if (!project){
@@ -38,8 +104,21 @@ module.exports.githubOpenIssues = (req, res, next) =>{
             }else {
                url = 'https://api.github.com/search/issues?q=repo:' + project.githubPartURL + '+type:issue+state:open&sort=created&order=asc';
 
-                console.log(url)
-                request
+                //console.log(url)
+                if(req._githubToken){
+                    request
+                    .get(url)
+
+                    .set('Authorization', 'token ' + req._githubToken)
+                    .then(result => {
+                        res.send(result.body);
+                    })
+                    .catch((err) => {
+                        console.log('Bad credentials');
+                        res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
+                    });
+                } else {
+                    request
                     .get(url)
 
                     //.set('Authorization', 'token ' + accessToken)
@@ -50,6 +129,8 @@ module.exports.githubOpenIssues = (req, res, next) =>{
                         console.log('Bad credentials');
                         res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
                     });
+                }
+                
                 
             }
         }
@@ -59,8 +140,7 @@ module.exports.githubOpenIssues = (req, res, next) =>{
 
 module.exports.githubClosedIssues = (req, res, next) =>{
 
-    //const accessToken = '9605bc40b37f04ccc8673f6ebe23aa4a9ff6c7f7';
-    console.log(req.params.id )
+    console.log(req._githubToken )
     Project.findOne({ _id: req.params.id },
         (err, project) => {
             if (!project){
@@ -70,8 +150,21 @@ module.exports.githubClosedIssues = (req, res, next) =>{
             }else {
                url = 'https://api.github.com/search/issues?q=repo:' + project.githubPartURL + '+type:issue+state:closed&sort=created&order=asc';
 
-                console.log(url)
-                request
+                //console.log(url)
+                if(req._githubToken){
+                    request
+                    .get(url)
+
+                    .set('Authorization', 'token ' + req._githubToken)
+                    .then(result => {
+                        res.send(result.body);
+                    })
+                    .catch((err) => {
+                        console.log('Bad credentials');
+                        res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
+                    });
+                } else {
+                    request
                     .get(url)
 
                     //.set('Authorization', 'token ' + accessToken)
@@ -82,6 +175,8 @@ module.exports.githubClosedIssues = (req, res, next) =>{
                         console.log('Bad credentials');
                         res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
                     });
+                }
+                
                 
             }
         }
@@ -92,8 +187,7 @@ module.exports.githubClosedIssues = (req, res, next) =>{
 
 module.exports.githubIssueCount = (req, res, next) =>{
 
-    //const accessToken = '9605bc40b37f04ccc8673f6ebe23aa4a9ff6c7f7';
-    console.log(req.params.id )
+    console.log(req._githubToken )
     Project.findOne({ _id: req.params.id },
         (err, project) => {
             if (!project){
@@ -103,8 +197,21 @@ module.exports.githubIssueCount = (req, res, next) =>{
             }else {
                url = 'https://api.github.com/search/issues?q=repo:' + project.githubPartURL + '+type:'+req.params.type+'+state:'+req.params.state;
 
-                console.log(url)
-                request
+                //console.log(url)
+                if(req._githubToken){
+                    request
+                    .get(url)
+
+                    .set('Authorization', 'token ' + req._githubToken)
+                    .then(result => {
+                        res.send(result.body);
+                    })
+                    .catch((err) => {
+                        console.log('Bad credentials');
+                        res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
+                    });
+                } else {
+                    request
                     .get(url)
 
                     //.set('Authorization', 'token ' + accessToken)
@@ -115,6 +222,8 @@ module.exports.githubIssueCount = (req, res, next) =>{
                         console.log('Bad credentials');
                         res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
                     });
+                }
+                
                 
             }
         }
@@ -124,7 +233,6 @@ module.exports.githubIssueCount = (req, res, next) =>{
 
 module.exports.githubGetIssueFromNumber = (req, res, next) =>{
 
-    //const accessToken = '9605bc40b37f04ccc8673f6ebe23aa4a9ff6c7f7';
     console.log(req.params.id, req.params.issuenum )
     Project.findOne({ _id: req.params.id },
         (err, project) => {
@@ -135,8 +243,21 @@ module.exports.githubGetIssueFromNumber = (req, res, next) =>{
             }else {
                url = 'https://api.github.com/repos/' + project.githubPartURL + '/issues/'+req.params.issuenum;
 
-                console.log(url)
-                request
+                //console.log(url)
+                if(req._githubToken){
+                    request
+                    .get(url)
+
+                    .set('Authorization', 'token ' + req._githubToken)
+                    .then(result => {
+                        res.send(result.body);
+                    })
+                    .catch((err) => {
+                        console.log('Bad credentials');
+                        res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
+                    });
+                } else {
+                    request
                     .get(url)
 
                     //.set('Authorization', 'token ' + accessToken)
@@ -147,6 +268,8 @@ module.exports.githubGetIssueFromNumber = (req, res, next) =>{
                         console.log('Bad credentials');
                         res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
                     });
+                }
+                
                 
             }
         }

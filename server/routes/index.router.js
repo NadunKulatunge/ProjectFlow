@@ -31,4 +31,8 @@ router.get('/sprints/:pid',jwtHelper.verifyJwtToken, ctrlSprint.sprints);
 router.get('/projectIssuesAddedToSprints/:pid',jwtHelper.verifyJwtToken, ctrlSprint.projectIssuesAddedToSprints);
 router.get('/sprintitem/:pid/:issueNumber',jwtHelper.verifyJwtToken, ctrlSprint.sprintItem);
 
+//Github SignIn
+
+router.get('/github/callback', ctrlGithub.githubSignIn);
+
 module.exports = router;
