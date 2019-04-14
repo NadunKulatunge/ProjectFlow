@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const _ = require('lodash');
 
 const Project = mongoose.model('Project');
+const SprintItem = mongoose.model('SprintItem');
+const Sprint = mongoose.model('Sprint');
 
 const request = require('superagent');
 
@@ -50,6 +52,52 @@ module.exports.projectInfo = (req, res, next) =>{
                 return res.status(403.2).json({ status: false, message: 'Project record read access forbidden.' });
             }else {
                 return res.status(200).json({ status: true, project });
+            }
+        }
+    );
+
+}
+
+module.exports.removeProject = (req, res, next) =>{
+    console.log('project iD' + req.params.projectID);
+    errors = [];
+    responses = [];
+    Project.findOne({ _id: req.params.projectID },
+        (err, project) => {
+            if (!project){
+                return res.status(404).json({ status: false, message: 'Project record not found.' });
+            } else if(project.userID != req._id) {
+                return res.status(403.2).json({ status: false, message: 'Project record read access forbidden.' });
+            }else {
+                //Remove the Project
+                SprintItem.remove({projectID:req.params.projectID}, 
+                    (err, result) => {
+                        if(err){
+                            errors.push(err);
+                        } else {
+                            responses.push(result);
+                        }
+                });
+                //Remove Sprints
+                Sprint.remove({projectID:req.params.projectID}, 
+                    (err, result) => {
+                        if(err){
+                            errors.push(err);
+                        } else {
+                            responses.push(result);
+                        }
+                });
+                //Remove Projects
+                Project.remove({_id:req.params.projectID}, 
+                    (err, result) => {
+                        if(err){
+                            errors.push(err);
+                        } else {
+                            responses.push(result);
+                            return res.status(200).json({ success: true, message: "Deleted successfully" });
+                        }
+                });
+
             }
         }
     );

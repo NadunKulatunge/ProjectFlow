@@ -10,6 +10,7 @@ export class ProjectsComponent implements OnInit {
 
   projects;
   projectList;
+  response;
 
   constructor(private dataService: DataService) { }
 
@@ -25,6 +26,28 @@ export class ProjectsComponent implements OnInit {
         
       }
     );
+  }
+
+  deleteItem(projectID) {
+    if(confirm("Are you sure to remove this project? ")) {
+      this.dataService.removeProject(projectID).subscribe(
+        res => {
+          this.response = res;
+          if(this.response.success){
+            //Remove project item from the list
+            for( var i=0; i < this.projectList.length; i++) {
+              if(projectID == this.projectList[i]._id){
+                this.projectList.splice(i, 1);
+              }
+            }
+          }
+        },
+        err => { 
+          console.log(err);
+          
+        }
+      );
+    }
   }
 
 }

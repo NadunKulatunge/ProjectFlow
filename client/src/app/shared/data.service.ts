@@ -75,5 +75,9 @@ export class DataService {
     return this.http.get(environment.apiBaseUrl+'/sprintitem/'+pid+'/'+issueNumber);
   }
 
+  removeProject(projectID) {
+    return this.http.delete(environment.apiBaseUrl+'/project/'+projectID);
+  }
+
  
 }

@@ -22,6 +22,7 @@ router.get('/githubGetIssueFromNumber/:id/:issuenum',jwtHelper.verifyJwtToken, c
 router.post('/project/create',jwtHelper.verifyJwtToken, ctrlProject.createProject);
 router.get('/userprojects',jwtHelper.verifyJwtToken, ctrlProject.userProjects);
 router.get('/projectinfo/:id',jwtHelper.verifyJwtToken, ctrlProject.projectInfo);
+router.delete('/project/:projectID',jwtHelper.verifyJwtToken, ctrlProject.removeProject);
 
 router.post('/sprintitem/create',jwtHelper.verifyJwtToken, ctrlSprint.createSprintItem);
 router.get('/sprintitems/:pid/:sid',jwtHelper.verifyJwtToken, ctrlSprint.sprintItems);
