@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../shared/data.service';
+import { ProjectService } from '../shared/project.service';
 
 @Component({
   selector: 'app-projects',
@@ -12,25 +12,23 @@ export class ProjectsComponent implements OnInit {
   projectList;
   response;
 
-  constructor(private dataService: DataService) { }
+  constructor(private projectService: ProjectService) { }
 
   ngOnInit() {
-    this.dataService.getProjects().subscribe(
+    this.projectService.getProjects().subscribe(
       res => {
         this.projects = res;
         this.projectList = this.projects.result;
-        console.log(res);
       },
       err => { 
         console.log(err);
-        
       }
     );
   }
 
   deleteItem(projectID) {
     if(confirm("Are you sure to remove this project? ")) {
-      this.dataService.removeProject(projectID).subscribe(
+      this.projectService.removeProject(projectID).subscribe(
         res => {
           this.response = res;
           if(this.response.success){
@@ -44,7 +42,6 @@ export class ProjectsComponent implements OnInit {
         },
         err => { 
           console.log(err);
-          
         }
       );
     }

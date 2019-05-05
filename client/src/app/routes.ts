@@ -3,7 +3,6 @@ import { UserComponent } from './user/user.component';
 import { SignUpComponent } from './user/sign-up/sign-up.component';
 import { SignInComponent } from './user/sign-in/sign-in.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { GithubComponent } from './github/github.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { ProjectCreateComponent } from './project-create/project-create.component';
 import { ProjectProfileComponent } from './project-profile/project-profile.component';
@@ -11,10 +10,11 @@ import { ProjectBacklogComponent } from './project-backlog/project-backlog.compo
 import { ProjectCompletedComponent } from './project-completed/project-completed.component';
 import { ProjectCreateSprintComponent } from './project-create-sprint/project-create-sprint.component';
 import { ProjectSprintComponent } from './project-sprint/project-sprint.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 import { AuthGuard } from './auth/auth.guard';
 
-export const appRoutes: Routes = [
+export const appRoutes: Routes = [ 
     {
         path: 'signup', component: UserComponent,
         children: [{ path: '', component: SignUpComponent }]
@@ -25,9 +25,6 @@ export const appRoutes: Routes = [
     },
     {
         path: 'userprofile', component: UserProfileComponent,canActivate:[AuthGuard]
-    },
-    {
-        path: 'github', component: GithubComponent,canActivate:[AuthGuard]
     },
     {
         path: 'projects', component: ProjectsComponent,canActivate:[AuthGuard]
@@ -52,5 +49,11 @@ export const appRoutes: Routes = [
     },
     {
         path: '', redirectTo: '/login', pathMatch: 'full'
+    },
+    {
+        path: '404', component: NotFoundComponent
+    },
+    {
+        path: '**', redirectTo: '/404'
     }
 ];

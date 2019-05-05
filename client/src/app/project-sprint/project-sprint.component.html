@@ -4,11 +4,13 @@
   <div class="card-body" >
     <h5 class="card-title" >
       {{issue.number + ') ' +issue.title}}
-      <span class="badge badge-success" *ngIf="isIssueOpen(issue.state)">{{issue.state}}</span>
-      <span class="badge badge-danger"  *ngIf="!isIssueOpen(issue.state)">{{issue.state}}</span>
+      <span class="badge badge-success" *ngIf="isIssueOpen(issue.state)">State: {{issue.state}}</span>
+      <span class="badge badge-danger"  *ngIf="!isIssueOpen(issue.state)">State: {{issue.state}}</span>
 
     </h5>
-    <p class="card-text">{{issue.body}}</p>
+    <a class="badge badge-pill badge-secondary" *ngFor="let label of issue.labels" style="margin-right:5px; color:white">{{label.name}}</a>
+    <a class="badge badge-pill badge-warning" *ngFor="let assignee of issue.assignees" style="margin-right:5px;">Assignees: {{assignee.login | json}}</a>
+    <read-more [text]="issue.body" [maxLength]="200"></read-more>
     <hr>
   </div>
 </div>

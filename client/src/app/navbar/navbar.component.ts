@@ -32,7 +32,9 @@ export class NavbarComponent implements OnInit {
     this.userService.deleteToken();
     this.router.navigate(['/login']);
   }
+
   onLogin(){
     this.router.navigate(['/login']);
   }
+  
 }

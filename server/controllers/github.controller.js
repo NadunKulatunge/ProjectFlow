@@ -11,7 +11,8 @@ const ctrlUser = require('../controllers/user.controller');
 
 //var accessToken = '';
 
-module.exports.githubUserProfile = (req, res, next) =>{
+//Get Github User Profile of the user ( GET /github )
+module.exports.getGithubUserProfile = (req, res, next) =>{
 
     if(req._githubToken){
         request
@@ -19,7 +20,6 @@ module.exports.githubUserProfile = (req, res, next) =>{
         .set('Authorization', 'token ' + req._githubToken)
         .then(result => {
             res.send(result.body);
-            //console.log(result
         })
         .catch((err) => {
             console.log('Bad credentials');
@@ -31,7 +31,6 @@ module.exports.githubUserProfile = (req, res, next) =>{
         //.set('Authorization', 'token ' + accessToken)
         .then(result => {
             res.send(result.body);
-            //console.log(result)
         })
         .catch((err) => {
             console.log('Bad credentials');
@@ -65,10 +64,6 @@ module.exports.githubSignIn = (req, res, next) =>{
     .set('Accept', 'application/json')
     .then(function(result) {
         const data = result.body;
-        //accessToken = data.access_token;
-        //req._githubToken = data.access_token;
-        //console.log(result)
-        console.log(ctrlUser.globalUserID);
         if(ctrlUser.globalUserID){
             User.updateOne({_id: ctrlUser.globalUserID}, {
                 $set: {
@@ -79,8 +74,6 @@ module.exports.githubSignIn = (req, res, next) =>{
                     res.json(err);
                 } else {
                     res.json('Login Success!! Please re-login to use the new features');
-                    //console.log(result)
-                    //console.log(accessToken)
                 }
             });
         }else {
@@ -92,10 +85,10 @@ module.exports.githubSignIn = (req, res, next) =>{
 }
 
 
-module.exports.githubOpenIssues = (req, res, next) =>{
+//Get Open Issues of a project ( GET /githubopenissues/:projectID )
+module.exports.getGithubOpenIssues = (req, res, next) =>{
 
-    console.log(req._githubToken )
-    Project.findOne({ _id: req.params.id },
+    Project.findOne({ _id: req.params.projectID },
         (err, project) => {
             if (!project){
                 return res.status(404).json({ status: false, message: 'Project record not found.' });
@@ -104,7 +97,6 @@ module.exports.githubOpenIssues = (req, res, next) =>{
             }else {
                url = 'https://api.github.com/search/issues?q=repo:' + project.githubPartURL + '+type:issue+state:open&sort=created&order=asc';
 
-                //console.log(url)
                 if(req._githubToken){
                     request
                     .get(url)
@@ -138,10 +130,9 @@ module.exports.githubOpenIssues = (req, res, next) =>{
 
 }
 
-module.exports.githubClosedIssues = (req, res, next) =>{
+module.exports.getGithubClosedIssues = (req, res, next) =>{
 
-    console.log(req._githubToken )
-    Project.findOne({ _id: req.params.id },
+    Project.findOne({ _id: req.params.projectID },
         (err, project) => {
             if (!project){
                 return res.status(404).json({ status: false, message: 'Project record not found.' });
@@ -150,7 +141,6 @@ module.exports.githubClosedIssues = (req, res, next) =>{
             }else {
                url = 'https://api.github.com/search/issues?q=repo:' + project.githubPartURL + '+type:issue+state:closed&sort=created&order=asc';
 
-                //console.log(url)
                 if(req._githubToken){
                     request
                     .get(url)
@@ -185,10 +175,9 @@ module.exports.githubClosedIssues = (req, res, next) =>{
 }
 
 
-module.exports.githubIssueCount = (req, res, next) =>{
+module.exports.getGithubIssueCount = (req, res, next) =>{
 
-    console.log(req._githubToken )
-    Project.findOne({ _id: req.params.id },
+    Project.findOne({ _id: req.params.projectID },
         (err, project) => {
             if (!project){
                 return res.status(404).json({ status: false, message: 'Project record not found.' });
@@ -197,7 +186,6 @@ module.exports.githubIssueCount = (req, res, next) =>{
             }else {
                url = 'https://api.github.com/search/issues?q=repo:' + project.githubPartURL + '+type:'+req.params.type+'+state:'+req.params.state;
 
-                //console.log(url)
                 if(req._githubToken){
                     request
                     .get(url)
@@ -231,20 +219,18 @@ module.exports.githubIssueCount = (req, res, next) =>{
     
 }
 
-//req.params.id - projectID
-module.exports.githubGetIssueFromNumber = (req, res, next) =>{
+//req.params.projectID - projectID
+module.exports.getGithubIssueFromNumber = (req, res, next) =>{
 
-    console.log(req.params.id, req.params.issuenum )
-    Project.findOne({ _id: req.params.id },
+    Project.findOne({ _id: req.params.projectID },
         (err, project) => {
             if (!project){
                 return res.status(404).json({ status: false, message: 'Project record not found.' });
             } else if(project.userID != req._id) {
                 return res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
             }else {
-               url = 'https://api.github.com/repos/' + project.githubPartURL + '/issues/'+req.params.issuenum;
+               url = 'https://api.github.com/repos/' + project.githubPartURL + '/issues/'+req.params.issueNumber;
 
-                //console.log(url)
                 if(req._githubToken){
                     request
                     .get(url)
@@ -277,7 +263,7 @@ module.exports.githubGetIssueFromNumber = (req, res, next) =>{
 }
 
 //Get sprint openissuecount, closedissuecount using sprintID
-module.exports.githubSprintDetails = (req, res, next) =>{
+module.exports.getGithubSprintDetails = (req, res, next) =>{
 
     Project.findOne({ _id: req.params.projectID },
         (err, project) => {
@@ -289,8 +275,6 @@ module.exports.githubSprintDetails = (req, res, next) =>{
 
                 SprintItem.find({ sprintID: req.params.sprintID },
                     (err, sprintitems) => {
-                        console.log('booooooo')
-                        //console.log(sprintitem)
                         var output = [];
                         var i = 0;
                         var openIssueCount = 0;
@@ -298,14 +282,12 @@ module.exports.githubSprintDetails = (req, res, next) =>{
                         sprintitems.forEach( (sprintitem) => {
                             
                             url = 'https://api.github.com/repos/' + project.githubPartURL + '/issues/'+sprintitem.issueNumber;
-                            //console.log(url)
 
                             request
                                 .get(url)
 
                                 .set('Authorization', 'token ' + req._githubToken)
                                 .then(result => {
-                                    //console.log(result.body.state);
                                     if(result.body.state == 'open'){
                                         openIssueCount++
                                     }else if(result.body.state == 'closed'){
@@ -325,10 +307,7 @@ module.exports.githubSprintDetails = (req, res, next) =>{
                                     res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
                                 });
 
-
-
-                        });
-                                                
+                        });             
                         
                     }
                 );
@@ -336,7 +315,6 @@ module.exports.githubSprintDetails = (req, res, next) =>{
             }
         }
     );
-
 
     
 }

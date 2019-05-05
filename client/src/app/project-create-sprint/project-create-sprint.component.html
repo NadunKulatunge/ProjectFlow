@@ -2,27 +2,38 @@
 <form #sprintForm="ngForm" (ngSubmit)="sprintForm.valid && onSubmit(sprintForm)">
   <div class="form-group">
     <label>Sprint Title</label>
-    <input type="text" #githubURL="ngModel" class="form-control" name="title" [(ngModel)]="dataService.selectedSprint.title" >
+    <input type="text" placeholder="Enter Sprint Title" #githubURL="ngModel" class="form-control" name="title" [(ngModel)]="sprintService.selectedSprint.title" >
   </div>
   <div class="form-group">
     <label>Start Date</label>
-    <input type="date" #description="ngModel"  name="startDate" [(ngModel)]="dataService.selectedSprint.startDate" class="form-control" >
+    <input type="date" placeholder="mm/dd/yyyy" #description="ngModel"  name="startDate" [(ngModel)]="sprintService.selectedSprint.startDate" class="form-control JDate" >
   </div>
   <div class="form-group">
     <label>End Date</label>
-    <input type="date" #description="ngModel"  name="endDate" [(ngModel)]="dataService.selectedSprint.endDate" class="form-control" >
+    <input type="date" placeholder="mm/dd/yyyy" #description="ngModel"  name="endDate" [(ngModel)]="sprintService.selectedSprint.endDate" class="form-control JDate" >
   </div>
 
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <br>
+  <div class="text-center">
+    <button type="submit" class="btn btn-dark btn-lg" style="width:50%">Submit</button>
+  </div>
 </form>
+<br>
 
 
 <!-- Success message -->
-<div class="success" *ngIf="showSucessMessage">
-  Saved successfully
+<div class="alert alert-success alert-dismissible fade show" *ngIf="showSucessMessage" role="alert">
+  <strong>Saved successfully!</strong> 
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
 </div>
 
 <!-- Error message -->
-<div class="alert" *ngIf="serverErrorMessages">
-  {{serverErrorMessages}}
+<div class="alert alert-danger alert-dismissible fade show" *ngIf="serverErrorMessages" role="alert">
+  <strong>Error!</strong> 
+  <div [innerHTML]="serverErrorMessages"></div>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
 </div>

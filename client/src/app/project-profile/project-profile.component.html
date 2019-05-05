@@ -69,6 +69,22 @@
   </div>
 
   <div class="col-md">
+
+      <div class="card" style="margin-bottom: 10px;" *ngIf="!error && (totalOpenTaskCount!=0 || totalClosedTaskCount!=0)">
+          <h2>Summary</h2>
+
+          <div class="card-body" >
+              <div>
+                <div *ngIf="isLoading()" class="d-flex justify-content-center">
+                  <div class="spinner-grow text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </div>
+                <canvas id="canvas">{{ chart }}</canvas>
+              </div>
+          </div>
+      </div>
+      
       <div class="card" style="margin-bottom: 10px;">
           <h2>Backlog / To-Do</h2>
           <div class="card-body" >
@@ -79,14 +95,14 @@
               <dd class="col-sm-6"><span class="badge badge-danger">{{openPullRequestCount}}</span></dd>
             </dl>
             <div class="progress">
-              <div class="progress-bar" role="progressbar" [style.width]="openIssueProgress+ '%'" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+              <div class="progress-bar bg-danger" role="progressbar" [style.width]="openIssueProgress+ '%'" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
               <div class="progress-bar bg-danger" role="progressbar" [style.width]="openPullRequestProgress+ '%'" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
             <dl class="row" style="margin-top: 20px;">
               <dt class="col-sm-6 text-truncate">To-Do Task Count</dt>
               <dd class="col-sm-6">{{totalOpenTaskCount}}</dd>
               <dt class="col-sm-6 text-truncate">To-Do Task Percentage</dt>
-              <dd class="col-sm-6">{{openTaskProgress + '%'}}</dd>
+              <dd class="col-sm-6">{{NaNValidate(openTaskProgress) + '%'}}</dd>
             </dl>
         
             <button type="button" [routerLink]="['/project-backlog', pid]" class="btn btn-primary btn-lg btn-block">View Project Backlog</button>
@@ -106,22 +122,27 @@
               <dd class="col-sm-6"><span class="badge badge-danger">{{closedPullRequestCount}}</span></dd>
             </dl>
             <div class="progress">
-                <div class="" role="progressbar" [style.width]="openIssueProgress+ '%'" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-                <div class="" role="progressbar" [style.width]="openPullRequestProgress+ '%'" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-              <div  class="progress-bar" role="progressbar" [style.width]="closedIssueProgress+ '%'" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-              <div  class="progress-bar bg-danger" role="progressbar" [style.width]="closedPullRequestProgress+ '%'" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                <!--<div class="" role="progressbar" [style.width]="openIssueProgress+ '%'" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="" role="progressbar" [style.width]="openPullRequestProgress+ '%'" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>-->
+              <div  class="progress-bar bg-default" role="progressbar" [style.width]="closedIssueProgress+ '%'" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+              <div  class="progress-bar bg-default" role="progressbar" [style.width]="closedPullRequestProgress+ '%'" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
             <dl class="row" style="margin-top: 20px;">
               <dt class="col-sm-6 text-truncate">Closed Task Count</dt>
               <dd class="col-sm-6">{{totalClosedTaskCount}}</dd>
               <dt class="col-sm-6 text-truncate">Closed Task Percentage</dt>
-              <dd class="col-sm-6">{{projectProgress + '%'}}</dd>
+              <dd class="col-sm-6">{{NaNValidate(projectProgress) + '%'}}</dd>
             </dl>
         
             <button type="button" [routerLink]="['/project-completed', pid]" class="btn btn-danger btn-lg btn-block">View Completed Tasks</button>
             <br>
           </div>
         </div>
+
+        
+
+
+        
   </div>
 
 </div>

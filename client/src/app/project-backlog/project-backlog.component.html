@@ -4,10 +4,14 @@
   <div class="card-body" >
     <h5 class="card-title" >
       {{issue.number + ') ' +issue.title}} 
-      <span class="badge badge-success" *ngIf="isAddedToSprint(issue.number)">In Progress</span>
-      <span class="badge badge-primary" *ngIf="!isAddedToSprint(issue.number)">Open</span>
+      <span class="badge badge-success" *ngIf="isAddedToSprint(issue.number)">In Progress : {{getSprintItemSprintTitle(issue.number)}}</span>
+      <span class="badge badge-primary" *ngIf="!isAddedToSprint(issue.number)">Status: Open</span>
     </h5>
-    <p class="card-text">{{issue.body}}</p>
+    <h6>
+    <a class="badge badge-pill badge-secondary" *ngFor="let label of issue.labels" style="margin-right:5px; color:white">{{label.name}}</a>
+    <a class="badge badge-pill badge-warning" *ngFor="let assignee of issue.assignees" style="margin-right:5px;">Assignees: {{assignee.login | json}}</a>
+  </h6>
+    <read-more [text]="issue.body" [maxLength]="200"></read-more>
     <hr>
 
     <div class="dropdown" *ngIf="!isAddedToSprint(issue.number)">
@@ -17,10 +21,21 @@
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a class="dropdown-item" (click)="addToSprint(issue.number, sprint._id, sprint.title)" *ngFor="let sprint of sprints">{{sprint.title}}</a>
         <div class="dropdown-divider"></div>
+        
         <a class="dropdown-item" [routerLink]="['/project-create-sprint', pid]" >Create New Sprint</a>
       </div>
     </div>
 
     <button *ngIf="isAddedToSprint(issue.number)" type="button" class="btn btn-success" disabled>Add to Sprint</button>
   </div>
+</div>
+
+<div *ngIf="!isOpenIssueItemsEmpty()" class="alert alert-primary text-center" role="alert">
+  Loading items please wait...
+  <br>
+  <br>
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div id='slowConnection'>This process is taking longer than usual... Please make sure you have open issues in your Github repository.</div>
 </div>

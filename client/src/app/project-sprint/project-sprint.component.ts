@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../shared/data.service';
+import { SprintService } from '../shared/sprint.service';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from "@angular/router";
 import { GithubService } from '../shared/github.service';
@@ -20,17 +20,15 @@ export class ProjectSprintComponent implements OnInit {
   sprintItem;
   issueItems = [];
 
-  constructor(private githubService: GithubService, private dataService: DataService, private _Activatedroute:ActivatedRoute, private router : Router) { }
+  constructor(private githubService: GithubService, private sprintService: SprintService, private _Activatedroute:ActivatedRoute, private router : Router) { }
 
   ngOnInit() {
     this.pid=this._Activatedroute.snapshot.params['pid'];
     this.sid=this._Activatedroute.snapshot.params['sid'];
 
     //Params Protection
-    this.dataService.getSprint(this.pid, this.sid).subscribe(
+    this.sprintService.getSprint(this.pid, this.sid).subscribe(
       res => {
-        
-        //console.log(this.project);
         this.sprint = res;
         this.sprint = this.sprint.result;
         this.sprintTitle = this.sprint[0].title;
@@ -44,26 +42,15 @@ export class ProjectSprintComponent implements OnInit {
       }
     );
 
-    this.dataService.getSprintItems(this.pid, this.sid).subscribe(
+    this.sprintService.getSprintItems(this.pid, this.sid).subscribe(
       res => {
         this.sprintItems = res;
         this.sprintItems = this.sprintItems.result;
-        //console.log(this.sprintItems);
-        //this.sprintTitle = this.sprintItems[0].sprintTitle;
-        //this.project = this.project.project;
-        //this.projectID = this.project._id;
-        //console.log(this.project);
 
         for (let num in this.sprintItems) {
-          //console.log(this.sprintItems[num])
-          this.githubService.githubGetIssueFromNumber(this.pid, this.sprintItems[num].issueNumber).subscribe(
+          this.githubService.getGithubIssueFromNumber(this.pid, this.sprintItems[num].issueNumber).subscribe(
             res => {
-              //console.log(res)
               this.issueItems.push(res);
-              //console.log(this.issueItems)
-              //this.project = this.project.project;
-              //this.projectID = this.project._id;
-              //console.log(this.project);
             },
             err => { 
               console.log(err);

@@ -16,7 +16,6 @@ import { UserService } from './shared/user.service';
 //other
 import { AuthGuard } from './auth/auth.guard';
 import { AuthInterceptor } from './auth/auth.interceptor';
-import { GithubComponent } from './github/github.component';
 import { GithubService } from './shared/github.service';
 import { ProjectsComponent } from './projects/projects.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -26,6 +25,8 @@ import { ProjectBacklogComponent } from './project-backlog/project-backlog.compo
 import { ProjectCompletedComponent } from './project-completed/project-completed.component';
 import { ProjectCreateSprintComponent } from './project-create-sprint/project-create-sprint.component';
 import { ProjectSprintComponent } from './project-sprint/project-sprint.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { ReadMoreComponent } from './read-more/read-more.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,6 @@ import { ProjectSprintComponent } from './project-sprint/project-sprint.componen
     SignUpComponent,
     UserProfileComponent,
     SignInComponent,
-    GithubComponent,
     ProjectsComponent,
     NavbarComponent,
     ProjectCreateComponent,
@@ -42,7 +42,9 @@ import { ProjectSprintComponent } from './project-sprint/project-sprint.componen
     ProjectBacklogComponent,
     ProjectCompletedComponent,
     ProjectCreateSprintComponent,
-    ProjectSprintComponent
+    ProjectSprintComponent,
+    NotFoundComponent,
+    ReadMoreComponent
   ],
   imports: [
     BrowserModule,
@@ -50,11 +52,13 @@ import { ProjectSprintComponent } from './project-sprint/project-sprint.componen
     RouterModule.forRoot(appRoutes),
     HttpClientModule
   ],
-  providers: [{
+  providers: [
+    {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true,
-  },AuthGuard,UserService, GithubService],
+    },
+    AuthGuard,UserService, GithubService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

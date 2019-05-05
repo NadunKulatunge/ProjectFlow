@@ -14,20 +14,20 @@ export class GithubService {
     return this.http.get(environment.apiBaseUrl + '/github');
   }
 
-  getGithubOpenIssues(id) {
-    return this.http.get(environment.apiBaseUrl + '/githubopenissues/'+id);
+  getGithubOpenIssues(projectID) {
+    return this.http.get(environment.apiBaseUrl + '/githubopenissues/'+projectID);
   }
 
-  getGithubClosedIssues(id) {
-    return this.http.get(environment.apiBaseUrl + '/githubclosedissues/'+id);
+  getGithubClosedIssues(projectID) {
+    return this.http.get(environment.apiBaseUrl + '/githubclosedissues/'+projectID);
   }
 
-  getGithubIssueCount(id, type, state) {
-    return this.http.get(environment.apiBaseUrl + '/githubissuecount/'+id+'/'+type+"/"+state);
+  getGithubIssueCount(projectID, type, state) {
+    return this.http.get(environment.apiBaseUrl + '/githubissuecount/'+projectID+'/'+type+"/"+state);
   }
 
-  githubGetIssueFromNumber(pid, issueNumber) {
-    return this.http.get(environment.apiBaseUrl + '/githubGetIssueFromNumber/'+pid+'/'+issueNumber);
+  getGithubIssueFromNumber(projectID, issueNumber) {
+    return this.http.get(environment.apiBaseUrl + '/githubGetIssueFromNumber/'+projectID+'/'+issueNumber);
   }
 
   getGithubSprintDetails(sprintID, projectID) {

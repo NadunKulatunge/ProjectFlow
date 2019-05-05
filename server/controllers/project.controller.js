@@ -7,7 +7,9 @@ const Sprint = mongoose.model('Sprint');
 
 const request = require('superagent');
 
+//To Create a new Project(POST /project/create)
 module.exports.createProject = (req, res, next) => {
+
     var project = new Project();
     project.title = req.body.title;
     project.githubURL = req.body.githubURL;
@@ -28,8 +30,8 @@ module.exports.createProject = (req, res, next) => {
     });
 }
 
-module.exports.userProjects = (req, res, next) =>{
-    console.log(req._id)
+//Get all the user projects ( GET /projects )
+module.exports.getProjects = (req, res, next) =>{
 
     Project.find().where("userID", req._id).
         exec(function(err, result) {
@@ -41,10 +43,10 @@ module.exports.userProjects = (req, res, next) =>{
 
 }
 
-module.exports.projectInfo = (req, res, next) =>{
-    console.log(req.params.id)
+//Get Project Information to the given user project ( GET /project/:projectID )
+module.exports.getProjectInfo = (req, res, next) =>{
     
-    Project.findOne({ _id: req.params.id },
+    Project.findOne({ _id: req.params.projectID },
         (err, project) => {
             if (!project){
                 return res.status(404).json({ status: false, message: 'Project record not found.' });
@@ -59,7 +61,7 @@ module.exports.projectInfo = (req, res, next) =>{
 }
 
 module.exports.removeProject = (req, res, next) =>{
-    console.log('project iD' + req.params.projectID);
+
     errors = [];
     responses = [];
     Project.findOne({ _id: req.params.projectID },

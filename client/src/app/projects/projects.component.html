@@ -4,10 +4,15 @@
 <div class="container-fluid">
     <div class="row">
     
-      <div class="col-6 col-md-4 col-lg-3 mb-4" *ngFor="let item of projectList">
+      <div class="col-6 col-md-4 col-lg-3 mb-4 align-self-center" *ngFor="let item of projectList">
         <div class="card mx-auto text-center">
           <div class="card-body">
-              <h5 class="card-title">{{item.title}}</h5>
+            <div [routerLink]="['/project-profile', item._id]" style="cursor: pointer">
+                <h5 class="card-title">{{item.title}}</h5>
+                <hr>
+                <i class="fa fa-cubes fa-5x" aria-hidden="true" style="opacity:0.3;" ></i>
+                <br>
+            </div>
             <h2 class="card-title"><span class="fa fa-external-link mr-1"></span><a class="text-primary" [routerLink]="['/project-profile', item._id]">View</a></h2>
             <h2 class="card-title"><span class="fa fa-external-link mr-1"></span><a class="text-danger" (click)="deleteItem(item._id)" style="cursor: pointer">Remove</a></h2>
           </div>
@@ -16,7 +21,12 @@
       <div class="col-6 col-md-4 col-lg-3 mb-4">
         <div class="card mx-auto text-center">
           <div class="card-body">
+            <div routerLink="/projectcreate" style="cursor: pointer">
               <h5 class="card-title">New Project?</h5>
+              <hr>
+              <i class="fa fa-plus-circle fa-5x" aria-hidden="true" style="opacity:0.3;"></i>
+              <br>
+            </div>
             <h2 class="card-title"><span class="fa fa-external-link mr-1"></span><a class="text-primary" routerLink="/projectcreate">Create</a></h2>
           </div>
         </div>

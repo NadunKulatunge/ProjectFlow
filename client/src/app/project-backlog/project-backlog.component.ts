@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DataService } from '../shared/data.service';
 import { Router } from "@angular/router";
+
 import { GithubService } from '../shared/github.service';
+import { ProjectService } from '../shared/project.service';
+import { SprintService } from '../shared/sprint.service';
 import { SprintItem } from '../shared/sprintitem.model';
+
+import { ReadMoreComponent } from '../read-more/read-more.component';
 
 @Component({
   selector: 'app-project-backlog',
@@ -12,7 +16,9 @@ import { SprintItem } from '../shared/sprintitem.model';
 })
 export class ProjectBacklogComponent implements OnInit {
 
+  
   pid;
+  response;
   project;
   projectID;
   githubOpenIssues;
@@ -25,75 +31,93 @@ export class ProjectBacklogComponent implements OnInit {
 
   serverErrorMessages;
 
-  constructor(private githubService: GithubService, private _Activatedroute:ActivatedRoute, private dataService: DataService, private router : Router) { }
+  constructor(
+    private githubService: GithubService, 
+    private projectService: ProjectService,
+    private sprintService: SprintService, 
+    private _Activatedroute:ActivatedRoute, 
+    private router : Router) { }
 
   ngOnInit() {
-    this.pid=this._Activatedroute.snapshot.params['pid'];
 
-    //Params Protection
-    this.dataService.getProjectInfo(this.pid).subscribe(
+    //Get URL parameters
+    this.pid=this._Activatedroute.snapshot.params['pid'];
+    
+    this.getProjectInfo(this.pid); //Parameter Protection
+
+    this.getGithubOpenIssues(this.pid);
+
+    this.getSprints(this.pid);
+
+    this.getIssuesAddedToSprints(this.pid);
+    
+  }
+
+  //// HTTP Methods
+
+  //Get the Info related to the Project & Parameter Protection
+  getProjectInfo(projectID){
+    this.projectService.getProjectInfo(projectID).subscribe(
       res => {
-        this.project = res;
-        this.project = this.project.project;
+        this.response = res;
+        this.project = this.response.project;
         this.projectID = this.project._id;
-        //console.log(this.project);
       },
       err => { 
         if (err.status === 404 || err.status === 403.2 || err.status === 403) {
-          this.router.navigateByUrl('/projects');
+          this.router.navigate(['/404']);
         }
-        console.log(err);
-        
       }
     );
-
-    this.githubService.getGithubOpenIssues(this.pid).subscribe(
-      res => {
-        //this.userDetails = res['user'];
-        //console.log(res);
-        this.githubOpenIssues = res;
-        this.githubOpenIssues = this.githubOpenIssues.items
-        //console.log(this.githubOpenIssues)
-      },
-      err => { 
-        console.log(err);
-        
-      }
-    );
-
-    this.dataService.getSprints(this.pid).subscribe(
-      res => {
-        this.sprints = res;
-        this.sprints = this.sprints.result;
-        //console.log(this.sprints)
-      },
-      err => { 
-        console.log(err);
-        
-      }
-    );
-
-    this.dataService.getProjectIssuesAddedToSprints(this.pid).subscribe(
-      res => {
-        console.log(res);
-        this.data = res;
-        this.data = this.data.result;
-        //console.log(this.data)
-        this.issuesAddedToSprints = this.data.map(({ issueNumber }) => issueNumber)
-        console.log(this.issuesAddedToSprints)
-
-        this.issuesNumberToSprintTitle = new Map(this.data.map(i => [i.issueNumber, i.sprintTitle]));
-        console.log(this.issuesNumberToSprintTitle)
-      },
-      err => { 
-        console.log(err);
-        
-      }
-    );
-    
-
   }
 
+  //To get Open Issues related to the Project
+  getGithubOpenIssues(projectID){
+    this.githubService.getGithubOpenIssues(projectID).subscribe(
+      res => {
+        this.response = res;
+        this.githubOpenIssues = this.response.items
+      },
+      err => { 
+        console.log(err);
+      }
+    );
+  }
+
+  //To get Sprints related to the Project
+  getSprints(projectID){
+    this.sprintService.getSprints(projectID).subscribe(
+      res => {
+        this.response = res;
+        this.sprints = this.response.result;
+      },
+      err => { 
+        console.log(err); 
+      }
+    );
+  }
+
+  //Get the Open Issues that have been Added to Sprints 
+  getIssuesAddedToSprints(projectID) {
+    this.sprintService.getIssuesAddedToSprints(projectID).subscribe(
+      res => {
+        
+        this.response = res;
+        this.data = this.response.result;
+
+        //Contains [issueNumbers] that have been added to any sprint ex: [3, 5]
+        this.issuesAddedToSprints = this.data.map(({ issueNumber }) => issueNumber)
+
+        //Contains [issueNumber => sprintTitle] map ex: {3 => "Sprint 1", 5 => "Sprint 1"}
+        this.issuesNumberToSprintTitle = new Map(this.data.map(i => [i.issueNumber, i.sprintTitle]));
+      },
+      err => { 
+        console.log(err);
+      }
+    );
+  }
+
+  //Add issue to sprint
   addToSprint(issueNumber, sprintID, sprintTitle){
   
     let newItem: SprintItem = {
@@ -101,62 +125,50 @@ export class ProjectBacklogComponent implements OnInit {
       projectID: this.projectID,
       issueNumber: issueNumber,
       sprintTitle: sprintTitle
-
     }
-    //console.log(newItem);
 
-    this.dataService.createSprintItem(newItem).subscribe(
+    this.sprintService.createSprintItem(newItem).subscribe(
       res => {
-        //console.log(res)
         this.addIssueToSprintArray(issueNumber);
+        this.addIssueTitleToSprintArray(issueNumber, sprintTitle);
       },
       err => {
         if (err.status === 422) {
           this.serverErrorMessages = err.error.join('<br/>');
         }
         else
-          this.serverErrorMessages = 'Something went wrong.Please contact admin.';
+          this.serverErrorMessages = 'Something went wrong. Please contact admin.';
       }
       
     );
   }
 
+  ////Helper Methods
+
+  //To check if issue is Added to a Sprint using IssueNumber
   isAddedToSprint(issueNumber){
     return this.issuesAddedToSprints.includes(issueNumber);
   }
 
+  //To add a new IssueNumber to issue array
   addIssueToSprintArray(issueNumber){
     this.issuesAddedToSprints.push(issueNumber);
   }
 
-  getSprintItemDetails(issueNumber){
-    this.dataService.getSprintItemDetails(issueNumber, this.pid).subscribe(
-      res => {
-        this.sprintItemDetails = res;
-        console.log(this.sprintItemDetails)
-      },
-      err => { 
-        console.log(err);
-        
-      }
-    );
+  addIssueTitleToSprintArray(issuenumber, title){
+    this.issuesNumberToSprintTitle.set(issuenumber, title);
   }
 
   getSprintItemSprintTitle(issueNumber){
-    this.dataService.getSprintItemDetails(issueNumber, this.pid).subscribe(
-      res => {
-        this.sprintItemDetails = res;
-        this.sprintItemDetails = this.sprintItemDetails.result;
-        this.sprintItemSprintTitle = this.sprintItemDetails.sprintTitle;
-        console.log(this.sprintItemSprintTitle)
-      },
-      err => { 
-        console.log(err);
-        
-      }
-    );
-    return this.sprintItemSprintTitle ;
+    return this.issuesNumberToSprintTitle.get(issueNumber);
   }
 
+  isOpenIssueItemsEmpty(){
+    if(this.githubOpenIssues){
+      return true;
+    } else {
+      return false;
+    }
+  }
 
 }

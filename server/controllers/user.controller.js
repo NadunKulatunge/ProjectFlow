@@ -45,7 +45,7 @@ module.exports.authenticate = (req, res, next) => {
     })(req, res);
 }
 
-module.exports.userProfile = (req, res, next) =>{
+module.exports.getUserProfile = (req, res, next) =>{
     User.findOne({ _id: req._id },
         (err, user) => {
             if (!user)
@@ -54,17 +54,4 @@ module.exports.userProfile = (req, res, next) =>{
                 return res.status(200).json({ status: true, user : _.pick(user,['_id','fullName','email']) });
         }
     );
-}
-
-module.exports.github = (req, res, next) =>{
-
-        const accessToken = '9605bc40b37f04ccc8673f6ebe23aa4a9ff6c7f7';
-    
-        request
-        .get('https://api.github.com/user')
-        .set('Authorization', 'token ' + accessToken)
-        .then(result => {
-            res.send(result.body);
-        });
-    
 }

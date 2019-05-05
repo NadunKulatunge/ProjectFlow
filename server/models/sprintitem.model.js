@@ -16,6 +16,8 @@ var sprintItemSchema = new mongoose.Schema({
     sprintTitle: {
         type: String,
         required: 'Sprint title can\'t be empty',
+        minlength: [4, 'Sprint title must be atleast 4 character long'],
+        maxlength: [25, 'Sprint title cannot be more than 25 character long']
     },
     userID: {
         type: String,

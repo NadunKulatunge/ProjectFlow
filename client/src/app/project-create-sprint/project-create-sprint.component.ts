@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Sprint } from '../shared/sprint.model';
-import { DataService } from '../shared/data.service';
+import { ActivatedRoute } from '@angular/router';
 import { Router } from "@angular/router";
 import { NgForm } from '@angular/forms';
+
 import { UserService } from '../shared/user.service';
-import { ActivatedRoute } from '@angular/router';
+import { ProjectService } from '../shared/project.service';
+import { SprintService } from '../shared/sprint.service';
 
 @Component({
   selector: 'app-project-create-sprint',
@@ -18,23 +20,34 @@ export class ProjectCreateSprintComponent implements OnInit {
   projectTitle;
   projectID;
 
+  todaydate= new Date();
+
   showSucessMessage: boolean;
   serverErrorMessages: string;
-  constructor(private dataService: DataService, private router : Router, private userService: UserService, private _Activatedroute:ActivatedRoute) { }
+  constructor(private projectService: ProjectService, private sprintService: SprintService, private router : Router, private userService: UserService, private _Activatedroute:ActivatedRoute) { }
 
   ngOnInit() {
+    //Get URL parameters
     this.pid=this._Activatedroute.snapshot.params['pid'];
 
-    this.dataService.getProjectInfo(this.pid).subscribe(
+    this.getProjectInfo(this.pid); //Parameter Protection
+    
+  }
+
+    //// HTTP Methods
+
+  //Get the Info related to the Project & Parameter Protection
+  getProjectInfo(projectID){
+    this.projectService.getProjectInfo(projectID).subscribe(
       res => {
         this.project = res;
-        this.projectTitle = this.project.project.title;
-        this.projectID = this.project.project._id;
-        //console.log(this.projectID);
+        this.project = this.project.project;
+        this.projectTitle = this.project.title;
+        this.projectID = this.project._id;
       },
       err => { 
         if (err.status === 404 || err.status === 403.2 || err.status === 403) {
-          this.router.navigateByUrl('/projects');
+          this.router.navigate(['/404']);
         }
         console.log(err);
         
@@ -53,10 +66,10 @@ export class ProjectCreateSprintComponent implements OnInit {
     }
     console.log(newItem);
 
-    this.dataService.createSprint(newItem).subscribe(
+    this.sprintService.createSprint(newItem).subscribe(
       res => {
         this.showSucessMessage = true;
-        setTimeout(() => this.showSucessMessage = false, 4000);
+        setTimeout(() => {this.showSucessMessage = false;}, 4000);
         this.resetForm(form);
       },
       err => {
@@ -71,7 +84,7 @@ export class ProjectCreateSprintComponent implements OnInit {
   }
 
   resetForm(form: NgForm) {
-    this.dataService.selectedSprint = {
+    this.sprintService.selectedSprint = {
       title: '',
       startDate: '',
       endDate: '',

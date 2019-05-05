@@ -20,8 +20,10 @@ export class SignInComponent implements OnInit {
   emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   serverErrorMessages: string;
   ngOnInit() {
-    if(this.userService.isLoggedIn())
-    this.router.navigateByUrl('/projects');
+    if(this.userService.isLoggedIn()){
+      this.router.navigateByUrl('/projects');
+    }
+    
   }
 
   onSubmit(form : NgForm){
@@ -31,6 +33,7 @@ export class SignInComponent implements OnInit {
         this.router.navigateByUrl('/projects');
       },
       err => {
+        console.log(err)
         this.serverErrorMessages = err.error.message;
       }
     );

@@ -4,7 +4,8 @@
         "MONGODB_URI": "mongodb://localhost:27017/ProjectFlow",
         "JWT_SECRET": "SECRET#123",
         "JWT_EXP": "10m",
-        "HOME_URL": "http://localhost:4200/"
+        "HOME_URL": "http://localhost:4200/",
+        "API_BASE_URL": "http://localhost:3000/api"
     },
     "production": {
         "PORT": 80,

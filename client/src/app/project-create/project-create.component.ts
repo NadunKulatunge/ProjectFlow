@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Project } from '../shared/project.model';
-import { DataService } from '../shared/data.service';
+import { ProjectService } from '../shared/project.service';
 import { Router } from "@angular/router";
 import { NgForm } from '@angular/forms';
 import { UserService } from '../shared/user.service';
@@ -20,18 +20,17 @@ export class ProjectCreateComponent implements OnInit {
 
   showSucessMessage: boolean;
   serverErrorMessages: string;
-  constructor(private dataService: DataService, private router : Router, private userService: UserService) { }
+
+  constructor(private projectService: ProjectService, private router : Router, private userService: UserService) { }
 
   ngOnInit() {
     this.userService.getUserProfile().subscribe(
       res => {
         this.userDetails = res['user'];
         this.userID = this.userDetails._id;
-        console.log(res);
       },
       err => { 
-        console.log(err);
-        
+        console.log(err);      
       }
     );
   }
@@ -39,7 +38,7 @@ export class ProjectCreateComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     this.url = form.value.githubURL;
-    this.urlsplit = this.url.split("/").slice(-2)
+    this.urlsplit = this.url.split("/").slice(-2);
     this.githubPartURL = this.urlsplit[0]+"/"+this.urlsplit[1];
   
     let newItem: Project = {
@@ -48,11 +47,9 @@ export class ProjectCreateComponent implements OnInit {
       githubPartURL: this.githubPartURL,
       description: form.value.description,
       userID: this.userID
-
     }
-    console.log(newItem);
 
-    this.dataService.createProject(newItem).subscribe(
+    this.projectService.createProject(newItem).subscribe(
       res => {
         this.showSucessMessage = true;
         setTimeout(() => this.showSucessMessage = false, 4000);
@@ -62,14 +59,15 @@ export class ProjectCreateComponent implements OnInit {
         if (err.status === 422) {
           this.serverErrorMessages = err.error.join('<br/>');
         }
-        else
+        else {
           this.serverErrorMessages = 'Something went wrong.Please contact admin.';
+        }
       }
     );
   }
 
   resetForm(form: NgForm) {
-    this.dataService.selectedProject = {
+    this.projectService.selectedProject = {
       title: '',
       githubURL: '',
       githubPartURL: '',

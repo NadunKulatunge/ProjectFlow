@@ -10,28 +10,30 @@ const jwtHelper = require('../config/jwtHelper');
 
 router.post('/register', ctrlUser.register);
 router.post('/authenticate', ctrlUser.authenticate);
-router.get('/userProfile',jwtHelper.verifyJwtToken, ctrlUser.userProfile);
+router.get('/userProfile',jwtHelper.verifyJwtToken, ctrlUser.getUserProfile);
 
 
-router.get('/github',jwtHelper.verifyJwtToken, ctrlGithub.githubUserProfile);
-router.get('/githubopenissues/:id',jwtHelper.verifyJwtToken, ctrlGithub.githubOpenIssues);
-router.get('/githubclosedissues/:id',jwtHelper.verifyJwtToken, ctrlGithub.githubClosedIssues);
-router.get('/githubissuecount/:id/:type/:state',jwtHelper.verifyJwtToken, ctrlGithub.githubIssueCount);
-router.get('/githubGetIssueFromNumber/:id/:issuenum',jwtHelper.verifyJwtToken, ctrlGithub.githubGetIssueFromNumber);
+router.get('/github',jwtHelper.verifyJwtToken, ctrlGithub.getGithubUserProfile);
+router.get('/githubopenissues/:projectID',jwtHelper.verifyJwtToken, ctrlGithub.getGithubOpenIssues);
+router.get('/githubclosedissues/:projectID',jwtHelper.verifyJwtToken, ctrlGithub.getGithubClosedIssues);
+router.get('/githubissuecount/:projectID/:type/:state',jwtHelper.verifyJwtToken, ctrlGithub.getGithubIssueCount);
+router.get('/githubGetIssueFromNumber/:projectID/:issueNumber',jwtHelper.verifyJwtToken, ctrlGithub.getGithubIssueFromNumber);
+router.get('/githubSprintDetails/:sprintID/:projectID',jwtHelper.verifyJwtToken, ctrlGithub.getGithubSprintDetails);
 
 router.post('/project/create',jwtHelper.verifyJwtToken, ctrlProject.createProject);
-router.get('/userprojects',jwtHelper.verifyJwtToken, ctrlProject.userProjects);
-router.get('/projectinfo/:id',jwtHelper.verifyJwtToken, ctrlProject.projectInfo);
+router.get('/projects',jwtHelper.verifyJwtToken, ctrlProject.getProjects);
+router.get('/project/:projectID',jwtHelper.verifyJwtToken, ctrlProject.getProjectInfo);
 router.delete('/project/:projectID',jwtHelper.verifyJwtToken, ctrlProject.removeProject);
 
 router.post('/sprintitem/create',jwtHelper.verifyJwtToken, ctrlSprint.createSprintItem);
-router.get('/sprintitems/:pid/:sid',jwtHelper.verifyJwtToken, ctrlSprint.sprintItems);
+router.get('/sprintitem/:projectID/:issueNumber',jwtHelper.verifyJwtToken, ctrlSprint.getSprintItem);
+router.get('/sprintitems/:projectID/:sprintID',jwtHelper.verifyJwtToken, ctrlSprint.getSprintItems);
 router.post('/sprint/create',jwtHelper.verifyJwtToken, ctrlSprint.createSprint);
-router.get('/sprint/:pid/:sid',jwtHelper.verifyJwtToken, ctrlSprint.sprint);
-router.get('/sprints/:pid',jwtHelper.verifyJwtToken, ctrlSprint.sprints);
-router.get('/projectIssuesAddedToSprints/:pid',jwtHelper.verifyJwtToken, ctrlSprint.projectIssuesAddedToSprints);
-router.get('/sprintitem/:pid/:issueNumber',jwtHelper.verifyJwtToken, ctrlSprint.sprintItem);
-router.get('/githubSprintDetails/:sprintID/:projectID',jwtHelper.verifyJwtToken, ctrlGithub.githubSprintDetails);
+router.get('/sprint/:projectID/:sprintID',jwtHelper.verifyJwtToken, ctrlSprint.getSprint);
+router.get('/sprints/:projectID',jwtHelper.verifyJwtToken, ctrlSprint.getSprints);
+router.get('/issuesAddedToSprints/:projectID',jwtHelper.verifyJwtToken, ctrlSprint.getIssuesAddedToSprints);
+
+
 
 //Github SignIn
 
