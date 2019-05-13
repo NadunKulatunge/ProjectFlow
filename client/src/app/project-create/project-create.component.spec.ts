@@ -46,7 +46,7 @@ describe('ProjectCreateComponent', () => {
     projectService = new ProjectService(null);
     userService = new UserService(null);
 
-    comp = new ProjectCreateComponent(projectService, null, userService);
+    comp = new ProjectCreateComponent(null, projectService, null, userService);
 
     de = fixture.debugElement.query(By.css('form'));
     el = de.nativeElement;

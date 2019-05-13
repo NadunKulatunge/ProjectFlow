@@ -22,8 +22,8 @@ module.exports.getGithubUserProfile = (req, res, next) =>{
             res.send(result.body);
         })
         .catch((err) => {
-            console.log('Bad credentials');
-            res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
+            console.log('Bad credentials!');
+            res.status(403).json({ status: false, message: 'Github access forbidden.' });
         });
     } else {
         request
@@ -34,7 +34,7 @@ module.exports.getGithubUserProfile = (req, res, next) =>{
         })
         .catch((err) => {
             console.log('Bad credentials');
-            res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
+            res.status(403).json({ status: false, message: 'Github access forbidden.' });
         });
     }
 
@@ -73,7 +73,7 @@ module.exports.githubSignIn = (req, res, next) =>{
                 if(err) {
                     res.json(err);
                 } else {
-                    res.json('Login Success!! Please re-login to use the new features');
+                    res.json('Login Success! Please re-login to ProjectFlow to use the new features');
                 }
             });
         }else {
@@ -106,8 +106,8 @@ module.exports.getGithubOpenIssues = (req, res, next) =>{
                         res.send(result.body);
                     })
                     .catch((err) => {
-                        console.log('Bad credentials');
-                        res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
+                        console.log('Bad credentials!');
+                        res.status(403).json({ status: false, message: 'Github access forbidden.' });
                     });
                 } else {
                     request
@@ -119,7 +119,7 @@ module.exports.getGithubOpenIssues = (req, res, next) =>{
                     })
                     .catch((err) => {
                         console.log('Bad credentials');
-                        res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
+                        res.status(403).json({ status: false, message: 'Github access forbidden.' });
                     });
                 }
                 
@@ -151,7 +151,7 @@ module.exports.getGithubClosedIssues = (req, res, next) =>{
                     })
                     .catch((err) => {
                         console.log('Bad credentials');
-                        res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
+                        res.status(403).json({ status: false, message: 'Github access forbidden.' });
                     });
                 } else {
                     request
@@ -163,7 +163,7 @@ module.exports.getGithubClosedIssues = (req, res, next) =>{
                     })
                     .catch((err) => {
                         console.log('Bad credentials');
-                        res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
+                        res.status(403).json({ status: false, message: 'Github access forbidden.' });
                     });
                 }
                 
@@ -185,7 +185,6 @@ module.exports.getGithubIssueCount = (req, res, next) =>{
                 return res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
             }else {
                url = 'https://api.github.com/search/issues?q=repo:' + project.githubPartURL + '+type:'+req.params.type+'+state:'+req.params.state;
-
                 if(req._githubToken){
                     request
                     .get(url)
@@ -196,7 +195,7 @@ module.exports.getGithubIssueCount = (req, res, next) =>{
                     })
                     .catch((err) => {
                         console.log('Bad credentials');
-                        res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
+                        res.status(403).json({ status: false, message: 'Github access forbidden.' });
                     });
                 } else {
                     request
@@ -208,7 +207,7 @@ module.exports.getGithubIssueCount = (req, res, next) =>{
                     })
                     .catch((err) => {
                         console.log('Bad credentials');
-                        res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
+                        res.status(403).json({ status: false, message: 'Github access forbidden.' });
                     });
                 }
                 
@@ -240,7 +239,7 @@ module.exports.getGithubIssueFromNumber = (req, res, next) =>{
                     })
                     .catch((err) => {
                         console.log('Bad credentials');
-                        res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
+                        res.status(403).json({ status: false, message: 'Github access forbidden.' });
                     });
                 } else {
                     request
@@ -252,7 +251,7 @@ module.exports.getGithubIssueFromNumber = (req, res, next) =>{
                     })
                     .catch((err) => {
                         console.log('Bad credentials');
-                        res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
+                        res.status(403).json({ status: false, message: 'Github access forbidden.' });
                     });
                 }  
             }
@@ -269,7 +268,7 @@ module.exports.getGithubSprintDetails = (req, res, next) =>{
             if (!project){
                 return res.status(404).json({ status: false, message: 'Project record not found.' });
             } else if(project.userID != req._id) {
-                return res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
+                return res.status(405).json({ status: false, message: 'Project record read access forbidden.' });
             }else {
 
                 SprintItem.find({ sprintID: req.params.sprintID },
@@ -282,29 +281,57 @@ module.exports.getGithubSprintDetails = (req, res, next) =>{
                             
                             url = 'https://api.github.com/repos/' + project.githubPartURL + '/issues/'+sprintitem.issueNumber;
 
-                            request
-                                .get(url)
+                            if(req._githubToken){
+                                request
+                                    .get(url)
 
-                                .set('Authorization', 'token ' + req._githubToken)
-                                .then(result => {
-                                    if(result.body.state == 'open'){
-                                        openIssueCount++
-                                    }else if(result.body.state == 'closed'){
-                                        closedIssueCount++
-                                    }
+                                    .set('Authorization', 'token ' + req._githubToken)
+                                    .then(result => {
+                                        if(result.body.state == 'open'){
+                                            openIssueCount++
+                                        }else if(result.body.state == 'closed'){
+                                            closedIssueCount++
+                                        }
 
-                                    output.push({issueNumber: sprintitem.issueNumber, state: result.body.state});
-                                    i++
+                                        output.push({issueNumber: sprintitem.issueNumber, state: result.body.state});
+                                        i++
 
-                                    if(sprintitems.length == i){
-                                        output.unshift({openIssues: openIssueCount, closedIssues: closedIssueCount});
-                                        res.send(output);
-                                    }
-                                })
-                                .catch((err) => {
-                                    console.log('Bad credentials');
-                                    res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
-                                });
+                                        if(sprintitems.length == i){
+                                            output.unshift({sprintID: sprintitem.sprintID, openIssues: openIssueCount, closedIssues: closedIssueCount});
+            
+                                            console.log(output)
+                                            res.send(output);
+                                        }
+                                    })
+                                    .catch((err) => {
+                                        console.log('Bad credentials');
+                                        res.status(403).json({ status: false, message: 'Github access forbidden.' });
+                                    });
+                            } else {
+                                request
+                                    .get(url)
+                                    .then(result => {
+                                        if(result.body.state == 'open'){
+                                            openIssueCount++
+                                        }else if(result.body.state == 'closed'){
+                                            closedIssueCount++
+                                        }
+
+                                        output.push({issueNumber: sprintitem.issueNumber, state: result.body.state});
+                                        i++
+
+                                        if(sprintitems.length == i){
+                                            output.unshift({sprintID: sprintitem.sprintID, openIssues: openIssueCount, closedIssues: closedIssueCount});
+            
+                                            console.log(output)
+                                            res.send(output);
+                                        }
+                                    })
+                                    .catch((err) => {
+                                        console.log('Bad credentials');
+                                        res.status(403).json({ status: false, message: 'Github access forbidden.' });
+                                    });
+                            }
 
                         });             
                         

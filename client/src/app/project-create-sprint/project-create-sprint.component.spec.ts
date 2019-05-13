@@ -46,7 +46,7 @@ describe('ProjectCreateSprintComponent', () => {
     sprintService = new SprintService(null);
     userService = new UserService(null);
 
-    comp = new ProjectCreateSprintComponent(projectService, sprintService, null, userService, null);
+    comp = new ProjectCreateSprintComponent(null, projectService, sprintService, null, userService, null);
   });
 
   it('should create', () => {

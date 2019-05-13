@@ -46,18 +46,18 @@
             <dd class="col-sm-6">{{sprint.startDate | date: 'dd/MM/yyyy'}}</dd>
             <dt class="col-sm-6 text-truncate">End Date</dt>
             <dd class="col-sm-6">{{sprint.endDate | date: 'dd/MM/yyyy'}}</dd>
-            <dt class="col-sm-6 text-truncate" *ngIf="sprintOpenIssues[i] != null">Open Tasks</dt>
-            <dd class="col-sm-6" *ngIf="sprintOpenIssues[i] != null"><span class="badge badge-danger">{{sprintOpenIssues[i]}}</span></dd>
-            <dt class="col-sm-6 text-truncate" *ngIf="sprintClosedIssues[i] != null">Closed Tasks</dt>
-            <dd class="col-sm-6" *ngIf="sprintClosedIssues[i] != null"><span class="badge badge-success">{{sprintClosedIssues[i]}}</span></dd>
+            <dt class="col-sm-6 text-truncate" *ngIf="getSprintOpenIssueCount(sprint._id) != null">Open Tasks</dt>
+            <dd class="col-sm-6" *ngIf="getSprintOpenIssueCount(sprint._id) != null"><span class="badge badge-danger">{{getSprintOpenIssueCount(sprint._id)}}</span></dd>
+            <dt class="col-sm-6 text-truncate" *ngIf="getSprintClosedIssueCount(sprint._id) != null">Closed Tasks</dt>
+            <dd class="col-sm-6" *ngIf="getSprintClosedIssueCount(sprint._id) != null"><span class="badge badge-success">{{getSprintClosedIssueCount(sprint._id)}}</span></dd>
           </dl>
           <div class="progress">
-            <div class="progress-bar bg-success" role="progressbar" [style.width]="sprintClosedIssuePercentages[i] + '%'" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress-bar bg-success" role="progressbar" [style.width]="getSprintsClosedIssuePercentageCounts(sprint._id) + '%'" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
           </div>
           <dl class="row" style="margin-top: 20px;">
-            <dt class="col-sm-6 text-truncate" *ngIf="sprintClosedIssuePercentages[i] != null">Sprint Completion</dt>
-            <dd class="col-sm-6" *ngIf="sprintClosedIssuePercentages[i] != null">{{sprintClosedIssuePercentages[i] + '%'}}</dd>
-            <dt class="col-sm-12 text-truncate" *ngIf="sprintClosedIssuePercentages[i] == null">No tasks assigned to this sprint yet. Visit <a [routerLink]="['/project-backlog', pid]">Project Backlog</a></dt>
+            <dt class="col-sm-6 text-truncate" *ngIf="getSprintsClosedIssuePercentageCounts(sprint._id) != null">Sprint Completion</dt>
+            <dd class="col-sm-6" *ngIf="getSprintsClosedIssuePercentageCounts(sprint._id) != null">{{getSprintsClosedIssuePercentageCounts(sprint._id) + '%'}}</dd>
+            <dt class="col-sm-12 text-truncate" *ngIf="getSprintsClosedIssuePercentageCounts(sprint._id) == null">No tasks assigned to this sprint yet. Visit <a [routerLink]="['/project-backlog', pid]">Project Backlog</a></dt>
           </dl>
       
           <button type="button" [routerLink]="['/project-sprint', pid, sprint._id]" class="btn btn-success btn-lg btn-block">View {{sprint.title}}</button>

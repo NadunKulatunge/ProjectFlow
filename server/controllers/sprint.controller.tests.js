@@ -49,7 +49,7 @@ describe('Sprint Controller', () => {
         it('it should not get sprint item details of other users', (done) => {
             
             chai.request(url)
-                .get('/sprintitem/' + '5c77a38ab6c49026fe3915d6' + '/' + '6')
+                .get('/sprintitem/' + '1m8a03s23846298293934044' + '/' + '6')
                 .set("Authorization", "Bearer " + token)
                 .end((err, res) => {
                     res.should.have.status(404);

@@ -58,6 +58,9 @@ export class ProjectProfileComponent implements OnInit {
   count = 0;
 
   serverErrorMessages;
+  sprintsOpenIssueCounts = new Map();
+  sprintsClosedIssueCounts = new Map();
+  sprintsClosedIssuePercentageCounts = new Map();
 
   constructor(private githubService: GithubService, private projectService: ProjectService, private sprintService: SprintService, private _Activatedroute:ActivatedRoute, private router : Router) { }
 
@@ -180,6 +183,11 @@ export class ProjectProfileComponent implements OnInit {
               this.sprintClosedIssues.push(res[0]['closedIssues']);
               this.sprintClosedIssuePercentages.push( ((res[0]['closedIssues']/(res[0]['closedIssues']+res[0]['openIssues'])) *100).toFixed(1) )
               this.countSprintOpenIssuesTotal();
+
+              this.sprintsOpenIssueCounts.set(res[0]['sprintID'],res[0]['openIssues'])
+              this.sprintsClosedIssueCounts.set(res[0]['sprintID'],res[0]['closedIssues'])
+              this.sprintsClosedIssuePercentageCounts.set(res[0]['sprintID'], ((res[0]['closedIssues']/(res[0]['closedIssues']+res[0]['openIssues'])) *100).toFixed(1) )
+              console.log(res)
             },
             err => { 
               console.log(err);
@@ -251,6 +259,18 @@ export class ProjectProfileComponent implements OnInit {
         }
       })
     }
+  }
+
+  getSprintOpenIssueCount(sprintID){
+    return this.sprintsOpenIssueCounts.get(sprintID)
+  }
+
+  getSprintClosedIssueCount(sprintID){
+    return this.sprintsClosedIssueCounts.get(sprintID)
+  }
+
+  getSprintsClosedIssuePercentageCounts(sprintID){
+    return this.sprintsClosedIssuePercentageCounts.get(sprintID)
   }
 
   removeSprint(projectID, sprintID){
