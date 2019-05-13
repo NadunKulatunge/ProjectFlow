@@ -176,3 +176,17 @@ module.exports.getIssuesAddedToSprints = (req, res, next) =>{
     );
     
 }
+
+//Find sprint items assigned to a project sprint ( DELETE /sprintitem/:projectID/:sprintID/:issueNumber )
+
+module.exports.removeSprintItem = (req, res, next) =>{
+    SprintItem.remove({userID: req._id , projectID: req.params.projectID , sprintID: req.params.sprintID, issueNumber: req.params.issueNumber }, 
+        (err, result) => {
+            if(err){
+                return res.status(404).json({ status: false, message: 'Not found.' });
+            } else {
+                return res.status(200).json({ status: true, result });
+            }
+    });
+            
+}
