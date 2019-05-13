@@ -177,7 +177,7 @@ module.exports.getIssuesAddedToSprints = (req, res, next) =>{
     
 }
 
-//Find sprint items assigned to a project sprint ( DELETE /sprintitem/:projectID/:sprintID/:issueNumber )
+//Delete sprint items assigned to a project sprint ( DELETE /sprintitem/:projectID/:sprintID/:issueNumber )
 
 module.exports.removeSprintItem = (req, res, next) =>{
     SprintItem.remove({userID: req._id , projectID: req.params.projectID , sprintID: req.params.sprintID, issueNumber: req.params.issueNumber }, 
@@ -186,6 +186,32 @@ module.exports.removeSprintItem = (req, res, next) =>{
                 return res.status(404).json({ status: false, message: 'Not found.' });
             } else {
                 return res.status(200).json({ status: true, result });
+            }
+    });
+            
+}
+
+//Delete sprint and sprint items assigned to a project sprint ( DELETE /sprint/:projectID/:sprintID )
+
+module.exports.removeSprint = (req, res, next) =>{
+    errors = [];
+    responses = [];
+
+    SprintItem.remove({userID: req._id , projectID: req.params.projectID , sprintID: req.params.sprintID }, 
+        (err, result) => {
+            if(err){
+                errors.push(err);
+            } else {
+                responses.push(result);
+            }
+    });
+    Sprint.remove({userID: req._id , projectID: req.params.projectID , _id: req.params.sprintID }, 
+        (err, result) => {
+            if(err){
+                errors.push(err);
+                return res.status(404).json({ status: false, message: 'Not found.' });
+            } else {
+                return res.status(200).json({ success: true, message: "Deleted successfully" });
             }
     });
             

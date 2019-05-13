@@ -37,7 +37,10 @@
         <div class="card-body" *ngFor="let sprint of sprints; let i= index;">
             <hr style="margin-top:-20px"> 
           <h4 class="text-center font-weight-bold">{{sprint.title}}</h4>
-      
+          <div class="text-right">
+              <a [routerLink]="" (click)="removeSprint(pid, sprint._id)" class="text-secondary"><i class="fas fa-trash"></i></a>
+          </div>
+          
           <dl class="row">
             <dt class="col-sm-6 text-truncate">Start Date</dt>
             <dd class="col-sm-6">{{sprint.startDate | date: 'dd/MM/yyyy'}}</dd>

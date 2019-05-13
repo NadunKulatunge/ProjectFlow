@@ -51,8 +51,12 @@ export class SprintService {
     getSprintItemDetails(issueNumber, projectID){
       return this.http.get(environment.apiBaseUrl+'/sprintitem/'+projectID+'/'+issueNumber);
     }
-    
+
     removeSprintItem(projectID, sprintID, issueNumber){
       return this.http.delete(environment.apiBaseUrl+'/sprintitem/'+projectID+'/'+sprintID+'/'+issueNumber);
+    }
+
+    removeSprint(projectID, sprintID){
+      return this.http.delete(environment.apiBaseUrl+'/sprint/'+projectID+'/'+sprintID);
     }
 }

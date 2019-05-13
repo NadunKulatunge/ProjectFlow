@@ -57,6 +57,8 @@ export class ProjectProfileComponent implements OnInit {
   sprintOpenIssuesTotal= 0;
   count = 0;
 
+  serverErrorMessages;
+
   constructor(private githubService: GithubService, private projectService: ProjectService, private sprintService: SprintService, private _Activatedroute:ActivatedRoute, private router : Router) { }
 
   ngOnInit() {
@@ -249,9 +251,29 @@ export class ProjectProfileComponent implements OnInit {
         }
       })
     }
+  }
 
-    
-    
+  removeSprint(projectID, sprintID){
+    if(confirm("Are you sure to remove this sprint? ")) {
+      
+      this.sprintService.removeSprint(projectID, sprintID).subscribe(
+        res => {
+          for( var i=0; i < this.sprints.length; i++) {
+            if(sprintID == this.sprints[i]._id){
+              this.sprints.splice(i, 1);
+            }
+          }
+        },
+        err => {
+          if (err.status === 422) {
+            this.serverErrorMessages = err.error.join('<br/>');
+          }
+          else
+            this.serverErrorMessages = 'Something went wrong. Please contact admin.';
+        }
+        
+      );
+    }
   }
 
   NaNValidate(value) {
