@@ -63,10 +63,11 @@ export class ProjectCompletedComponent implements OnInit {
   }
 
   isClosedIssueItemsEmpty(){
-    if(this.githubClosedIssues){
+    if(this.githubClosedIssues!=undefined && this.githubClosedIssues[0]){
       return true;
     } else {
       return false;
+      
     }
   }
 

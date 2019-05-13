@@ -221,7 +221,6 @@ module.exports.getGithubIssueCount = (req, res, next) =>{
 
 //req.params.projectID - projectID
 module.exports.getGithubIssueFromNumber = (req, res, next) =>{
-
     Project.findOne({ _id: req.params.projectID },
         (err, project) => {
             if (!project){
@@ -315,7 +314,41 @@ module.exports.getGithubSprintDetails = (req, res, next) =>{
             }
         }
     );
+}
 
+
+module.exports.githubCreateIssue = (req, res, next) => {
+    console.log(req.body)
+    Project.findOne({ _id: req.params.projectID },
+        (err, project) => {
+            if (!project){
+                return res.status(404).json({ status: false, message: 'Project record not found.' });
+            } else if(project.userID != req._id) {
+                return res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
+            }else {
+               url = 'https://api.github.com/repos/' + project.githubPartURL + '/issues';
+
+                if(req._githubToken){
+                    request
+                    .post(url)
+                    .send(req.body)
+                    .set('Authorization', 'token ' + req._githubToken)
+                    .then(result => {
+                        res.send(result.body);
+                    })
+                    .catch((err) => {
+                        console.log('Bad credentials');
+                        console.log(err.response.body.message)
+                        res.status(403).json({ status: false, message: err.response.body.message });
+                    });
+                } else {
+                    console.log('Account not linked to github');
+                    res.status(403).json({ status: false, message: 'Sorry! Account not linked to github' });
+                    
+                }  
+            }
+        }
+    );
     
 }
 

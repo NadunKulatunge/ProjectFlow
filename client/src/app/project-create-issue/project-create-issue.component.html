@@ -1,0 +1,36 @@
+<h2 class="headerLine">Create Issue</h2>
+<form #sprintForm="ngForm" (ngSubmit)="sprintForm.valid && onSubmit(sprintForm)">
+  <div class="form-group">
+    <label>Issue Title</label>
+    <input type="text" placeholder="Enter Issue Title" #githubURL="ngModel" class="form-control" name="title" [(ngModel)]="githubService.newIssue.title" >
+  </div>
+  <div class="form-group">
+    <label>Issue Body</label>
+    <input type="text" placeholder="Enter Issue Body" #githubURL="ngModel" class="form-control" name="body" [(ngModel)]="githubService.newIssue.body" >
+  </div>
+
+
+  <br>
+  <div class="text-center">
+    <button type="submit" class="btn btn-dark btn-lg" style="width:50%">Submit</button>
+  </div>
+</form>
+<br>
+
+
+<!-- Success message -->
+<div class="alert alert-success alert-dismissible fade show" *ngIf="showSucessMessage" role="alert">
+  <strong>Saved successfully!</strong> 
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<!-- Error message -->
+<div class="alert alert-danger alert-dismissible fade show" *ngIf="serverErrorMessages" role="alert">
+  <strong>Error!</strong> 
+  <div [innerHTML]="serverErrorMessages"></div>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>

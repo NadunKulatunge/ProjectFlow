@@ -27,6 +27,7 @@ import { ProjectCreateSprintComponent } from './project-create-sprint/project-cr
 import { ProjectSprintComponent } from './project-sprint/project-sprint.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ReadMoreComponent } from './read-more/read-more.component';
+import { ProjectCreateIssueComponent } from './project-create-issue/project-create-issue.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { ReadMoreComponent } from './read-more/read-more.component';
     ProjectCreateSprintComponent,
     ProjectSprintComponent,
     NotFoundComponent,
-    ReadMoreComponent
+    ReadMoreComponent,
+    ProjectCreateIssueComponent
   ],
   imports: [
     BrowserModule,

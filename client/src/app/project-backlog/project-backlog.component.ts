@@ -164,7 +164,7 @@ export class ProjectBacklogComponent implements OnInit {
   }
 
   isOpenIssueItemsEmpty(){
-    if(this.githubOpenIssues){
+    if(this.githubOpenIssues!=undefined && this.githubOpenIssues[0]){
       return true;
     } else {
       return false;

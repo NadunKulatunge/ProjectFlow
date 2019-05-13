@@ -1,5 +1,10 @@
 <h2 class="headerLine">Project Backlog</h2>
 
+<div class="text-right">
+  <button type="button" [routerLink]="['/project-create-issue', pid]" class="btn btn-primary" > + Create Issue</button>
+</div>
+<br>
+
 <div class="card" *ngFor="let issue of githubOpenIssues" style="margin-bottom: 10px;">
   <div class="card-body" >
     <h5 class="card-title" >
@@ -29,6 +34,7 @@
     <button *ngIf="isAddedToSprint(issue.number)" type="button" class="btn btn-success" disabled>Add to Sprint</button>
   </div>
 </div>
+
 
 <div *ngIf="!isOpenIssueItemsEmpty()" class="alert alert-primary text-center" role="alert">
   Loading items please wait...

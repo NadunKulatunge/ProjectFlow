@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Sprint } from '../shared/sprint.model';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from "@angular/router";
 import { NgForm } from '@angular/forms';
@@ -7,31 +6,31 @@ import { NgForm } from '@angular/forms';
 import { UserService } from '../shared/user.service';
 import { ProjectService } from '../shared/project.service';
 import { SprintService } from '../shared/sprint.service';
+import { GithubService } from '../shared/github.service';
 
 @Component({
-  selector: 'app-project-create-sprint',
-  templateUrl: './project-create-sprint.component.html',
-  styleUrls: ['./project-create-sprint.component.css']
+  selector: 'app-project-create-issue',
+  templateUrl: './project-create-issue.component.html',
+  styleUrls: ['./project-create-issue.component.css']
 })
-export class ProjectCreateSprintComponent implements OnInit {
+export class ProjectCreateIssueComponent implements OnInit {
 
   pid;
   project;
   projectTitle;
   projectID;
 
-  todaydate= new Date();
-
   showSucessMessage: boolean;
   serverErrorMessages: string;
-  constructor(private projectService: ProjectService, private sprintService: SprintService, private router : Router, private userService: UserService, private _Activatedroute:ActivatedRoute) { }
+
+  constructor(private projectService: ProjectService, private sprintService: SprintService, private router : Router, private userService: UserService, private githubService: GithubService,  private _Activatedroute:ActivatedRoute) { }
 
   ngOnInit() {
     //Get URL parameters
     this.pid=this._Activatedroute.snapshot.params['pid'];
 
     this.getProjectInfo(this.pid); //Parameter Protection
-    
+
   }
 
   //// HTTP Methods
@@ -57,16 +56,13 @@ export class ProjectCreateSprintComponent implements OnInit {
 
   onSubmit(form: NgForm) {
   
-    let newItem: Sprint = {
+    let newIssue = {
       title: form.value.title,
-      startDate: form.value.startDate,
-      endDate: form.value.endDate,
-      projectID: this.projectID,
+      body: form.value.body,
 
     }
-    console.log(newItem);
 
-    this.sprintService.createSprint(newItem).subscribe(
+    this.githubService.githubCreateIssue(this.pid, newIssue).subscribe(
       res => {
         this.showSucessMessage = true;
         setTimeout(() => {this.showSucessMessage = false;}, 4000);
@@ -77,22 +73,20 @@ export class ProjectCreateSprintComponent implements OnInit {
           this.serverErrorMessages = err.error.join('<br/>');
         }
         else
-          this.serverErrorMessages = 'Something went wrong.Please contact admin.';
+          this.serverErrorMessages = err.error.message;
       }
     );
 
   }
 
+
+
   resetForm(form: NgForm) {
-    this.sprintService.selectedSprint = {
+    this.githubService.newIssue = {
       title: '',
-      startDate: '',
-      endDate: '',
-      projectID: '',
+      body: '',
     };
     form.resetForm();
     this.serverErrorMessages = '';
   }
-
-  
 }

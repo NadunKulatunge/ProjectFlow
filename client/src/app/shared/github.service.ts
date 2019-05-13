@@ -8,6 +8,11 @@ import { environment } from '../../environments/environment';
 })
 export class GithubService {
 
+  newIssue = {
+    title: '',
+    body: '',
+  };
+
   constructor(private http: HttpClient) { }
 
   getGithubUserProfile() {
@@ -32,6 +37,10 @@ export class GithubService {
 
   getGithubSprintDetails(sprintID, projectID) {
     return this.http.get(environment.apiBaseUrl + '/githubSprintDetails/'+sprintID+'/'+projectID);
+  }
+
+  githubCreateIssue(projectID, newIssue){
+    return this.http.post(environment.apiBaseUrl + '/github/issue/create/'+projectID, newIssue);
   }
 
 }
