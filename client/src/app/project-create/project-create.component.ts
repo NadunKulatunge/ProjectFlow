@@ -4,6 +4,7 @@ import { ProjectService } from '../shared/project.service';
 import { Router } from "@angular/router";
 import { NgForm } from '@angular/forms';
 import { UserService } from '../shared/user.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-project-create',
@@ -21,7 +22,7 @@ export class ProjectCreateComponent implements OnInit {
   showSucessMessage: boolean;
   serverErrorMessages: string;
 
-  constructor(private projectService: ProjectService, private router : Router, private userService: UserService) { }
+  constructor(private _location: Location, private projectService: ProjectService, private router : Router, private userService: UserService) { }
 
   ngOnInit() {
     this.userService.getUserProfile().subscribe(
@@ -78,5 +79,8 @@ export class ProjectCreateComponent implements OnInit {
     this.serverErrorMessages = '';
   }
   
+  goBack(){
+    this._location.back();
+  }
 
 }

@@ -3,6 +3,7 @@ import { SprintService } from '../shared/sprint.service';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from "@angular/router";
 import { GithubService } from '../shared/github.service';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-project-sprint',
@@ -22,7 +23,7 @@ export class ProjectSprintComponent implements OnInit {
 
   serverErrorMessages;
 
-  constructor(private githubService: GithubService, private sprintService: SprintService, private _Activatedroute:ActivatedRoute, private router : Router) { }
+  constructor(private _location: Location, private githubService: GithubService, private sprintService: SprintService, private _Activatedroute:ActivatedRoute, private router : Router) { }
 
   ngOnInit() {
     this.pid=this._Activatedroute.snapshot.params['pid'];
@@ -64,10 +65,7 @@ export class ProjectSprintComponent implements OnInit {
 
 
       },
-      err => { 
-        if (err.status === 404 || err.status === 403.2 ) {
-          this.router.navigateByUrl('/projects');
-        }
+      err => {  
         console.log(err);
         
       }

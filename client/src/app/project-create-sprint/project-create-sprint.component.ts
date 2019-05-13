@@ -3,6 +3,7 @@ import { Sprint } from '../shared/sprint.model';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from "@angular/router";
 import { NgForm } from '@angular/forms';
+import { Location } from '@angular/common';
 
 import { UserService } from '../shared/user.service';
 import { ProjectService } from '../shared/project.service';
@@ -24,7 +25,7 @@ export class ProjectCreateSprintComponent implements OnInit {
 
   showSucessMessage: boolean;
   serverErrorMessages: string;
-  constructor(private projectService: ProjectService, private sprintService: SprintService, private router : Router, private userService: UserService, private _Activatedroute:ActivatedRoute) { }
+  constructor(private _location: Location, private projectService: ProjectService, private sprintService: SprintService, private router : Router, private userService: UserService, private _Activatedroute:ActivatedRoute) { }
 
   ngOnInit() {
     //Get URL parameters
@@ -92,6 +93,10 @@ export class ProjectCreateSprintComponent implements OnInit {
     };
     form.resetForm();
     this.serverErrorMessages = '';
+  }
+
+  goBack(){
+    this._location.back();
   }
 
   

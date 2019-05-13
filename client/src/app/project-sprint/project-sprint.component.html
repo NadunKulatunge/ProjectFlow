@@ -12,7 +12,7 @@
     <a class="badge badge-pill badge-warning" *ngFor="let assignee of issue.assignees" style="margin-right:5px;">Assignees: {{assignee.login | json}}</a>
     <read-more [text]="issue.body" [maxLength]="200"></read-more>
     <hr>
-    <button (click)="removeSprintItem(pid, sid, issue.number)" type="button" class="btn btn-danger">Remove</button>
+    <button (click)="removeSprintItem(pid, sid, issue.number)" type="button" class="btn btn-danger"><i class="fas fa-trash"></i> Remove</button>
   </div>
 </div>
 

@@ -1,4 +1,8 @@
 <h2 class="headerLine">Create Sprint</h2>
+<br>
+<a [routerLink]="" class="btn btn-secondary btn-sm"  (click)="goBack()"> <i class="fas fa-chevron-left"></i> Back</a> 
+<br>
+<hr>
 <form #sprintForm="ngForm" (ngSubmit)="sprintForm.valid && onSubmit(sprintForm)">
   <div class="form-group">
     <label>Sprint Title</label>
@@ -23,7 +27,7 @@
 
 <!-- Success message -->
 <div class="alert alert-success alert-dismissible fade show" *ngIf="showSucessMessage" role="alert">
-  <strong>Saved successfully!</strong> 
+  <strong>Saved successfully! </strong>
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
