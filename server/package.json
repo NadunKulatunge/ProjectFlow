@@ -5,8 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "test": "mocha --timeout 10000 '../server/**/*.tests.js' ",
-    "publishheroku": "cd ../ && git subtree push --prefix server/ projectflow-server master || true"
+    "test": "mocha --timeout 10000 '../server/**/*.tests.js' "
   },
   "author": "",
   "license": "ISC",
