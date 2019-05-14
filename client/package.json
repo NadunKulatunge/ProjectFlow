@@ -7,10 +7,14 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "heroku-postinstall": "ng build --aot --prod",
+    "publishheroku": "cd ../ && git subtree push --prefix client/ projectflow-client master || true"
   },
   "private": true,
   "dependencies": {
+    "@angular/compiler-cli": "^6.0.0",
+    "@angular/cli": "~6.0.0",
     "@angular/animations": "^6.0.0",
     "@angular/common": "^6.0.0",
     "@angular/compiler": "^6.0.0",
