@@ -20,6 +20,7 @@ router.get('/githubissuecount/:projectID/:type/:state',jwtHelper.verifyJwtToken,
 router.get('/githubGetIssueFromNumber/:projectID/:issueNumber',jwtHelper.verifyJwtToken, ctrlGithub.getGithubIssueFromNumber);
 router.get('/githubSprintDetails/:sprintID/:projectID',jwtHelper.verifyJwtToken, ctrlGithub.getGithubSprintDetails);
 router.post('/github/issue/create/:projectID',jwtHelper.verifyJwtToken, ctrlGithub.githubCreateIssue);
+router.delete('/github/logout',jwtHelper.verifyJwtToken, ctrlGithub.githubLogout);
 
 router.post('/project/create',jwtHelper.verifyJwtToken, ctrlProject.createProject);
 router.get('/projects',jwtHelper.verifyJwtToken, ctrlProject.getProjects);

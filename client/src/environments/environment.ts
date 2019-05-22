@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: 'http://localhost:3000/api'
+  apiBaseUrl: 'http://localhost:3000/api',
+  auth_client: '530a31e610d573b4d652',
+  
 };
 
 /*

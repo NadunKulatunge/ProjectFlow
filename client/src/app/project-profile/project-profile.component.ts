@@ -6,6 +6,7 @@ import { ProjectService } from '../shared/project.service';
 import { SprintService } from '../shared/sprint.service';
 
 import { Chart } from 'chart.js';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-project-profile',
@@ -310,6 +311,10 @@ export class ProjectProfileComponent implements OnInit {
     }else{
       return true;
     }
+  }
+
+  githubClientLogin(){
+    window.location.href = 'https://github.com/login/oauth/authorize?client_id='+environment.auth_client+'&scope=repo' ;
   }
 }
 

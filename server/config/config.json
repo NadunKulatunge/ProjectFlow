@@ -4,12 +4,16 @@
         "JWT_SECRET": "SECRET#123",
         "JWT_EXP": "10m",
         "HOME_URL": "http://localhost:4200/",
-        "API_BASE_URL": "http://localhost:3000/api"
+        "API_BASE_URL": "http://localhost:3000/api",
+        "AUTH_CLIENT": "530a31e610d573b4d652",
+        "AUTH_SECRET": "7bdbec56d41af9fb1aa7e7a844c39f879da7eb6b"
     },
     "production": {
         "MONGODB_URI": "mongodb://xxxxx/DB_Name",
         "JWT_SECRET": "SECRET#123",
         "JWT_EXP": "2m",
-        "HOME_URL": "http://localhost:4200/"
+        "HOME_URL": "http://localhost:4200/",
+        "AUTH_CLIENT": "530a31e610d573b4d652",
+        "AUTH_SECRET": "7bdbec56d41af9fb1aa7e7a844c39f879da7eb6b"
     }
 }

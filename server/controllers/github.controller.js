@@ -57,14 +57,16 @@ module.exports.githubSignIn = (req, res, next) =>{
     request
     .post('https://github.com/login/oauth/access_token')
     .send({ 
-        client_id: '530a31e610d573b4d652', 
-        client_secret: '7bdbec56d41af9fb1aa7e7a844c39f879da7eb6b',
+        client_id: process.env.AUTH_CLIENT, 
+        client_secret: process.env.AUTH_SECRET,
         code: code
     })
     .set('Accept', 'application/json')
     .then(function(result) {
         const data = result.body;
+        console.log(result.body)
         if(ctrlUser.globalUserID){
+            console.log(data.access_token)
             User.updateOne({_id: ctrlUser.globalUserID}, {
                 $set: {
                     accessToken: data.access_token,
@@ -77,7 +79,7 @@ module.exports.githubSignIn = (req, res, next) =>{
                 }
             });
         }else {
-            return res.status(403).json({ status: false, message: 'Error while trying to connect to GitHub' });
+            return res.status(403).json({ status: false, message: 'Error while trying to connect to GitHub', error: result.body});
         }
 
     });
@@ -377,5 +379,22 @@ module.exports.githubCreateIssue = (req, res, next) => {
         }
     );
     
+}
+
+module.exports.githubLogout = (req, res, next) =>{
+    User.update({_id: req._id},{
+        $unset: {
+            accessToken:1
+        }
+    },
+    
+    function(err, result) {
+        if(err){
+            return res.status(404).json({ status: false, message: 'Not found.' });
+        } else {
+            return res.status(200).json({ status: true, result });
+        }
+    });
+            
 }
 

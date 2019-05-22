@@ -43,4 +43,8 @@ export class GithubService {
     return this.http.post(environment.apiBaseUrl + '/github/issue/create/'+projectID, newIssue);
   }
 
+  githubLogout(){
+    return this.http.delete(environment.apiBaseUrl + '/github/logout');
+  }
+
 }

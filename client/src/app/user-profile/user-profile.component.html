@@ -1,27 +1,60 @@
-<table *ngIf="userDetails" class="table-fill">
-  <thead>
-      <tr>
-          <th colspan="2" class="text-center">User Profile</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>First Name</td>
-          <td>{{userDetails.fullName.split(' ')[0]}}</td>
-      </tr>
-      <tr>
-          <td>Last Name</td>
-          <td>{{userDetails.fullName.split(' ')[1]}}</td>
-      </tr>
-      <tr>
-          <td>Email</td>
-          <td>{{userDetails.email}}</td>
-      </tr>
-      <tr>
-          <td colspan="2" class="text-center">
-              <input type="button" (click)="onLogout()" value="Logout" />
-              <input type="button" (click)="viewGithub()" value="Github" />
-          </td>
-      </tr>
-  </tbody>
-</table>
+<div class="page-wrap d-flex flex-row align-items-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 text-center">
+                <hr>
+                <h4>
+                    <b>User Details</b>
+                </h4>
+                <hr>
+
+                <dl class="row">
+                    <dt class="col-sm-6">Full Name</dt>
+                    <dd class="col-sm-6">{{userDetails.fullName}}</dd>
+                    
+                    <dt class="col-sm-6">Email</dt>
+                    <dd class="col-sm-6">{{userDetails.email}}</dd>
+                    
+                    <dt class="col-sm-6">Github Connected</dt>
+                    <dd class="col-sm-6" *ngIf="userDetails.accessToken">True</dd>
+                    <dd class="col-sm-6" *ngIf="!userDetails.accessToken">False</dd>
+                </dl>
+                <hr>
+                <h4>
+                    <b>Github Details</b>
+                </h4>
+                <hr>
+                    <dl class="row" *ngIf=" userDetails.accessToken">
+                        <dt class="col-sm-6" >Username</dt>
+                        <dd class="col-sm-6">{{githubDetails.login}}</dd>
+                    </dl>
+                <div *ngIf="showSucessMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Success :</strong> {{serverSuccessMessage}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="text-center" *ngIf="userDetails.accessToken">
+                    <a class="btn btn-danger" (click)="githubLogout()" style="color: white; margin-bottom: 10px" ><i class="fab fa-github"></i> Disconnect from GitHub</a>
+                </div>
+                
+                <div class="text-center" *ngIf="userDetails.accessToken">
+                    <a class="btn btn-dark" style="color: white; margin-top: 10px" (click)="githubClientLogin()" routerLink=""><i class="fab fa-github"></i> Re-Connect to GitHub</a>
+                </div>
+                <div class="text-center" *ngIf="!userDetails.accessToken">
+                    <a class="btn btn-dark" style="color: white;" (click)="githubClientLogin()" routerLink=""><i class="fab fa-github"></i> Connect to GitHub</a>
+                </div>
+                
+                
+                <br>
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Note :</strong> After successfully login-in to Github. <a href="#" (click)="onLogout()">Sign Out</a> from ProjectFlow and re-login to use the new features.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
