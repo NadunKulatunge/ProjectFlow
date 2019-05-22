@@ -12,6 +12,7 @@ import { ProjectCreateSprintComponent } from './project-create-sprint/project-cr
 import { ProjectCreateIssueComponent } from './project-create-issue/project-create-issue.component';
 import { ProjectSprintComponent } from './project-sprint/project-sprint.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { FaqComponent } from './faq/faq.component';
 
 import { AuthGuard } from './auth/auth.guard';
 
@@ -29,6 +30,9 @@ export const appRoutes: Routes = [
     },
     {
         path: 'projects', component: ProjectsComponent,canActivate:[AuthGuard]
+    },
+    {
+        path: 'faq', component: FaqComponent
     },
     {
         path: 'projectcreate', component: ProjectCreateComponent,canActivate:[AuthGuard]

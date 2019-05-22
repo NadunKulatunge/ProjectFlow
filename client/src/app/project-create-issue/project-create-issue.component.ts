@@ -93,4 +93,5 @@ export class ProjectCreateIssueComponent implements OnInit {
   goBack(){
     this._location.back();
   }
+  
 }
