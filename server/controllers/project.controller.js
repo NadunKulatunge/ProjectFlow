@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const _ = require('lodash');
 
 const Project = mongoose.model('Project');
@@ -27,6 +28,39 @@ module.exports.createProject = (req, res, next) => {
                 return next(err);
         }
 
+    });
+}
+
+module.exports.editProject = (req, res, next) => {
+
+    var project = new Project();
+    project.title = req.body.title;
+    project.githubURL = req.body.githubURL;
+    project.githubPartURL = req.body.githubPartURL;
+    project.description = req.body.description;
+    project.userID = req.body.userID;
+
+    Project.findOneAndUpdate({_id: req.params.projectID},{
+        $set: {
+            title : req.body.title,
+            githubURL : req.body.githubURL,
+            githubPartURL : req.body.githubPartURL,
+            description : req.body.description,
+            userID : req._id,
+
+        }
+    },
+  {runValidators: true},
+    
+    function(err, result) {
+        if (!err)
+            res.send(result);
+        else {
+            if (err.code == 11000)
+                res.status(422).send(['Duplicate Github URL found.']);
+            else
+                return next(err);
+        }
     });
 }
 

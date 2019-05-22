@@ -7,6 +7,9 @@
     <div class="card" style="margin-bottom: 10px;">
       <h2>Project Summary</h2>
       <div class="card-body" >
+        <div class="text-right">
+            <a [routerLink]="['/project-edit', this.pid]" class="text-secondary"><i class="fas fa-cog"></i></a>
+        </div>
         <dl class="row">
           <dt class="col-sm-4 text-truncate">Project Name</dt>
           <dd class="col-sm-8">{{title}}</dd>

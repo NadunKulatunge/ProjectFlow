@@ -5,6 +5,7 @@ import { SignInComponent } from './user/sign-in/sign-in.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { ProjectCreateComponent } from './project-create/project-create.component';
+import { ProjectEditComponent } from './project-edit/project-edit.component';
 import { ProjectProfileComponent } from './project-profile/project-profile.component';
 import { ProjectBacklogComponent } from './project-backlog/project-backlog.component';
 import { ProjectCompletedComponent } from './project-completed/project-completed.component';
@@ -36,6 +37,9 @@ export const appRoutes: Routes = [
     },
     {
         path: 'projectcreate', component: ProjectCreateComponent,canActivate:[AuthGuard]
+    },
+    {
+        path: 'project-edit/:pid', component: ProjectEditComponent,canActivate:[AuthGuard]
     },
     {
         path: 'project-profile/:pid', component: ProjectProfileComponent,canActivate:[AuthGuard]

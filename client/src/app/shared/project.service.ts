@@ -24,7 +24,11 @@ export class ProjectService {
 
   //Projects
   createProject(project: Project) {
-    return this.http.post(environment.apiBaseUrl+'/project/create',project);
+    return this.http.post(environment.apiBaseUrl+'/project/create', project);
+  }
+
+  editProject(project: Project, projectID) {
+    return this.http.put(environment.apiBaseUrl+'/project/'+projectID, project);
   }
 
   removeProject(projectID) {

@@ -23,6 +23,7 @@ router.post('/github/issue/create/:projectID',jwtHelper.verifyJwtToken, ctrlGith
 
 router.post('/project/create',jwtHelper.verifyJwtToken, ctrlProject.createProject);
 router.get('/projects',jwtHelper.verifyJwtToken, ctrlProject.getProjects);
+router.put('/project/:projectID',jwtHelper.verifyJwtToken, ctrlProject.editProject);
 router.get('/project/:projectID',jwtHelper.verifyJwtToken, ctrlProject.getProjectInfo);
 router.delete('/project/:projectID',jwtHelper.verifyJwtToken, ctrlProject.removeProject);
 

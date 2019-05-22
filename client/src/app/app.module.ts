@@ -29,6 +29,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { ReadMoreComponent } from './read-more/read-more.component';
 import { ProjectCreateIssueComponent } from './project-create-issue/project-create-issue.component';
 import { FaqComponent } from './faq/faq.component';
+import { ProjectEditComponent } from './project-edit/project-edit.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { FaqComponent } from './faq/faq.component';
     NotFoundComponent,
     ReadMoreComponent,
     ProjectCreateIssueComponent,
-    FaqComponent
+    FaqComponent,
+    ProjectEditComponent
   ],
   imports: [
     BrowserModule,
