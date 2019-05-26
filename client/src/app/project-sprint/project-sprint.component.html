@@ -1,5 +1,9 @@
 <h2 class="headerLine">{{sprintTitle}}</h2>
+<br>
+<a style="float: left;" [routerLink]="" class="btn btn-secondary btn-sm"  (click)="goBack()"> <i class="fas fa-chevron-left"></i> Back</a>
+<br>
 
+<br>
 <div class="card" *ngFor="let issue of issueItems" style="margin-bottom: 10px;">
   <div class="card-body" >
     <h5 class="card-title" >

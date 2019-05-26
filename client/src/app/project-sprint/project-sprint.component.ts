@@ -23,7 +23,12 @@ export class ProjectSprintComponent implements OnInit {
 
   serverErrorMessages;
 
-  constructor(private _location: Location, private githubService: GithubService, private sprintService: SprintService, private _Activatedroute:ActivatedRoute, private router : Router) { }
+  constructor(
+    private _location: Location, 
+    private githubService: GithubService, 
+    private sprintService: SprintService, 
+    private _Activatedroute:ActivatedRoute, 
+    private router : Router) { }
 
   ngOnInit() {
     this.pid=this._Activatedroute.snapshot.params['pid'];
@@ -111,6 +116,10 @@ export class ProjectSprintComponent implements OnInit {
         
       );
     }
+  }
+
+  goBack(){
+    this._location.back();
   }
 
 }

@@ -8,6 +8,7 @@ import { SprintService } from '../shared/sprint.service';
 import { SprintItem } from '../shared/sprintitem.model';
 
 import { ReadMoreComponent } from '../read-more/read-more.component';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-project-backlog',
@@ -36,7 +37,8 @@ export class ProjectBacklogComponent implements OnInit {
     private projectService: ProjectService,
     private sprintService: SprintService, 
     private _Activatedroute:ActivatedRoute, 
-    private router : Router) { }
+    private router : Router,
+    private _location: Location) { }
 
   ngOnInit() {
 
@@ -169,6 +171,10 @@ export class ProjectBacklogComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  goBack(){
+    this._location.back();
   }
 
 }

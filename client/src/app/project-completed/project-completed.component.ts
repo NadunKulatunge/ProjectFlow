@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from "@angular/router";
 import { GithubService } from '../shared/github.service';
 import { ProjectService } from '../shared/project.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-project-completed',
@@ -17,7 +18,12 @@ export class ProjectCompletedComponent implements OnInit {
   projectID;
   githubClosedIssues;
 
-  constructor(private githubService: GithubService, private _Activatedroute:ActivatedRoute, private projectService: ProjectService, private router : Router) { }
+  constructor(
+    private githubService: GithubService, 
+    private _Activatedroute:ActivatedRoute, 
+    private projectService: ProjectService, 
+    private router : Router,
+    private _location: Location) { }
 
   ngOnInit() {
 
@@ -69,6 +75,10 @@ export class ProjectCompletedComponent implements OnInit {
       return false;
       
     }
+  }
+
+  goBack(){
+    this._location.back();
   }
 
 }
