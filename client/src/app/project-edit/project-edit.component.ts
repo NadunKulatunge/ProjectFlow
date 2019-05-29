@@ -30,7 +30,12 @@ export class ProjectEditComponent implements OnInit {
   showSucessMessage: boolean;
   serverErrorMessages: string;
 
-  constructor(private _location: Location, private projectService: ProjectService, private router : Router, private userService: UserService, private _Activatedroute:ActivatedRoute) { }
+  constructor(
+    private _location: Location, 
+    private projectService: ProjectService, 
+    private router : Router, 
+    private userService: UserService, 
+    private _Activatedroute:ActivatedRoute) { }
 
   ngOnInit() {
     //Get URL parameters

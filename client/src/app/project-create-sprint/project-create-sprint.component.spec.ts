@@ -1,18 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { By } from '@angular/platform-browser';
-import { RouterLinkWithHref } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Router } from '@angular/router';
 import { Observable, from, throwError } from 'rxjs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgForm } from '@angular/forms';
 
 import { ProjectCreateSprintComponent } from './project-create-sprint.component';
 
 import { SprintService } from '../shared/sprint.service';
 import { ProjectService } from '../shared/project.service';
-import { UserService } from '../shared/user.service';
 
 describe('ProjectCreateSprintComponent', () => {
   let component: ProjectCreateSprintComponent;
@@ -20,7 +15,6 @@ describe('ProjectCreateSprintComponent', () => {
 
   let sprintService: SprintService;
   let projectService: ProjectService;
-  let userService: UserService;
 
   let fixture: ComponentFixture<ProjectCreateSprintComponent>;
 
@@ -44,9 +38,8 @@ describe('ProjectCreateSprintComponent', () => {
 
     projectService = new ProjectService(null);
     sprintService = new SprintService(null);
-    userService = new UserService(null);
 
-    comp = new ProjectCreateSprintComponent(null, projectService, sprintService, null, userService, null);
+    comp = new ProjectCreateSprintComponent(null, projectService, sprintService, null, null);
   });
 
   it('should create', () => {

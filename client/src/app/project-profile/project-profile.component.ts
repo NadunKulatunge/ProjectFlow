@@ -63,7 +63,12 @@ export class ProjectProfileComponent implements OnInit {
   sprintsClosedIssueCounts = new Map();
   sprintsClosedIssuePercentageCounts = new Map();
 
-  constructor(private githubService: GithubService, private projectService: ProjectService, private sprintService: SprintService, private _Activatedroute:ActivatedRoute, private router : Router) { }
+  constructor(
+    private githubService: GithubService, 
+    private projectService: ProjectService, 
+    private sprintService: SprintService, 
+    private _Activatedroute:ActivatedRoute, 
+    private router : Router) { }
 
   ngOnInit() {
     //Get URL parameters

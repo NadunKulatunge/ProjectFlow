@@ -17,7 +17,10 @@ export class UserProfileComponent implements OnInit {
   serverSuccessMessage;
   showSucessMessage;
   serverErrorMessages;
-  constructor(private userService: UserService,private githubService: GithubService,  private router: Router) { }
+  constructor(
+    private userService: UserService,
+    private githubService: GithubService,  
+    private router: Router) { }
 
   ngOnInit() {
 

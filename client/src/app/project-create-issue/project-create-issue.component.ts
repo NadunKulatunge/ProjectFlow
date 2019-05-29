@@ -89,8 +89,6 @@ export class ProjectCreateIssueComponent implements OnInit {
 
   }
 
-
-
   resetForm(form: NgForm) {
     this.githubService.newIssue = {
       title: '',
@@ -101,6 +99,7 @@ export class ProjectCreateIssueComponent implements OnInit {
     form.resetForm();
     this.serverErrorMessages = '';
   }
+  
   goBack(){
     this._location.back();
   }
