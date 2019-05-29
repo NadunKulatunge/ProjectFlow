@@ -1,4 +1,4 @@
-<h2 class="headerLine">Create Issue</h2>
+<h2 class="headerLine">Edit Issue</h2>
 <br>
 <a [routerLink]="" class="btn btn-secondary btn-sm"  (click)="goBack()"> <i class="fas fa-chevron-left"></i> Back</a> 
 <br>
@@ -12,24 +12,35 @@
       </div>
   <div class="form-group">
     <label>Issue Title</label>
-    <input type="text" placeholder="Enter the issue title" #githubURL="ngModel" class="form-control" name="title" [(ngModel)]="githubService.newIssue.title" >
+    <input type="text" placeholder="Enter the issue title" #githubURL="ngModel" class="form-control" name="title" [(ngModel)]="githubService.editIssue.title" >
   </div>
   <div class="form-group">
     <label>Labels</label>
-    <input type="text" placeholder="Enter issue labels. For multiple labels use as comma seperated values (Ex: bug, enhancement)" #githubURL="ngModel" class="form-control" name="labels" [(ngModel)]="githubService.newIssue.labels" >
+    <input type="text" placeholder="Enter issue labels. For multiple labels use as comma seperated values (Ex: bug, enhancement)" #githubURL="ngModel" class="form-control" name="labels" [(ngModel)]="githubService.editIssue.labels" >
+    <small>NOTE: Only users with push access can set labels for new issues.</small>
   </div>
   <div class="form-group">
     <label>Assignees</label>
-    <input type="text" placeholder="Enter issue Assignees. For multiple Assignees use as comma seperated values (Ex: John, Peter)" #githubURL="ngModel" class="form-control" name="assignees" [(ngModel)]="githubService.newIssue.assignees" >
+    <input type="text" placeholder="Enter issue Assignees. For multiple Assignees use as comma seperated values (Ex: John, Peter)" #githubURL="ngModel" class="form-control" name="assignees" [(ngModel)]="githubService.editIssue.assignees" >
+    <small>NOTE: Only users with push access can set assignees for new issues.</small>
+  </div>
+  <div class="form-group">
+    <label>State</label>
+    <select  class='form-control' [value]='open' #githubURL="ngModel" name="state"
+          [(ngModel)]="githubService.editIssue.state">
+      <option value='open'>Open</option>
+      <option value='closed'>Closed</option>
+    </select>
   </div>
   <div class="form-group">
     <label>Issue Body</label>
-    <input type="text" placeholder="Enter the contents of the issue" #githubURL="ngModel" class="form-control" name="body" [(ngModel)]="githubService.newIssue.body" >
+    <textarea type="text" rows="4" placeholder="Enter the contents of the issue" #githubURL="ngModel" class="form-control" name="body" [(ngModel)]="githubService.editIssue.body" > </textarea>
   </div>
+
 
   <br>
   <!-- Success message -->
-  <div class="alert alert-success alert-dismissible fade show" *ngIf="showSucessMessage" role="alert">
+<div class="alert alert-success alert-dismissible fade show" *ngIf="showSucessMessage" role="alert">
     <strong>Saved successfully!</strong> 
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
@@ -44,7 +55,7 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-
+  
   <div class="text-center">
     <button type="submit" class="btn btn-dark btn-lg" style="width:50%">Submit</button>
   </div>

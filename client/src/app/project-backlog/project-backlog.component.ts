@@ -19,6 +19,7 @@ export class ProjectBacklogComponent implements OnInit {
 
   
   pid;
+  page;
   response;
   project;
   projectID;
@@ -29,8 +30,13 @@ export class ProjectBacklogComponent implements OnInit {
   issuesNumberToSprintTitle;
   sprintItemDetails;
   sprintItemSprintTitle;
+  openIssueCount;
+  pagesCount;
+  pagesCountArray;
+  outputRes;
 
   serverErrorMessages;
+  loadMoreLoading = false;
 
   constructor(
     private githubService: GithubService, 
@@ -44,6 +50,7 @@ export class ProjectBacklogComponent implements OnInit {
 
     //Get URL parameters
     this.pid=this._Activatedroute.snapshot.params['pid'];
+    this.page = 1;
     
     this.getProjectInfo(this.pid); //Parameter Protection
 
@@ -52,6 +59,8 @@ export class ProjectBacklogComponent implements OnInit {
     this.getSprints(this.pid);
 
     this.getIssuesAddedToSprints(this.pid);
+
+    this.getGithubOpenIssueCount(this.pid);
     
   }
 
@@ -75,13 +84,58 @@ export class ProjectBacklogComponent implements OnInit {
 
   //To get Open Issues related to the Project
   getGithubOpenIssues(projectID){
-    this.githubService.getGithubOpenIssues(projectID).subscribe(
+
+    this.githubService.getGithubOpenIssues(projectID, 1).subscribe(
       res => {
         this.response = res;
-        this.githubOpenIssues = this.response.items
+        this.githubOpenIssues = this.response.items;
       },
       err => { 
         console.log(err);
+      }
+    );
+  }
+
+  getMoreIssues(projectID){
+    this.loadMoreLoading = true;
+    this.githubService.getGithubOpenIssues(projectID, this.page+1).subscribe(
+      res => {
+        this.page = this.page+1;
+        console.log(this.page)
+        this.response = res;
+        this.githubOpenIssues = [...this.githubOpenIssues, ...this.response.items]
+        this.loadMoreLoading = false;
+      },
+      err => { 
+        console.log(err);
+        this.loadMoreLoading = false;
+      }
+    );
+  }
+
+  isLoadMoreAvailable(){
+    if(this.page>=this.pagesCount){
+      return false
+    }else{
+      return true
+    }
+  }
+
+
+
+  //To get the open issue count
+  getGithubOpenIssueCount(projectID){
+    this.githubService.getGithubIssueCount(projectID, 'issue', 'open').subscribe(
+      res => {
+        this.response = res;
+        this.openIssueCount = this.response.total_count;
+        this.pagesCount = Math.round(this.openIssueCount/30);
+        console.log(this.pagesCount)
+        
+      },
+      err => { 
+        console.log(err);
+        
       }
     );
   }

@@ -49,7 +49,7 @@ describe('ProjectBacklogComponent', () => {
     projectService = new ProjectService(null);
     sprintService = new SprintService(null);
 
-    comp = new ProjectBacklogComponent(githubService, projectService, sprintService,  null, null);
+    comp = new ProjectBacklogComponent(githubService, projectService, sprintService,  null, null, null);
 
     comp.issuesNumberToSprintTitle = new Map();
   });

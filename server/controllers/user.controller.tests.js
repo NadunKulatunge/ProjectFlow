@@ -85,21 +85,6 @@ describe('User Controller', () => {
                     done();
                 });
         });
-        xit('it should POST a user with valid details to register', (done) => {
-            let user = {
-                fullName: 'Test',
-                email: 'test@email.com',
-                password: '12345',
-            }
-            
-            chai.request(process.env.API_BASE_URL)
-                .post('/register')
-                .send(user)
-                .end((err, res) => {
-                    res.should.have.status(200);
-                    done();
-                });
-        });
     });
 
 });

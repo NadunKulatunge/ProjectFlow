@@ -43,7 +43,7 @@ describe('ProjectCompletedComponent', () => {
     githubService = new GithubService(null);
     projectService = new ProjectService(null);
 
-    comp = new ProjectCompletedComponent(githubService, null, projectService, null);
+    comp = new ProjectCompletedComponent(githubService, null, projectService, null, null);
   });
 
   it('should create', () => {

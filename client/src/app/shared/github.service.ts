@@ -10,6 +10,16 @@ export class GithubService {
 
   newIssue = {
     title: '',
+    labels: '',
+    assignees: '',
+    body: '',
+  };
+
+  editIssue = {
+    title: '',
+    labels: '',
+    assignees: '',
+    state: '',
     body: '',
   };
 
@@ -19,8 +29,8 @@ export class GithubService {
     return this.http.get(environment.apiBaseUrl + '/github');
   }
 
-  getGithubOpenIssues(projectID) {
-    return this.http.get(environment.apiBaseUrl + '/githubopenissues/'+projectID);
+  getGithubOpenIssues(projectID, page) {
+    return this.http.get(environment.apiBaseUrl + '/githubopenissues/'+projectID+'/'+page);
   }
 
   getGithubClosedIssues(projectID) {
@@ -41,6 +51,10 @@ export class GithubService {
 
   githubCreateIssue(projectID, newIssue){
     return this.http.post(environment.apiBaseUrl + '/github/issue/create/'+projectID, newIssue);
+  }
+
+  githubEditIssue(projectID, issueNumber, editIssue){
+    return this.http.put(environment.apiBaseUrl + '/github/issue/edit/'+projectID+'/'+issueNumber, editIssue);
   }
 
   githubLogout(){

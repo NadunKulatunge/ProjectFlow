@@ -22,7 +22,6 @@ module.exports.getGithubUserProfile = (req, res, next) =>{
             res.send(result.body);
         })
         .catch((err) => {
-            console.log('Bad credentials!');
             res.status(403).json({ status: false, message: 'Github access forbidden.' });
         });
     } else {
@@ -33,7 +32,6 @@ module.exports.getGithubUserProfile = (req, res, next) =>{
             res.send(result.body);
         })
         .catch((err) => {
-            console.log('Bad credentials');
             res.status(403).json({ status: false, message: 'Github access forbidden.' });
         });
     }
@@ -64,9 +62,7 @@ module.exports.githubSignIn = (req, res, next) =>{
     .set('Accept', 'application/json')
     .then(function(result) {
         const data = result.body;
-        console.log(result.body)
         if(ctrlUser.globalUserID){
-            console.log(data.access_token)
             User.updateOne({_id: ctrlUser.globalUserID}, {
                 $set: {
                     accessToken: data.access_token,
@@ -97,7 +93,7 @@ module.exports.getGithubOpenIssues = (req, res, next) =>{
             } else if(project.userID != req._id) {
                 return res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
             }else {
-               url = 'https://api.github.com/search/issues?q=repo:' + project.githubPartURL + '+type:issue+state:open&sort=created&order=asc';
+               url = 'https://api.github.com/search/issues?q=repo:' + project.githubPartURL + '+type:issue+state:open&sort=created&order=asc&page='+ req.params.page;
 
                 if(req._githubToken){
                     request
@@ -108,7 +104,6 @@ module.exports.getGithubOpenIssues = (req, res, next) =>{
                         res.send(result.body);
                     })
                     .catch((err) => {
-                        console.log('Bad credentials!');
                         res.status(403).json({ status: false, message: 'Github access forbidden.' });
                     });
                 } else {
@@ -120,7 +115,6 @@ module.exports.getGithubOpenIssues = (req, res, next) =>{
                         res.send(result.body);
                     })
                     .catch((err) => {
-                        console.log('Bad credentials');
                         res.status(403).json({ status: false, message: 'Github access forbidden.' });
                     });
                 }
@@ -152,7 +146,6 @@ module.exports.getGithubClosedIssues = (req, res, next) =>{
                         res.send(result.body);
                     })
                     .catch((err) => {
-                        console.log('Bad credentials');
                         res.status(403).json({ status: false, message: 'Github access forbidden.' });
                     });
                 } else {
@@ -164,7 +157,6 @@ module.exports.getGithubClosedIssues = (req, res, next) =>{
                         res.send(result.body);
                     })
                     .catch((err) => {
-                        console.log('Bad credentials');
                         res.status(403).json({ status: false, message: 'Github access forbidden.' });
                     });
                 }
@@ -196,7 +188,6 @@ module.exports.getGithubIssueCount = (req, res, next) =>{
                         res.send(result.body);
                     })
                     .catch((err) => {
-                        console.log('Bad credentials');
                         res.status(403).json({ status: false, message: 'Github access forbidden.' });
                     });
                 } else {
@@ -208,7 +199,6 @@ module.exports.getGithubIssueCount = (req, res, next) =>{
                         res.send(result.body);
                     })
                     .catch((err) => {
-                        console.log('Bad credentials');
                         res.status(403).json({ status: false, message: 'Github access forbidden.' });
                     });
                 }
@@ -240,7 +230,6 @@ module.exports.getGithubIssueFromNumber = (req, res, next) =>{
                         res.send(result.body);
                     })
                     .catch((err) => {
-                        console.log('Bad credentials');
                         res.status(403).json({ status: false, message: 'Github access forbidden.' });
                     });
                 } else {
@@ -252,7 +241,6 @@ module.exports.getGithubIssueFromNumber = (req, res, next) =>{
                         res.send(result.body);
                     })
                     .catch((err) => {
-                        console.log('Bad credentials');
                         res.status(403).json({ status: false, message: 'Github access forbidden.' });
                     });
                 }  
@@ -301,12 +289,10 @@ module.exports.getGithubSprintDetails = (req, res, next) =>{
                                         if(sprintitems.length == i){
                                             output.unshift({sprintID: sprintitem.sprintID, openIssues: openIssueCount, closedIssues: closedIssueCount});
             
-                                            console.log(output)
                                             res.send(output);
                                         }
                                     })
                                     .catch((err) => {
-                                        console.log('Bad credentials');
                                         res.status(403).json({ status: false, message: 'Github access forbidden.' });
                                     });
                             } else {
@@ -325,12 +311,10 @@ module.exports.getGithubSprintDetails = (req, res, next) =>{
                                         if(sprintitems.length == i){
                                             output.unshift({sprintID: sprintitem.sprintID, openIssues: openIssueCount, closedIssues: closedIssueCount});
             
-                                            console.log(output)
                                             res.send(output);
                                         }
                                     })
                                     .catch((err) => {
-                                        console.log('Bad credentials');
                                         res.status(403).json({ status: false, message: 'Github access forbidden.' });
                                     });
                             }
@@ -347,7 +331,21 @@ module.exports.getGithubSprintDetails = (req, res, next) =>{
 
 
 module.exports.githubCreateIssue = (req, res, next) => {
-    console.log(req.body)
+
+    //Converting labels into an array
+    if(req.body.labels!=null){
+        labelsArray = new Array();
+        labelsArray = req.body.labels.split(",");
+        req.body.labels = labelsArray;
+    }else{delete req.body['labels'];}
+
+    //Converting assignees into an array
+    if(req.body.assignees!=null){
+        assigneesArray = new Array();
+        assigneesArray = req.body.assignees.split(",");
+        req.body.assignees = assigneesArray;
+    }else{delete req.body['assignees'];}
+
     Project.findOne({ _id: req.params.projectID },
         (err, project) => {
             if (!project){
@@ -366,12 +364,56 @@ module.exports.githubCreateIssue = (req, res, next) => {
                         res.send(result.body);
                     })
                     .catch((err) => {
-                        console.log('Bad credentials');
-                        console.log(err.response.body.message)
                         res.status(403).json({ status: false, message: err.response.body.message });
                     });
                 } else {
-                    console.log('Account not linked to github');
+                    res.status(403).json({ status: false, message: 'Sorry! Account not linked to github' });
+                    
+                }  
+            }
+        }
+    );
+    
+}
+
+module.exports.githubEditIssue = (req, res, next) => {
+
+    //Converting labels into an array
+    if(req.body.labels!=null && req.body.labels!=[] && req.body.labels!=[''] && req.body.labels!='' && req.body.labels!=' '){
+        labelsArray = new Array();
+        labelsArray = req.body.labels.split(",").map(item => item.trim()); //Remove whitespaces and create an array of items
+        req.body.labels = labelsArray;
+    }else{delete req.body.labels; req.body.labels=[]; } //Remove all the labels
+
+    //Converting assignees into an array
+    if(req.body.assignees!=null && req.body.labels!=[] && req.body.labels!=[''] && req.body.labels!='' && req.body.labels!=' '){
+        assigneesArray = new Array();
+        assigneesArray = req.body.assignees.split(",").map(item => item.trim()); //Remove whitespaces and create an array of items
+        req.body.assignees = assigneesArray;
+    }else{delete req.body.assignees; req.body.assignees=[];} //Remove all the assignees
+
+    Project.findOne({ _id: req.params.projectID },
+        (err, project) => {
+            if (!project){
+                return res.status(404).json({ status: false, message: 'Project record not found.' });
+            } else if(project.userID != req._id) {
+                return res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
+            }else {
+               url = 'https://api.github.com/repos/' + project.githubPartURL + '/issues/' + req.params.issueNumber;
+
+                if(req._githubToken){
+                    request
+                    .post(url)
+                    .send(req.body)
+                    .set('Authorization', 'token ' + req._githubToken)
+                    .then(result => {
+                        res.send(result.body);
+                    })
+                    .catch((err) => {
+                        console.log(err.response.body)
+                        res.status(403).json({ status: false, message: err.response.body.message });
+                    });
+                } else {
                     res.status(403).json({ status: false, message: 'Sorry! Account not linked to github' });
                     
                 }  

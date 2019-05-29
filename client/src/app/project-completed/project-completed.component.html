@@ -6,6 +6,9 @@
 <br>
 <div class="card" *ngFor="let issue of githubClosedIssues" style="margin-bottom: 10px;">
   <div class="card-body" >
+    <div style="float:right">
+        <a [routerLink]="['/project-edit-issue', this.pid, issue.number]" class="text-secondary"><i class="fas fa-cog"></i></a>
+    </div>
     <h5 class="card-title" >
       {{issue.number + ') ' +issue.title}}
       <span class="badge badge-danger" >Status: Closed</span>

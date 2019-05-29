@@ -10,16 +10,18 @@ import { SprintService } from '../shared/sprint.service';
 import { GithubService } from '../shared/github.service';
 
 @Component({
-  selector: 'app-project-create-issue',
-  templateUrl: './project-create-issue.component.html',
-  styleUrls: ['./project-create-issue.component.css']
+  selector: 'app-project-edit-issue',
+  templateUrl: './project-edit-issue.component.html',
+  styleUrls: ['./project-edit-issue.component.css']
 })
-export class ProjectCreateIssueComponent implements OnInit {
+export class ProjectEditIssueComponent implements OnInit {
 
   pid;
+  iid;
   project;
   projectTitle;
   projectID;
+  issueInfo;
 
   showSucessMessage: boolean;
   serverErrorMessages: string;
@@ -35,10 +37,11 @@ export class ProjectCreateIssueComponent implements OnInit {
 
   ngOnInit() {
     //Get URL parameters
-    this.pid=this._Activatedroute.snapshot.params['pid'];
+    this.pid=this._Activatedroute.snapshot.params['pid']; //project ID
+    this.iid=this._Activatedroute.snapshot.params['iid']; //Issue Number
 
     this.getProjectInfo(this.pid); //Parameter Protection
-
+    this.getIssueInfo(this.pid, this.iid)
   }
 
   //// HTTP Methods
@@ -62,20 +65,55 @@ export class ProjectCreateIssueComponent implements OnInit {
     );
   }
 
+  getIssueInfo(projectID, issueNumber) {
+    this.githubService.getGithubIssueFromNumber(projectID, issueNumber).subscribe(
+      res => {
+        console.log(res)
+        this.issueInfo = res;
+        this.githubService.editIssue.title = this.issueInfo.title;
+        this.githubService.editIssue.body = this.issueInfo.body;
+        this.githubService.editIssue.state = this.issueInfo.state;
+
+        //Get Labels as comma seperated values
+        var i;
+        var labelsArray = new Array();
+        for(i = 0; i < this.issueInfo.labels.length; ++i){
+          labelsArray.push(this.issueInfo.labels[i].name)
+        }
+        this.githubService.editIssue.labels = labelsArray.join(", ");
+
+        //Get assignees as comma seperated values
+        var assigneesArray = new Array();
+        for(i = 0; i < this.issueInfo.assignees.length; ++i){
+          assigneesArray.push(this.issueInfo.assignees[i].login)
+        }
+        this.githubService.editIssue.assignees = assigneesArray.join(", ");
+
+      },
+      err => { 
+        if (err.status === 404 || err.status === 403.2 || err.status === 403) {
+          this.router.navigate(['/404']);
+        }
+        
+      }
+    );
+  }
+
   onSubmit(form: NgForm) {
   
-    let newIssue = {
+    let editIssue = {
       title: form.value.title,
       labels: form.value.labels,
       assignees: form.value.assignees,
+      state: form.value.state,
       body: form.value.body,
 
     }
 
-    this.githubService.githubCreateIssue(this.pid, newIssue).subscribe(
+    this.githubService.githubEditIssue(this.pid, this.iid, editIssue).subscribe(
       res => {
         this.showSucessMessage = true;
-        setTimeout(() => {this.showSucessMessage = false;}, 4000);
+        setTimeout(() => {this.showSucessMessage = false; this._location.back();}, 2000);
         this.resetForm(form);
       },
       err => {
@@ -92,10 +130,11 @@ export class ProjectCreateIssueComponent implements OnInit {
 
 
   resetForm(form: NgForm) {
-    this.githubService.newIssue = {
+    this.githubService.editIssue = {
       title: '',
       labels: '',
       assignees: '',
+      state: '',
       body: '',
     };
     form.resetForm();

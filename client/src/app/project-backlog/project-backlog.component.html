@@ -10,6 +10,9 @@
 
 <div class="card" *ngFor="let issue of githubOpenIssues" style="margin-bottom: 10px;">
   <div class="card-body" >
+    <div style="float:right">
+        <a [routerLink]="['/project-edit-issue', this.pid, issue.number]" class="text-secondary"><i class="fas fa-cog"></i></a>
+    </div>
     <h5 class="card-title" >
       {{issue.number + ') ' +issue.title}} 
       <span class="badge badge-success" *ngIf="isAddedToSprint(issue.number)">In Progress : {{getSprintItemSprintTitle(issue.number)}}</span>
@@ -37,7 +40,16 @@
     <button *ngIf="isAddedToSprint(issue.number)" type="button" class="btn btn-success" disabled>Add to Sprint</button>
   </div>
 </div>
-
+<div class="text-center" *ngIf="isOpenIssueItemsEmpty()">
+  <br>
+    <button *ngIf="isLoadMoreAvailable()"(click)="getMoreIssues(pid)" type="button" class="btn btn-secondary"> 
+      <i class="fas fa-sync fa-spin" *ngIf="loadMoreLoading"></i> 
+      <i class="fas fa-angle-double-down" *ngIf="!loadMoreLoading"></i>
+      Load More
+    </button>
+  <br>
+  <br>
+</div>
 
 <div *ngIf="!isOpenIssueItemsEmpty()" class="alert alert-primary text-center" role="alert">
   Loading items please wait...

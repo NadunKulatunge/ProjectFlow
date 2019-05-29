@@ -30,6 +30,7 @@ import { ReadMoreComponent } from './read-more/read-more.component';
 import { ProjectCreateIssueComponent } from './project-create-issue/project-create-issue.component';
 import { FaqComponent } from './faq/faq.component';
 import { ProjectEditComponent } from './project-edit/project-edit.component';
+import { ProjectEditIssueComponent } from './project-edit-issue/project-edit-issue.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { ProjectEditComponent } from './project-edit/project-edit.component';
     ReadMoreComponent,
     ProjectCreateIssueComponent,
     FaqComponent,
-    ProjectEditComponent
+    ProjectEditComponent,
+    ProjectEditIssueComponent
   ],
   imports: [
     BrowserModule,

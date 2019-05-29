@@ -11,6 +11,7 @@ import { ProjectBacklogComponent } from './project-backlog/project-backlog.compo
 import { ProjectCompletedComponent } from './project-completed/project-completed.component';
 import { ProjectCreateSprintComponent } from './project-create-sprint/project-create-sprint.component';
 import { ProjectCreateIssueComponent } from './project-create-issue/project-create-issue.component';
+import { ProjectEditIssueComponent } from './project-edit-issue/project-edit-issue.component';
 import { ProjectSprintComponent } from './project-sprint/project-sprint.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { FaqComponent } from './faq/faq.component';
@@ -55,6 +56,9 @@ export const appRoutes: Routes = [
     },
     {
         path: 'project-create-issue/:pid', component: ProjectCreateIssueComponent,canActivate:[AuthGuard]
+    },
+    {
+        path: 'project-edit-issue/:pid/:iid', component: ProjectEditIssueComponent,canActivate:[AuthGuard]
     },
     {
         path: 'project-sprint/:pid/:sid', component: ProjectSprintComponent,canActivate:[AuthGuard]

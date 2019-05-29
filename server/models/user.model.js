@@ -49,7 +49,6 @@ userSchema.methods.verifyPassword = function (password) {
 };
 
 userSchema.methods.generateJwt = function () {
-    console.log(this.accessToken)
     return jwt.sign({ _id: this._id, _githubToken: this.accessToken},
         process.env.JWT_SECRET,
     {

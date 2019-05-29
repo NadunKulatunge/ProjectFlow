@@ -34,16 +34,13 @@ mongoose.model('Project', projectSchema);
 projectSchema.path('githubURL').validate((val) => {
     urlRegex = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/;
     if(!urlRegex.test(val)) { //Invalid URL
-        console.log('Invalid')
         return false;
     } else { 
         urlsplit = val.split("/");
         domain = urlsplit[2];
         if(domain=="github.com" || domain=="www.github.com"){ //Valid
-            console.log('valid')
             return true;
         } else { //Invalid
-            console.log('Invalid')
             return false;
         }
     }

@@ -14,12 +14,13 @@ router.get('/userProfile',jwtHelper.verifyJwtToken, ctrlUser.getUserProfile);
 
 
 router.get('/github',jwtHelper.verifyJwtToken, ctrlGithub.getGithubUserProfile);
-router.get('/githubopenissues/:projectID',jwtHelper.verifyJwtToken, ctrlGithub.getGithubOpenIssues);
+router.get('/githubopenissues/:projectID/:page',jwtHelper.verifyJwtToken, ctrlGithub.getGithubOpenIssues);
 router.get('/githubclosedissues/:projectID',jwtHelper.verifyJwtToken, ctrlGithub.getGithubClosedIssues);
 router.get('/githubissuecount/:projectID/:type/:state',jwtHelper.verifyJwtToken, ctrlGithub.getGithubIssueCount);
 router.get('/githubGetIssueFromNumber/:projectID/:issueNumber',jwtHelper.verifyJwtToken, ctrlGithub.getGithubIssueFromNumber);
 router.get('/githubSprintDetails/:sprintID/:projectID',jwtHelper.verifyJwtToken, ctrlGithub.getGithubSprintDetails);
 router.post('/github/issue/create/:projectID',jwtHelper.verifyJwtToken, ctrlGithub.githubCreateIssue);
+router.put('/github/issue/edit/:projectID/:issueNumber',jwtHelper.verifyJwtToken, ctrlGithub.githubEditIssue);
 router.delete('/github/logout',jwtHelper.verifyJwtToken, ctrlGithub.githubLogout);
 
 router.post('/project/create',jwtHelper.verifyJwtToken, ctrlProject.createProject);

@@ -34,7 +34,6 @@ module.exports.authenticate = (req, res, next) => {
         if (err) return res.status(400).json(err);
         // registered user
         else if (user) {
-            console.log(user)
             module.exports.globalUserID = user._id;
             return res.status(200).json({ "token": user.generateJwt() });
             //module.exports.globalUserID = '';
