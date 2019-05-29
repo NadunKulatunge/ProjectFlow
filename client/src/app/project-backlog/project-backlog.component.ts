@@ -101,7 +101,6 @@ export class ProjectBacklogComponent implements OnInit {
     this.githubService.getGithubOpenIssues(projectID, this.page+1).subscribe(
       res => {
         this.page = this.page+1;
-        console.log(this.page)
         this.response = res;
         this.githubOpenIssues = [...this.githubOpenIssues, ...this.response.items]
         this.loadMoreLoading = false;
@@ -130,7 +129,6 @@ export class ProjectBacklogComponent implements OnInit {
         this.response = res;
         this.openIssueCount = this.response.total_count;
         this.pagesCount = Math.round(this.openIssueCount/30);
-        console.log(this.pagesCount)
         
       },
       err => { 

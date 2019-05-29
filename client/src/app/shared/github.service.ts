@@ -33,8 +33,8 @@ export class GithubService {
     return this.http.get(environment.apiBaseUrl + '/githubopenissues/'+projectID+'/'+page);
   }
 
-  getGithubClosedIssues(projectID) {
-    return this.http.get(environment.apiBaseUrl + '/githubclosedissues/'+projectID);
+  getGithubClosedIssues(projectID, page) {
+    return this.http.get(environment.apiBaseUrl + '/githubclosedissues/'+projectID+'/'+page);
   }
 
   getGithubIssueCount(projectID, type, state) {

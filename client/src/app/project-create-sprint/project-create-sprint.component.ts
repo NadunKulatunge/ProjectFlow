@@ -65,7 +65,6 @@ export class ProjectCreateSprintComponent implements OnInit {
       projectID: this.projectID,
 
     }
-    console.log(newItem);
 
     this.sprintService.createSprint(newItem).subscribe(
       res => {

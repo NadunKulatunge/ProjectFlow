@@ -15,7 +15,7 @@ router.get('/userProfile',jwtHelper.verifyJwtToken, ctrlUser.getUserProfile);
 
 router.get('/github',jwtHelper.verifyJwtToken, ctrlGithub.getGithubUserProfile);
 router.get('/githubopenissues/:projectID/:page',jwtHelper.verifyJwtToken, ctrlGithub.getGithubOpenIssues);
-router.get('/githubclosedissues/:projectID',jwtHelper.verifyJwtToken, ctrlGithub.getGithubClosedIssues);
+router.get('/githubclosedissues/:projectID/:page',jwtHelper.verifyJwtToken, ctrlGithub.getGithubClosedIssues);
 router.get('/githubissuecount/:projectID/:type/:state',jwtHelper.verifyJwtToken, ctrlGithub.getGithubIssueCount);
 router.get('/githubGetIssueFromNumber/:projectID/:issueNumber',jwtHelper.verifyJwtToken, ctrlGithub.getGithubIssueFromNumber);
 router.get('/githubSprintDetails/:sprintID/:projectID',jwtHelper.verifyJwtToken, ctrlGithub.getGithubSprintDetails);

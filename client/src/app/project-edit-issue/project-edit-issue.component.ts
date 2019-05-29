@@ -68,7 +68,6 @@ export class ProjectEditIssueComponent implements OnInit {
   getIssueInfo(projectID, issueNumber) {
     this.githubService.getGithubIssueFromNumber(projectID, issueNumber).subscribe(
       res => {
-        console.log(res)
         this.issueInfo = res;
         this.githubService.editIssue.title = this.issueInfo.title;
         this.githubService.editIssue.body = this.issueInfo.body;

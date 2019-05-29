@@ -135,7 +135,7 @@ module.exports.getGithubClosedIssues = (req, res, next) =>{
             } else if(project.userID != req._id) {
                 return res.status(403).json({ status: false, message: 'Project record read access forbidden.' });
             }else {
-               url = 'https://api.github.com/search/issues?q=repo:' + project.githubPartURL + '+type:issue+state:closed&sort=created&order=asc';
+               url = 'https://api.github.com/search/issues?q=repo:' + project.githubPartURL + '+type:issue+state:closed&sort=created&order=asc&page='+ req.params.page;
 
                 if(req._githubToken){
                     request

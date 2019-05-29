@@ -20,6 +20,17 @@
   </div>
 </div>
 
+<div class="text-center" *ngIf="isClosedIssueItemsEmpty()">
+  <br>
+    <button *ngIf="isLoadMoreAvailable()"(click)="getMoreIssues(pid)" type="button" class="btn btn-secondary"> 
+      <i class="fas fa-sync fa-spin" *ngIf="loadMoreLoading"></i> 
+      <i class="fas fa-angle-double-down" *ngIf="!loadMoreLoading"></i>
+      Load More
+    </button>
+  <br>
+  <br>
+</div>
+
 <div *ngIf="!isClosedIssueItemsEmpty()" class="alert alert-primary text-center" role="alert">
   Loading items please wait...
   <br>

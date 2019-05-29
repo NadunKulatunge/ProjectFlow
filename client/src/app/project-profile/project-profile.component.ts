@@ -231,7 +231,6 @@ export class ProjectProfileComponent implements OnInit {
   countSprintOpenIssuesTotal() {
     this.sprintOpenIssuesTotal= 0;
     for (let i of this.sprintOpenIssues) {
-      console.log("count" + i)
       this.sprintOpenIssuesTotal = this.sprintOpenIssuesTotal + i;
     }
     this.generateChart()
