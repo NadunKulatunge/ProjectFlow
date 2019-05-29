@@ -36,11 +36,11 @@ describe('Github Controller', () => {
         });
     });
 
-    context('GET /githubopenissues/:projectID', () => {
+    context('GET /githubopenissues/:projectID/:page', () => {
         it('it should not get open issues of projects of other users', (done) => {
             
             chai.request(url)
-                .get('/githubopenissues/' + '1m8a03s23846298293934044')
+                .get('/githubopenissues/' + '1m8a03s23846298293934044/1')
                 .set("Authorization", "Bearer " + token)
                 .end((err, res) => {
                     res.should.have.status(404);
@@ -50,7 +50,7 @@ describe('Github Controller', () => {
         it('it should get open issues of projects of the current users', (done) => {
             
             chai.request(url)
-                .get('/githubopenissues/' + '5c77a38ab6c49026fe3915d6')
+                .get('/githubopenissues/' + '5c77a38ab6c49026fe3915d6/1')
                 .set("Authorization", "Bearer " + token)
                 .end((err, res) => {
                     res.should.have.status(200);
@@ -59,11 +59,11 @@ describe('Github Controller', () => {
         });
     });
 
-    context('GET /githubclosedissues/:projectID', () => {
+    context('GET /githubclosedissues/:projectID/:page', () => {
         it('it should not get closed issues of projects of other users', (done) => {
             
             chai.request(url)
-                .get('/githubclosedissues/' + '1m8a03s23846298293934044')
+                .get('/githubclosedissues/' + '1m8a03s23846298293934044/1')
                 .set("Authorization", "Bearer " + token)
                 .end((err, res) => {
                     res.should.have.status(404);
@@ -73,7 +73,7 @@ describe('Github Controller', () => {
         it('it should get closed issues of projects of the current users', (done) => {
             
             chai.request(url)
-                .get('/githubclosedissues/' + '5c77a38ab6c49026fe3915d6')
+                .get('/githubclosedissues/' + '5c77a38ab6c49026fe3915d6/1')
                 .set("Authorization", "Bearer " + token)
                 .end((err, res) => {
                     res.should.have.status(200);

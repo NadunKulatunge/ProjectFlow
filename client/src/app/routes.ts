@@ -10,6 +10,7 @@ import { ProjectProfileComponent } from './project-profile/project-profile.compo
 import { ProjectBacklogComponent } from './project-backlog/project-backlog.component';
 import { ProjectCompletedComponent } from './project-completed/project-completed.component';
 import { ProjectCreateSprintComponent } from './project-create-sprint/project-create-sprint.component';
+import { ProjectEditSprintComponent } from './project-edit-sprint/project-edit-sprint.component';
 import { ProjectCreateIssueComponent } from './project-create-issue/project-create-issue.component';
 import { ProjectEditIssueComponent } from './project-edit-issue/project-edit-issue.component';
 import { ProjectSprintComponent } from './project-sprint/project-sprint.component';
@@ -53,6 +54,9 @@ export const appRoutes: Routes = [
     },
     {
         path: 'project-create-sprint/:pid', component: ProjectCreateSprintComponent,canActivate:[AuthGuard]
+    },
+    {
+        path: 'project-edit-sprint/:pid/:sid', component: ProjectEditSprintComponent,canActivate:[AuthGuard]
     },
     {
         path: 'project-create-issue/:pid', component: ProjectCreateIssueComponent,canActivate:[AuthGuard]

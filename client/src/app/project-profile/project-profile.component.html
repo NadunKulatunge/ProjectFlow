@@ -41,7 +41,7 @@
             <hr style="margin-top:-20px"> 
           <h4 class="text-center font-weight-bold">{{sprint.title}}</h4>
           <div class="text-right">
-              <a [routerLink]="" (click)="removeSprint(pid, sprint._id)" class="text-secondary" style="margin-right:10px"><i class="fas fa-cog"></i></a>
+              <a [routerLink]="['/project-edit-sprint', pid, sprint._id]" class="text-secondary" style="margin-right:10px"><i class="fas fa-cog"></i></a>
               <a [routerLink]="" (click)="removeSprint(pid, sprint._id)" class="text-secondary"><i class="fas fa-trash"></i></a>
           </div>
           

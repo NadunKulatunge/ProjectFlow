@@ -104,6 +104,32 @@ module.exports.createSprint = (req, res, next) =>{
 
 }
 
+//Edit Sprint for a Project ( PUT /sprint/edit )
+module.exports.editSprint = (req, res, next) =>{
+    console.log(req.body)
+    Sprint.findOneAndUpdate({projectID: req.params.projectID, userID: req._id, _id: req.params.sprintID},{
+        $set: {
+            userID : req._id,
+            projectID : req.params.projectID,
+            title : req.body.title,
+            startDate : req.body.startDate,
+            endDate : req.body.endDate
+        }
+    },
+    
+    function(err, result) {
+        if (!err)
+            res.send(result);
+        else {
+            if (err.code == 11000)
+                res.status(422).send(['Duplicate Github URL found.']);
+            else
+                return next(err);
+        }
+    });
+
+}
+
 //Find sprints assigned to a project ( GET /sprints/:projectID )
 module.exports.getSprints = (req, res, next) =>{
 

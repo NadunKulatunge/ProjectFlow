@@ -35,6 +35,7 @@ router.delete('/sprint/:projectID/:sprintID',jwtHelper.verifyJwtToken, ctrlSprin
 router.delete('/sprintitem/:projectID/:sprintID/:issueNumber',jwtHelper.verifyJwtToken, ctrlSprint.removeSprintItem)
 router.get('/sprintitems/:projectID/:sprintID',jwtHelper.verifyJwtToken, ctrlSprint.getSprintItems);
 router.post('/sprint/create',jwtHelper.verifyJwtToken, ctrlSprint.createSprint);
+router.put('/sprint/edit/:projectID/:sprintID',jwtHelper.verifyJwtToken, ctrlSprint.editSprint);
 router.get('/sprint/:projectID/:sprintID',jwtHelper.verifyJwtToken, ctrlSprint.getSprint);
 router.get('/sprints/:projectID',jwtHelper.verifyJwtToken, ctrlSprint.getSprints);
 router.get('/issuesAddedToSprints/:projectID',jwtHelper.verifyJwtToken, ctrlSprint.getIssuesAddedToSprints);

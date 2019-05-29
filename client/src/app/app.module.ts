@@ -31,6 +31,7 @@ import { ProjectCreateIssueComponent } from './project-create-issue/project-crea
 import { FaqComponent } from './faq/faq.component';
 import { ProjectEditComponent } from './project-edit/project-edit.component';
 import { ProjectEditIssueComponent } from './project-edit-issue/project-edit-issue.component';
+import { ProjectEditSprintComponent } from './project-edit-sprint/project-edit-sprint.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { ProjectEditIssueComponent } from './project-edit-issue/project-edit-iss
     ProjectCreateIssueComponent,
     FaqComponent,
     ProjectEditComponent,
-    ProjectEditIssueComponent
+    ProjectEditIssueComponent,
+    ProjectEditSprintComponent
   ],
   imports: [
     BrowserModule,

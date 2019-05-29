@@ -27,6 +27,10 @@ export class SprintService {
     createSprint(sprint: Sprint) {
       return this.http.post(environment.apiBaseUrl+'/sprint/create',sprint);
     }
+
+    editSprint(sprint: Sprint, projectID, sprintID) {
+      return this.http.put(environment.apiBaseUrl+'/sprint/edit/'+projectID+'/'+sprintID, sprint);
+    }
   
     getSprints(projectID){
       return this.http.get(environment.apiBaseUrl+'/sprints/'+projectID);
@@ -37,7 +41,7 @@ export class SprintService {
     }
   
     createSprintItem(sprintitem: SprintItem) {
-      return this.http.post(environment.apiBaseUrl+'/sprintitem/create',sprintitem);
+      return this.http.post(environment.apiBaseUrl+'/sprintitem/create', sprintitem);
     }
   
     getSprintItems(projectID, sprintID){
