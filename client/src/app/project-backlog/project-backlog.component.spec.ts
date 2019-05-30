@@ -76,13 +76,13 @@ describe('ProjectBacklogComponent', () => {
     expect(comp.projectID).toBe(123)
   });
 
-  xit('should navigate to 404 if project not found error from the server', () => {
+  /*xit('should navigate to 404 if project not found error from the server', () => {
     spyOn(projectService, 'getProjectInfo').and.callFake(() => {
       return throwError( {status: 404} )
     });
 
     comp.getProjectInfo(123);
-  });
+  });*/
 
   it('should set githubOpenIssues property with the items returned from the server', () => {
     spyOn(githubService, 'getGithubOpenIssues').and.callFake((x) => {

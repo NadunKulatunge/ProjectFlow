@@ -333,18 +333,18 @@ module.exports.getGithubSprintDetails = (req, res, next) =>{
 module.exports.githubCreateIssue = (req, res, next) => {
 
     //Converting labels into an array
-    if(req.body.labels!=null){
+    if(req.body.labels!=null && req.body.labels!=[] && req.body.labels!=[''] && req.body.labels!='' && req.body.labels!=' '){
         labelsArray = new Array();
-        labelsArray = req.body.labels.split(",");
+        labelsArray = req.body.labels.split(",").map(item => item.trim()); //Remove whitespaces and create an array of items
         req.body.labels = labelsArray;
-    }else{delete req.body['labels'];}
+    }else{delete req.body.labels; req.body.labels=[]; } //Remove all the labels
 
     //Converting assignees into an array
     if(req.body.assignees!=null){
         assigneesArray = new Array();
-        assigneesArray = req.body.assignees.split(",");
+        assigneesArray = req.body.assignees.split(",").map(item => item.trim()); //Remove whitespaces and create an array of items
         req.body.assignees = assigneesArray;
-    }else{delete req.body['assignees'];}
+    }else{delete req.body.assignees; req.body.assignees=[];} //Remove all the assignees
 
     Project.findOne({ _id: req.params.projectID },
         (err, project) => {
