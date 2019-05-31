@@ -1,9 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { By } from '@angular/platform-browser';
-import { RouterLinkWithHref } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Router } from '@angular/router';
 import { Observable, from, throwError } from 'rxjs';
 
 import { ProjectCompletedComponent } from './project-completed.component';

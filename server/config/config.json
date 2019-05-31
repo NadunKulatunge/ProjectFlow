@@ -9,11 +9,12 @@
         "AUTH_SECRET": "7bdbec56d41af9fb1aa7e7a844c39f879da7eb6b"
     },
     "production": {
-        "MONGODB_URI": "mongodb://xxxxx/DB_Name",
+        "MONGODB_URI": "mongodb+srv://nadun:nadun@projectflow-oh5vu.mongodb.net/test",
         "JWT_SECRET": "SECRET#123",
-        "JWT_EXP": "2m",
-        "HOME_URL": "http://localhost:4200/",
-        "AUTH_CLIENT": "530a31e610d573b4d652",
-        "AUTH_SECRET": "7bdbec56d41af9fb1aa7e7a844c39f879da7eb6b"
+        "JWT_EXP": "30m",
+        "HOME_URL": "https://projectflow-client.herokuapp.com/",
+        "API_BASE_URL": "https://projectflow-server.herokuapp.com/api",
+        "AUTH_CLIENT": "b572bd41a2e8693023a2",
+        "AUTH_SECRET": "a51da7843aa2b64519741544ca0db3dfa67c75bf"
     }
 }

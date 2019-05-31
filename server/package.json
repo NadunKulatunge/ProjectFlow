@@ -1,7 +1,7 @@
 {
-  "name": "project",
+  "name": "projectflow",
   "version": "1.0.0",
-  "description": "",
+  "description": "A project management tool linked with Github",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
